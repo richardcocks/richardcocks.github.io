@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>(How not to) Generate a Large Prime</title>
+</head>
+
+<body>
+    <h1>(How not to) Generate a Large Prime</h1>
+    <h2>Confidently Incorrect</h2>
+    <p>
+        I asked Bard and ChatGPT to generate large primes. I wasn't expecting magic, I thought they would give a wrong
+        answer.
+    </p>
+    <p>
+        <img src="/img/BardPrime.png"
+            alt="Bard wrongly asserts 1073741823 is prime, even after being demonstrated the factors.">
+    </p>
+    <p>What surprised me was how confidently they asserted that the composite number they provided me with was a prime
+        number.</p>
+    <p>They carefully explained it was only divisible by 1 and itself. They carefully explained there is the
+        Miller-Rabin primality test.</p>
+    <p><img src="/img/ChatGPTPrime.png"
+            alt="Chat GPT asserts 2087891141 is prime even after being demonstrated the fators."></p>
+    <p>Even after asking the forward multiplication, they still asserted their number was prime.</p>
+    <p>Chat GPT would when told outright concede that it was not prime.</p>
+    <p>
+        <img src="/img/ChatGPTCorrection.png" alt="Chat GPT concedes it is a composite number.">
+    </p>
+    <h2>Code Generation</h2>
+    <p>I tried another approach, asking for an actually large prime (1024 bit), they helpfully generated code to
+        generate a prime.</p>
+    <p>
+        <img src="/img/NaivePrime.png" alt="Chat GPT suggests naive code to generate a large prime.">
+    </p>
+    <p>This was in their wheelhouse. Their answers gave me code that had naive primality tests while asserting they were
+        using probabilistic tests.</p>
+    <p>
+        <img src="/img/LargePrimeOutput.png"
+            alt="Chat GPT provides a large prime and part of the Miller-Rabin primality test.">
+        <img src="/img/IsPrimeLower.png" alt="Second part of the Miller-Rabin test (according to chat GPT)">
+    </p>
+
+    <p>Now this code looks much better. It seems more sophisticated than the earlier tests and could plausibly be a
+        working implementation of Miller-Rabin.</p>
+
+
+    <p>Let's try it out and run it!</p>
+
+    <p>
+        <code>
+            65537 is composite.
+        </code>
+    </p>
+
+    <p>Oh dear.</p>
+
+</body>
+
+</html>
