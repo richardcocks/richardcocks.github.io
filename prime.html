@@ -65,6 +65,115 @@
 
     <p>Oh dear.</p>
 
+    <p>p.s. I have no idea if the "example output" is prime or not. If anyone can test it the number is
+        <code>111214044139118619458848693151753948296057654127829166914906209735324916371896491119563828345538092899249564707256262387088469431842037731246856602310033515744704658741593630980025248837518238148378282212738504052001926740531138951106678803580892031406225962087662871480135858142245523789325317276927004039427</code>
+    </p>
+
+    <h2>Appendix</h2>
+    <h3>Code Example 1 (Python)</h3>
+
+    <pre>
+    import random
+    import math
+
+    def generate_prime_number(num_bits):
+        while True:
+            n = random.getrandbits(num_bits)
+            if n % 2 == 0:
+                n += 1
+            if is_prime(n):
+                return n
+
+    def is_prime(n):
+        if n <= 3:
+            return n > 1
+        elif n % 2 == 0 or n % 3 == 0:
+            return False
+        else:
+            i = 5
+            while i * i <= n:
+                if n % i == 0 or n % (i + 2) == 0:
+                    return False
+                i += 6
+            return True
+
+    prime_number = generate_prime_number(1024)
+    print(prime_number)
+
+    </pre>
+
+    <h3>Code example 2 (C#)</h3>
+    <pre>
+        using System;
+
+        class MillerRabin
+        {
+            static Random rand = new Random();
+        
+            static bool IsPrime(int n, int k)
+            {
+                if (n == 2 || n == 3)
+                    return true;
+        
+                if (n < 2 || n % 2 == 0)
+                    return false;
+        
+                int s = 0, d = n - 1;
+                while (d % 2 == 0)
+                {
+                    d /= 2;
+                    s++;
+                }
+        
+                for (int i = 0; i < k; i++)
+                {
+                    int a = rand.Next(2, n - 1);
+                    int x = ModPow(a, d, n);
+        
+                    if (x == 1 || x == n - 1)
+                        continue;
+        
+                    for (int j = 0; j < s - 1; j++)
+                    {
+                        x = ModPow(x, 2, n);
+                        if (x == n - 1)
+                            break;
+                    }
+        
+                    if (x != n - 1)
+                        return false;
+                }
+        
+                return true;
+            }
+        
+            static int ModPow(int a, int b, int n)
+            {
+                int res = 1;
+                while (b > 0)
+                {
+                    if (b % 2 == 1)
+                        res = (res * a) % n;
+                    a = (a * a) % n;
+                    b /= 2;
+                }
+                return res;
+            }
+        
+            static void Main()
+            {
+                int n = 65537;
+                int k = 10;
+        
+                if (IsPrime(n, k))
+                    Console.WriteLine(n + " is probably prime.");
+                else
+                    Console.WriteLine(n + " is composite.");
+            }
+        }
+    
+    </pre>
+
 </body>
 
 </html>
