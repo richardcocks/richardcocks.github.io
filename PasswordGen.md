@@ -26,7 +26,6 @@ public string GeneratePassword(int length)
     }
     return password;
 }
-
 ```
 
 It surprised me, because it's in the perfect spot of being just about good enough to sneak through some reviews. It would certainly get a few remarks if reviewed as a standalone feature, but it could get through if bundled as part of 20 files in a wider feature. This is a benefit of small commits, but that's a post for another day.
