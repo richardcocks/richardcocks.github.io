@@ -3,7 +3,9 @@ layout: post
 title: Fixing a password generator
 date: 2025-03-24
 ---
-# Fixing a password generator
+
+
+# 2025-03-24  Fixing a password generator
 
 I've been [nerd-sniped](https://xkcd.com/356/) by co-pilot. I don't normally have it enabled, but was working on another machine which did. I was implementing a feature when it suggested autocompleting GeneratePassword.
 
@@ -243,16 +245,18 @@ public string CharArraySecure()
 ![Graph for Table 2 non-secure variants](/assets/img/2stringBuilderWeak.png)
 ![Graph for Table 2 secure variants](/assets/img/3StringBuilderSecure.png)
 
-Okay, that's another modest improvement, and we've confirmed the `char[]` approach beats out `StringBuilder` for building short strings from characters.
+Okay, that's another modest improvement. It's hard to see with the secure version, but with the vulnerable version we've confirmed the `char[]` approach is better than `StringBuilder`for building short fixed-length strings up from characters.
+
+The time in the secure version is dominated by the random number generation, so let's fix that.
 
 
 ## Faster random generators
 
-The time in our secure version is completely dominated by `GetInt32`, we can improve performance by getting all the bytes we need at once and then encoding them into characters.
+We need to address  time spent in our secure version which is completely dominated by `GetInt32`. We can improve performance by getting all the bytes we need at once and then encoding them into characters.
 
-To do so will mean making an important compromise so we don't introduce bias. 
+To allow us to do this, we will need to make an important compromise, so that we don't introduce bias. 
 
-Our character set is 74 characters, meaning if we were to generate 1 byte and then do `value % 74`, we would be introducing bias toward characters `a` through `H` as can be seen by running this code:
+Our character set is 74 characters. If we were to generate a byte and then do `value % 74`, we would be introducing a bias toward characters `a` through `H`. I won't go into the mathematics, but this can be seen by running this code:
 
 ```csharp
 byte[] foo = new byte[1024*1024];
@@ -285,16 +289,17 @@ foreach (var c in frequencies) {
 ```
 There's a heavy bias with `a` through `H` having approximately ~16,300 appearances with `I` through `+` having roughly 12,200.
 
-To eliminate this bias, we need a character set that divides evenly into 256. We can either try to pad to 128 characters, which will significantly increase the entropy of our password, or cut down to 64 characters, which will have the unfortunate side-effect of also reducing entropy.
+To eliminate this bias, we need a character set that divides evenly into 256. We can either try to pad to 128 characters, which will significantly increase the entropy of our password for a given length, or we can cut down to 64 characters, which will have the unfortunate side-effect of also reducing entropy.
 
-We'll cut down to 64, because it's difficult to think of 50 more recognisable characters, and we can also take the opportunity to cut out characters that can be confused for each other in some fonts, such as I and l. 
+We'll cut down to 64. It's difficult to think of 50 more recognisable characters and we can also take the opportunity to cut out characters that can be confused for each other in some fonts, such as I and l.
 
-The reduction in entropy for a 16 character password is going from `74^16  ~= 100 bits`, to `64^16 = 96 bits`.  So we've lost around 4 bits from our password. If this is a concern, then we can increase our password length by one character to accomodate.
+The reduction in entropy can be calculated. For a 16 character password, we are going from `74^16  ~= 100 bits`, to `64^16 = 96 bits`.  So we've lost around 4 bits from our password. If this is a concern, then we can increase our password length by one character to accomodate.
 
-It is a weakening, but as long as it's properly documented, should not be a concern.
+The actual entropy lost will be `log_2(64/74) = -0.2094534` bits per character in the password.
+
+It is a weakening, but if it's properly documented, should not be a concern.
 
 Let's define our new character set:
-
 
 ```csharp
 private const string charactersShortSet = "abcdefghjkmnpqrstuwxyzABCDEFGHJKLMNPQRSTVWXYZ0123456789@#$%&()_+";
@@ -306,7 +311,7 @@ Now we have a character set that won't introduce bias, let's add a function that
 public string Buffer()
 {
     byte[] bytebuffer = new byte[Length];
-    Random.Shared.NextBytes(bytebuffer);
+    RandomNumberGenerator.Fill(bytebuffer);
 
     char[] buffer = new char[Length];
 
@@ -319,8 +324,10 @@ public string Buffer()
 }
 ```
 
-With of course an equivalent "Secure" version using `RandomNumberGenerator.Fill`.
+We'll also produce an equivalent "vulnerable" version using `Random.Shared.NextBytes`, although I'd recommend not using it.
 
+<details>
+<summary>Results table for buffering the random bytes</summary>
 Results:
 | Method           | Categories | Length | Mean        | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------- |----------- |------- |------------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
@@ -341,7 +348,9 @@ Results:
 |                  |            |        |             |           |           |       |         |        |           |             |
 | **GeneratePassword** | **Vulnerable** | **32**     |   **374.71 ns** |  **4.076 ns** |  **3.812 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
 | Buffer           | Vulnerable | 32     |    44.37 ns |  0.522 ns |  0.488 ns |  0.12 |    0.00 | 0.0277 |     232 B |        0.12 |
+</details>
 
+![Graph of benchmark results for buffering the random data](/assets/img/4Buffer.png)
 
 Now there's the improvement we were hoping for! Our Vulnerable version is now up to 8 times faster than the original co-pilot output.
 
