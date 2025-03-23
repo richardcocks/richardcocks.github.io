@@ -1,4 +1,10 @@
+---
+layout: post
+title: Fixing a password generator
+---
 # Fixing a password generator
+
+23 March 2025
 
 I've been [nerd-sniped](https://xkcd.com/356/) by co-pilot. I don't normally have it enabled, but was working on another machine which did. I was implementing a feature when it suggested autocompleting GeneratePassword.
 
