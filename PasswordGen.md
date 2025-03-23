@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Fixing a password generator
+date: 2025-03-24
 ---
 # Fixing a password generator
 
