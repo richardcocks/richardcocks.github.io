@@ -5,8 +5,6 @@ date: 2025-03-24
 ---
 # Fixing a password generator
 
-23 March 2025
-
 I've been [nerd-sniped](https://xkcd.com/356/) by co-pilot. I don't normally have it enabled, but was working on another machine which did. I was implementing a feature when it suggested autocompleting GeneratePassword.
 
 It took me on a journey of benchmarking with BenchmarkDotNet and discovering what did and did not affect performance in microbenchmarking.
