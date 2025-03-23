@@ -165,7 +165,7 @@ namespace PasswordGen
 
 </details>
 
-![Benchmark results graph](/assets/img/1random.png "Benchmark results table 1")
+![Benchmark results graph](/assets/img/1random.png "Lower is better")
 
 We can now see that avoiding `new System.Random()` increased performance, roughly 35% faster for the 24 character example.
 
@@ -242,8 +242,8 @@ public string CharArraySecure()
 | CharArray           | Vulnerable | 32     |   141.43 ns |  0.751 ns |  0.627 ns |   141.33 ns |  0.37 |    0.00 | 0.0210 |     176 B |        0.09 |
 </details>
 
-![Graph for Table 2 non-secure variants](/assets/img/2stringBuilderWeak.png)
-![Graph for Table 2 secure variants](/assets/img/3StringBuilderSecure.png)
+![Graph for Table 2 non-secure variants](/assets/img/2stringBuilderWeak.png "Lower is better")
+![Graph for Table 2 secure variants](/assets/img/3StringBuilderSecure.png "Lower is better")
 
 Okay, that's another modest improvement. It's hard to see with the secure version, but with the vulnerable version we've confirmed the `char[]` approach is better than `StringBuilder`for building short fixed-length strings up from characters.
 
@@ -351,17 +351,17 @@ We'll also produce an equivalent "vulnerable" version using `Random.Shared.NextB
 
 </details>
 
-![Graph of benchmark results for buffering the random data](/assets/img/4Buffer.png)
+![Graph of benchmark results for buffering the random data](/assets/img/4Buffer.png "Lower is better")
 
-Now there's the improvement we were hoping for! Our Vulnerable version is now up to 8 times faster than the original co-pilot output.
+Now there's the improvement we were hoping for! Our vulnerable version is now up to 8 times faster than the original co-pilot output.
 
-More importantly, our secure version is actually faster than the original vulnerable version. 
+More importantly, our secure version is actually faster than the original vulnerable co-pilot version.
 
-We've sacrificed some generation strength to achieve this, can we maintain this speed while also using our full character set?  We actually might. While looking up `RandomNumberGenerator.Fill` I spotted `RandomNumberGenerator.GetItems<T>`, which:
+We've sacrificed some symbols and characters from the output to achieve this. Can we maintain a good speed while also using our full character set? It might be possible: while looking up `RandomNumberGenerator.Fill` I spotted `RandomNumberGenerator.GetItems<T>`, which:
 
 > Creates an array populated with items chosen at random from choices
 
-That sounds exactly like what we're after. There's also `Random.Shared.GetItems<T>`, let's implement them, going back to our original 74 character set. This leaves our methods as:
+That sounds exactly like what we're after. There's also an equivalent `Random.Shared.GetItems<T>`, let's implement them, going back to our original 74 character set to do so. This leaves our methods as:
 
 ```csharp
 [BenchmarkCategory("Vulnerable"), Benchmark()]
@@ -380,6 +380,9 @@ public string GetItemsSecure()
 ```
 
 That's definitely a lot neater code than the original, let's see how it performs:
+
+<details>
+<summary>Table of Results for GetItems methods<summary>
 
 | Method           | Categories | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------- |----------- |------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
@@ -401,7 +404,13 @@ That's definitely a lot neater code than the original, let's see how it performs
 | **GeneratePassword** | **Vulnerable** | **32**     |   **383.6 ns** |  **5.39 ns** |  **4.50 ns** |  **1.00** |    **0.02** | **0.2303** |    **1928 B** |        **1.00** |
 | GetItems         | Vulnerable | 32     |   243.7 ns |  2.80 ns |  2.62 ns |  0.64 |    0.01 | 0.0210 |     176 B |        0.09 |
 
-Right, so that's a bit of a performance regression, so we'd need to understand the trade-offs of using the full character set vs the reduced character set with better performance.
+</details>
+
+![Graph of benchmark results for GetItems](/assets/img/5GetItems.png "Lower is better")
+
+Okay, well that's a bit of a performance regression. We'd need to understand the trade-offs of using the full character set vs the reduced character set with better performance.
+
+There's a couple of final performance tweaks we can try, but before we do, we should address the third bullet point on the list of problems with the original co-pilot code.
 
 ## Fixing the functionality
 
