@@ -162,8 +162,8 @@ namespace PasswordGen
 | GeneratePasswordSharedRandom | 32     |   314.4 ns |  6.03 ns |  6.20 ns |  0.81 |    0.02 | 0.2217 |    1856 B |        0.96 |
 
 </details>
-![Benchmark results graph](/assets/img/1random.png "Benchmark results table 1")
 
+![Benchmark results graph](/assets/img/1random.png "Benchmark results table 1")
 
 We can now see that avoiding `new System.Random()` increased performance, roughly 35% faster for the 24 character example.
 
