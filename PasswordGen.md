@@ -81,7 +81,6 @@ public string GeneratePasswordSharedRandom()
     return password;
 }
 ```
-
 Let's immediately look at the impact of removing `System.Random random = new System.Random();` and using the static `System.Random.Shared` for the vulnerable example.
 
 For this example I'll post the whole class, for future examples I'll just post individual methods.
@@ -146,6 +145,9 @@ namespace PasswordGen
 
 </details>
 
+<details>
+<summary>Results Table</summary>
+
 | Method                       | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------------- |------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
 | **GeneratePassword**             | **14**     |   **219.0 ns** |  **4.19 ns** |  **3.92 ns** |  **1.00** |    **0.02** | **0.0753** |     **632 B** |        **1.00** |
@@ -160,6 +162,8 @@ namespace PasswordGen
 | SecureRandom                 | 32     | 3,181.0 ns | 18.73 ns | 15.64 ns |  8.16 |    0.20 | 0.2213 |    1856 B |        0.96 |
 | GeneratePasswordSharedRandom | 32     |   314.4 ns |  6.03 ns |  6.20 ns |  0.81 |    0.02 | 0.2217 |    1856 B |        0.96 |
 
+</details>
+![Benchmark results graph](/assets/img/1random.png "Benchmark results table 1")
 
 
 We can now see that avoiding `new System.Random()` increased performance, roughly 35% faster for the 24 character example.
