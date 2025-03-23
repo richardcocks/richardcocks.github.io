@@ -382,6 +382,7 @@ public string GetItemsSecure()
 That's definitely a lot neater code than the original, let's see how it performs:
 
 <details>
+
 <summary>Table of Results for GetItems methods<summary>
 
 | Method           | Categories | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
