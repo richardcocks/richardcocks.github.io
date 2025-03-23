@@ -33,9 +33,9 @@ It surprised me, because it's in the perfect spot of being just about good enoug
 
 Yet it's also bad code. There are to me, three main concerns:
 
-* Performance - The use of `new System.Random()` rather than `System.Random.Shared`, and string concatenation rather than `StringBuilder`, are two things in particular that stand out as quick wins for performance.
-* Security - Using `System.Random` instead of a cryptographically secure generator such as `System.Security.Cryptography.RandomNumberGenerator` is a concern for any password generator.
-* Lack of checking output for symbols - It's desirable for passwords to always have at least one symbol to pass most validation sets. With this password generator, you'd be fine most of the time given the input set, but then occassionally be frustrated when it generates a password without symbols. This would happen around 5% of the time for a 16 character password. Just often enough to get missed in testing then hit you later.
+* **Performance** - The use of `new System.Random()` rather than `System.Random.Shared`, and string concatenation rather than `StringBuilder`, are two things in particular that stand out as quick wins for performance.
+* **Security** - Using `System.Random` instead of a cryptographically secure generator such as `System.Security.Cryptography.RandomNumberGenerator` is a concern for any password generator.
+* **Lack of validating output** for symbols - It's desirable for passwords to always have at least one symbol to pass most validation sets. With this password generator, you'd be fine most of the time given the input set, but then occassionally be frustrated when it generates a password without symbols. This would happen around 5% of the time for a 16 character password. Just often enough to get missed in testing then hit you later.
 
 ## Improving Security
 Let's address security first, it's no good having a password generator be fast if you can't trust the output.
@@ -712,20 +712,20 @@ You may be thinking:
 
 > Password generation shouldn't happen often enough that even 1ms, let alone 1µs should matter. All this optimization is a waste.
 
-And you'd be right if the goal of this was to optimise password generation in production rather than a demonstration of the tooling with an easy to understand example.
+You'd be right if the goal of this was to optimise password generation in production rather than a personal exercise and demonstration of the tooling with an easy to understand example.
 
-I would say however, that performance matters, because two things happen if you let in poor quality code:
+I also feel that code quality, including performance, is still important. Two things happen if you let in poor quality code:
 
 1. The code gets copied around, and used outside of its original context.
 2. Your team gets used to checking in bad code, and a "Looks good to me" culture.
 
-The first can be particularly problematic. While password generation almost certainly isn't a hot path, who knows when next time someone might need some random data. And if this code is hanging around your code-base, it can easily get copied and used elsewhere where the performance concerns are more valid. You could argue it's up to the reviewer of that feature to then catch it at that time, but I've seen worse justifed with, "Well we used this approach elsewhere" and get nodded through.
+Password generation almost certainly isn't a hot path, but who knows when next time someone might need some random data. If this code is hanging around your code-base, it can easily get copied and used in a different context where the performance concerns are more valid.
 
-The second is more subjective, but it's a matter of pride to work on a team where the first code that co-pilot generated  would get picked apart and not accepted. A culture of rubber-stamping PRs can set in if standards aren't held up and assumptions aren't checked.
+The second is more subjective, but it's a matter of pride to work on a team where the first code that co-pilot generated  would get picked apart and not accepted. A culture of rubber-stamping PRs can quickly set in if standards aren't held up and assumptions aren't checked.
 
 ## False Optimisations
 
-It's worth noting here some approaches that did not improve performance. I originally wanted to include them in the bulk of the post but I felt it was already getting too long, so they got cut from the final version.
+It's worth noting here some approaches taken that did not improve performance. I originally wanted to include them in the bulk of the post but I felt it was already getting too long, so they got cut from the final version.
 
  ### Replacing the character lookup `string` with `char[]`
 
@@ -764,6 +764,8 @@ Instead of `!char.IsAsciiLetterOrDigit`, I tried `System.Buffer.SearchValues` wi
 
 
 ## Addendum
+
+The code to generate all the results in this post is available at [https://github.com/richardcocks/passwordgen](https://github.com/richardcocks/passwordgen)
 
 Here's a benchmark run with all the functions, with a single baseline of the original co-pilot output. The arguments were changed to properties to support cleaner parameterisation within BenchmarkDotNet and a shared common baseline set.
 
