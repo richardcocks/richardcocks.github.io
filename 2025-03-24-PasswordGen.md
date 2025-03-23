@@ -5,7 +5,7 @@ date: 2025-03-24
 ---
 
 
-# 2025-03-24  Fixing a password generator
+# 2025-03-24  Fixing a Password Generator
 
 I've been [nerd-sniped](https://xkcd.com/356/) by co-pilot. I don't normally have it enabled, but was working on another machine which did. I was implementing a feature when it suggested autocompleting GeneratePassword.
 
