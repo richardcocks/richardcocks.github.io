@@ -147,7 +147,7 @@ namespace PasswordGen
 </details>
 
 <details>
-<summary>Results Table</summary>
+<summary>Table of Results</summary>
 
 | Method                       | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------------------- |------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
@@ -327,8 +327,8 @@ public string Buffer()
 We'll also produce an equivalent "vulnerable" version using `Random.Shared.NextBytes`, although I'd recommend not using it.
 
 <details>
-<summary>Results table for buffering the random bytes</summary>
-Results:
+<summary>Table of results for buffering the random bytes</summary>
+
 | Method           | Categories | Length | Mean        | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------- |----------- |------- |------------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
 | **SecureRandom**     | **Secure**     | **14**     | **1,385.36 ns** |  **7.762 ns** |  **6.881 ns** |  **1.00** |    **0.01** | **0.0668** |     **560 B** |        **1.00** |
@@ -348,6 +348,7 @@ Results:
 |                  |            |        |             |           |           |       |         |        |           |             |
 | **GeneratePassword** | **Vulnerable** | **32**     |   **374.71 ns** |  **4.076 ns** |  **3.812 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
 | Buffer           | Vulnerable | 32     |    44.37 ns |  0.522 ns |  0.488 ns |  0.12 |    0.00 | 0.0277 |     232 B |        0.12 |
+
 </details>
 
 ![Graph of benchmark results for buffering the random data](/assets/img/4Buffer.png)
