@@ -167,9 +167,9 @@ namespace PasswordGen
 
 We can now see that avoiding `new System.Random()` increased performance, roughly 35% faster for the 24 character example.
 
-We can also see that using `RandomNumberGenerator.GetInt32` destroyed our performance, taking us into the microsecond territory and taking around 8 times as long to do the same work.
+We can also see that using `RandomNumberGenerator.GetInt32` destroyed our performance, taking us into microseconds territory and taking around 8 times as long to do the same work.
 
-To make future comparisons easier, we can add `[BenchmarkCategory("Secure")]` and `[BenchmarkCategory("Vulnerable")]` attributes to our benchmarks to mark `GeneratePassword` and `SecureRandom` as two separate baselines, so we can more easily examine the performane impact on changes made to each. We also need to mark the class with `[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]` and `[CategoriesColumn]` to get a category column in the output table.
+To make comparisons in the table easier, we can add `[BenchmarkCategory("Secure")]` and `[BenchmarkCategory("Vulnerable")]` attributes to our benchmarks to mark `GeneratePassword` and `SecureRandom` as two separate baselines, so we can more easily examine the performane impact on changes made to each. We also need to mark the class with `[GroupBenchmarksBy(BenchmarkLogicalGroupRule.ByCategory)]` and `[CategoriesColumn]` to get a category column in the output table.
 
 ## String Building
 Okay, let's do the other straightforward and obvious improvement, to use `StringBuilder`, so that our non-secure version now looks like this:
@@ -191,7 +191,7 @@ public string StringBuilder()
 // With an equivalent Secure version not shown here.
 
 ```
-We know the size of the string, so we were able to intialize our string builder with that capacity. But given we know the size of the string, wouldn't it be faster still to allocate a `char[]` and fill it? Let's try that at the same time and compare:
+Since we know the size of the string, we are able to intialize our string builder with that capacity. However, given this knowledge, we can also allocate a `char[]` and fill it. Let's also try that at the same time:
 
 ```csharp
 [BenchmarkCategory("Secure"), Benchmark()]
@@ -210,7 +210,8 @@ public string CharArraySecure()
 // With an equivalent Vulnerable version not shown here.
 ```
 
-Here are the results:
+<details>
+<summary>Table of Results for String Builder, Char[], and original function with string concatenation</summary>
 
 | Method              | Categories | Length | Mean        | Error     | StdDev    | Median      | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |-------------------- |----------- |------- |------------:|----------:|----------:|------------:|------:|--------:|-------:|----------:|------------:|
@@ -237,7 +238,10 @@ Here are the results:
 | **GeneratePassword**    | **Vulnerable** | **32**     |   **384.21 ns** |  **4.711 ns** |  **3.678 ns** |   **385.03 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
 | StringBuilder       | Vulnerable | 32     |   182.13 ns |  2.545 ns |  2.125 ns |   182.57 ns |  0.47 |    0.01 | 0.0267 |     224 B |        0.12 |
 | CharArray           | Vulnerable | 32     |   141.43 ns |  0.751 ns |  0.627 ns |   141.33 ns |  0.37 |    0.00 | 0.0210 |     176 B |        0.09 |
+</details>
 
+![Graph for Table 2 non-secure variants](/assets/img/2stringBuilderWeak.png)
+![Graph for Table 2 secure variants](/assets/img/2stringBuilderWeak.png)
 
 Okay, that's another modest improvement, and we've confirmed the `char[]` approach beats out `StringBuilder` for building short strings from characters.
 
