@@ -241,7 +241,7 @@ public string CharArraySecure()
 </details>
 
 ![Graph for Table 2 non-secure variants](/assets/img/2stringBuilderWeak.png)
-![Graph for Table 2 secure variants](/assets/img/2stringBuilderWeak.png)
+![Graph for Table 2 secure variants](/assets/img/3StringBuilderSecure.png)
 
 Okay, that's another modest improvement, and we've confirmed the `char[]` approach beats out `StringBuilder` for building short strings from characters.
 
