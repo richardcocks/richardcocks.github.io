@@ -1,0 +1,2 @@
+ - [Fixing a Password Generator](/PasswordGen)
+ - [Prime](/prime.html)
