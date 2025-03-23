@@ -768,6 +768,14 @@ Instead of `!char.IsAsciiLetterOrDigit`, I tried `System.Buffer.SearchValues` wi
 
 ## Addendum
 
+### Credits
+
+Graphs generated with https://chartbenchmark.net/
+
+Thank you to members on the [csharp discord](https://discord.gg/csharp) for reviewing a draft and finding mistakes, posting improvements and suggesting alternative approaches.
+
+### Code
+
 The code to generate all the results in this post is available at [https://github.com/richardcocks/passwordgen](https://github.com/richardcocks/passwordgen)
 
 Here's a benchmark run with all the functions, with a single baseline of the original co-pilot output. The arguments were changed to properties to support cleaner parameterisation within BenchmarkDotNet and a shared common baseline set.
