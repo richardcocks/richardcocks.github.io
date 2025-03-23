@@ -383,7 +383,7 @@ That's definitely a lot neater code than the original, let's see how it performs
 
 <details>
 
-<summary>Table of Results for GetItems methods<summary>
+<summary>Table of Results for GetItems methods</summary>
 
 | Method           | Categories | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |----------------- |----------- |------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
@@ -411,15 +411,20 @@ That's definitely a lot neater code than the original, let's see how it performs
 
 Okay, well that's a bit of a performance regression. We'd need to understand the trade-offs of using the full character set vs the reduced character set with better performance.
 
+At this point we can drop benchmarking the "weak" version entirely. We now have  a secure version that has feature parity with the original while also being faster than the original code.
+
+The most optimised vulnerable version is much faster of course, but [there are even faster weak generators](https://xkcd.com/221/).
+
 There's a couple of final performance tweaks we can try, but before we do, we should address the third bullet point on the list of problems with the original co-pilot code.
 
 ## Fixing the functionality
 
-It's important we don't lose sight of our goal, a working password generator that won't frustrate us 1 in 100 times we use it by returning something with no symbols.
+It's important we don't lose sight of our goal, a working password generator that won't frustrate us by sometimes returning a password that contains no symbols.
 
-There are a few approaches to this, some of which are fraught with the danger of re-introducing bias. One naive way would be to simply generate a character (or `k` characters ) from the symbols set, then generate `n-k` characters from the full set, then shuffle them all together. This would however reintroduce a subtle bias.
+There are a few approaches to fixing this issue, some of which are fraught with the danger of re-introducing bias. One naive way is to generate a character from the symbols set (or `k` characters) and then generate `n-k` characters from the full set, then shuffle both sets together. This would however reintroduce a subtle bias.
 
 The easiest way to demonstrate this bias is with a set of 3 fair coins.
+
 We have 8 possible random outcomes:
 
 ```
@@ -432,10 +437,11 @@ THT
 TTH
 TTT
 ```
+ If we demand a passcode that "must have at least 1 T", then we have 7 possible equally likely outcomes, that is all outcomes except `HHH`.
 
- If we demand we "must have at least 1 tails", then we have 7 possible equally likely outcomes, everything except `HHH`.
-
- If we try to generate this by picking a `T`, then randomly picking the other two, and then shuffling, we have 4 intial outcomes:
+ Let's ee what happens if we try to generate this by picking a `T`, then randomly picking two more characters and then shuffling.
+ 
+ We have 4 intial outcomes from our two remaining coin tosses:
 
 ```
 T + HH
@@ -444,7 +450,9 @@ T + TH
 T + TT
 ```
 
-When shuffled, become 24 equally likely outcomes:
+For each initial outcome, we have 6 ways to shuffle the 3 characters.
+
+So when shuffled, these become 24 equally likely outcomes:
 
 ```
 ( From T + HH )
@@ -480,24 +488,22 @@ TTT
 TTT
 TTT
 TTT
-
 ```
 
-Yes, 6 in 24, a full quarter of all outcomes are `TTT`, yet with a fair coin it should be 1 in 7 of cases where there is at least one `T`.
+Yes, 6 in 24, a full quarter of all outcomes are `TTT`, yet with a fair coin there should be just 1 in 7 cases of `TTT` given there is at least one `T`.
 
+So that approach is out. The fairer way to do this is to generate a password, then if it doesn't meet the criteria, throw it out entirely and start again.
 
-So that approach is out. The fairer way to do this is to generate a password, then if it doesn't meet the criteria, throw it out entirely and start again. 
-
-We'll parameterise the minimum number of special characters.
+We'll also parameterise the minimum number of special characters in our code, to look at requiring 0, 1 or 2 special characters.
 
 ```csharp
 [Params(0, 1, 2)]
 public int MinmumSpecialCharacters { get; set; }
 ```
 
-In the case where we're first generating `byte[]` with our character set, we've arranged our character set so we can cheaply determine if there is a special character. We just have to look at the value of the byte pre-lookup to see if it is `55` or higher, since `55` to `63` are all special characters.
+When we're using `RandomNumberGenerator.Fill` and looking up the result in our character set, our character set is fortunately arranged so that we can cheaply determine if there is a special character. We just have to look at the value of the byte to see if it is `55 (0x37)` or higher, since indexes `55` to `63` in our string are all special characters.
 
-For the case where we're using `GetItems`, we have to count `char.IsAsciiLetterOrDigit` and take that from our password length, then compare that count against the requested minimum symbols.
+For the case where we are using `GetItems`, we have to count `char.IsAsciiLetterOrDigit` and take that from our password length, then compare that count against the requested minimum symbols.
 
 ```csharp
 [BenchmarkCategory("Secure"), Benchmark()]
@@ -544,10 +550,12 @@ public string GetItemsWithRejectionSecure()
     }
 }
 ```
-For this solution we have had to enumerate the array again for the `GetItems` approach, which we expect to further worsen it's performance relative to the 64 character set approach, so let's see the results:
+
+For this solution we have had to enumerate the array again for the `GetItems` approach. We expect this to further worsen its performance relative to the 64 character set approach, so let's see the results:
 
 <details>
-<summary>Results table - Rejection Sampling (Example5.cs)</summary>
+
+<summary>Table of Results for passwords with Minimum Special Characters</summary>
 
 | Method                      | Categories | MinmumSpecialCharacters | Length | Mean        | Error     | StdDev    | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |---------------------------- |----------- |------------------------ |------- |------------:|----------:|----------:|------:|--------:|-------:|----------:|------------:|
@@ -624,6 +632,8 @@ For this solution we have had to enumerate the array again for the `GetItems` ap
 | GetItemsWithRejection       | Vulnerable | 2                       | 32     |   385.51 ns |  3.140 ns |  2.937 ns |  1.00 |    0.02 | 0.0210 |     178 B |        0.09 |
 
 </details>
+
+![Graph of results for minimum special characters](/assets/img/6Rejection.png "Lower is better")
 
 As expected, this has added overhead, particularly `GetItemsWithRejection`, which is left in a strange spot of being neither secure, nor particularly fast. If security is not an issue, then `RejectionSample` still performs decently well. If security is desired, then there is a choice between `RejectionSampleSecure` with it's slightly reduced entropy per output character, and `GetItemsWithRejectionSecure`.
 
