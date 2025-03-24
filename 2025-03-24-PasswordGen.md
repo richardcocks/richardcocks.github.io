@@ -750,11 +750,15 @@ Graphs generated with https://chartbenchmark.net/
 
 Thank you to members on the [csharp discord](https://discord.gg/csharp) for reviewing a draft and finding mistakes, posting improvements and suggesting alternative approaches.
 
-### Code
+### Code - Pull Requests Welcome
 
 The code to generate all the results in this post is available at [https://github.com/richardcocks/passwordgen](https://github.com/richardcocks/passwordgen)
 
-Here's a benchmark run with all the functions, with a single baseline of the original co-pilot output. The arguments were changed to properties to support cleaner parameterisation within BenchmarkDotNet and a shared common baseline set.
+Pull requests are welcomed. If you have improvements or corrections, please send me a PR with the change.
+
+### Full comparison table
+
+Here's a benchmark run with most of the functions, with a single baseline of the original co-pilot output. This run was done before the very final versions of some of the functions, so some minor differences in naming or results may be observed. ( This full run takes well over an hour to generate. )
 
 <details>
 
