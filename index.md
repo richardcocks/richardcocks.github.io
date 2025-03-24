@@ -1,2 +1,1 @@
- - [Fixing a Password Generator](/2025-03-24-PasswordGen)
- - [Prime](/prime.html)
+ - [2025-03-24 Fixing a Password Generator](/2025-03-24-PasswordGen)
