@@ -607,102 +607,81 @@ Finally, we can try to avoid a heap allocation by using `stackalloc` to allocate
 
 <summary>Results table - Loop special character checking (Example6.cs)</summary>
 
-| Method                      | Categories | MinmumSpecialCharacters | Length | Mean       | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
-|---------------------------- |----------- |------------------------ |------- |-----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
-| **SecureRandom**                | **Secure**     | **0**                       | **14**     | **1,274.2 ns** |  **8.35 ns** |  **7.40 ns** |  **1.00** |    **0.01** | **0.0668** |     **560 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 0                       | 14     |   278.5 ns |  2.11 ns |  1.76 ns |  0.22 |    0.00 | 0.0134 |     112 B |        0.20 |
-| SpecialLoopSecure           | Secure     | 0                       | 14     |   236.5 ns |  1.76 ns |  1.56 ns |  0.19 |    0.00 | 0.0134 |     112 B |        0.20 |
-| StackAllocSecure            | Secure     | 0                       | 14     |   243.7 ns |  0.66 ns |  0.58 ns |  0.19 |    0.00 | 0.0067 |      56 B |        0.10 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **0**                       | **24**     | **2,400.5 ns** | **19.68 ns** | **18.41 ns** |  **1.00** |    **0.01** | **0.1411** |    **1200 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 0                       | 24     |   405.0 ns |  2.40 ns |  2.13 ns |  0.17 |    0.00 | 0.0172 |     144 B |        0.12 |
-| SpecialLoopSecure           | Secure     | 0                       | 24     |   309.7 ns |  2.25 ns |  1.99 ns |  0.13 |    0.00 | 0.0172 |     144 B |        0.12 |
-| StackAllocSecure            | Secure     | 0                       | 24     |   312.9 ns |  1.88 ns |  1.66 ns |  0.13 |    0.00 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **0**                       | **32**     | **2,951.6 ns** | **22.31 ns** | **20.87 ns** |  **1.00** |    **0.01** | **0.2213** |    **1856 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 0                       | 32     |   503.5 ns |  5.61 ns |  4.97 ns |  0.17 |    0.00 | 0.0210 |     176 B |        0.09 |
-| SpecialLoopSecure           | Secure     | 0                       | 32     |   374.2 ns |  3.50 ns |  3.27 ns |  0.13 |    0.00 | 0.0210 |     176 B |        0.09 |
-| StackAllocSecure            | Secure     | 0                       | 32     |   381.1 ns |  2.01 ns |  1.88 ns |  0.13 |    0.00 | 0.0105 |      88 B |        0.05 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **1**                       | **14**     | **1,332.3 ns** | **11.45 ns** | **10.15 ns** |  **1.00** |    **0.01** | **0.0668** |     **560 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 1                       | 14     |   310.7 ns |  2.05 ns |  1.92 ns |  0.23 |    0.00 | 0.0138 |     117 B |        0.21 |
-| SpecialLoopSecure           | Secure     | 1                       | 14     |   250.3 ns |  1.01 ns |  0.89 ns |  0.19 |    0.00 | 0.0134 |     112 B |        0.20 |
-| StackAllocSecure            | Secure     | 1                       | 14     |   242.8 ns |  0.86 ns |  0.71 ns |  0.18 |    0.00 | 0.0067 |      56 B |        0.10 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **1**                       | **24**     | **2,357.4 ns** | **17.30 ns** | **15.33 ns** |  **1.00** |    **0.01** | **0.1411** |    **1200 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 1                       | 24     |   422.6 ns |  2.43 ns |  2.16 ns |  0.18 |    0.00 | 0.0172 |     145 B |        0.12 |
-| SpecialLoopSecure           | Secure     | 1                       | 24     |   316.3 ns |  2.31 ns |  2.16 ns |  0.13 |    0.00 | 0.0172 |     144 B |        0.12 |
-| StackAllocSecure            | Secure     | 1                       | 24     |   314.0 ns |  1.96 ns |  1.84 ns |  0.13 |    0.00 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **1**                       | **32**     | **3,052.0 ns** | **25.36 ns** | **23.72 ns** |  **1.00** |    **0.01** | **0.2213** |    **1856 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 1                       | 32     |   520.7 ns |  3.96 ns |  3.70 ns |  0.17 |    0.00 | 0.0210 |     176 B |        0.09 |
-| SpecialLoopSecure           | Secure     | 1                       | 32     |   392.6 ns |  3.38 ns |  3.00 ns |  0.13 |    0.00 | 0.0210 |     176 B |        0.09 |
-| StackAllocSecure            | Secure     | 1                       | 32     |   379.2 ns |  2.86 ns |  2.67 ns |  0.12 |    0.00 | 0.0105 |      88 B |        0.05 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **2**                       | **14**     | **1,358.7 ns** |  **9.64 ns** |  **9.01 ns** |  **1.00** |    **0.01** | **0.0668** |     **560 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 2                       | 14     |   409.1 ns |  5.90 ns |  5.23 ns |  0.30 |    0.00 | 0.0162 |     137 B |        0.24 |
-| SpecialLoopSecure           | Secure     | 2                       | 14     |   336.9 ns |  4.58 ns |  4.06 ns |  0.25 |    0.00 | 0.0134 |     112 B |        0.20 |
-| StackAllocSecure            | Secure     | 2                       | 14     |   335.1 ns |  0.71 ns |  0.55 ns |  0.25 |    0.00 | 0.0067 |      56 B |        0.10 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **2**                       | **24**     | **2,343.5 ns** |  **9.81 ns** |  **8.70 ns** |  **1.00** |    **0.01** | **0.1411** |    **1200 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 2                       | 24     |   450.3 ns |  4.45 ns |  4.17 ns |  0.19 |    0.00 | 0.0176 |     150 B |        0.12 |
-| SpecialLoopSecure           | Secure     | 2                       | 24     |   356.6 ns |  1.64 ns |  1.37 ns |  0.15 |    0.00 | 0.0172 |     144 B |        0.12 |
-| StackAllocSecure            | Secure     | 2                       | 24     |   368.4 ns |  2.41 ns |  2.01 ns |  0.16 |    0.00 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **SecureRandom**                | **Secure**     | **2**                       | **32**     | **3,170.9 ns** | **48.96 ns** | **45.80 ns** |  **1.00** |    **0.02** | **0.2213** |    **1856 B** |        **1.00** |
-| GetItemsWithRejectionSecure | Secure     | 2                       | 32     |   531.8 ns | 10.52 ns | 11.26 ns |  0.17 |    0.00 | 0.0210 |     178 B |        0.10 |
-| SpecialLoopSecure           | Secure     | 2                       | 32     |   424.9 ns |  5.10 ns |  4.77 ns |  0.13 |    0.00 | 0.0210 |     176 B |        0.09 |
-| StackAllocSecure            | Secure     | 2                       | 32     |   406.0 ns |  2.04 ns |  1.81 ns |  0.13 |    0.00 | 0.0105 |      88 B |        0.05 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **0**                       | **14**     |   **217.2 ns** |  **3.71 ns** |  **3.47 ns** |  **1.00** |    **0.02** | **0.0753** |     **632 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 0                       | 14     |   192.6 ns |  1.14 ns |  0.95 ns |  0.89 |    0.01 | 0.0134 |     112 B |        0.18 |
-| SpecialLoop                 | Vulnerable | 0                       | 14     |   150.2 ns |  2.27 ns |  2.12 ns |  0.69 |    0.01 | 0.0134 |     112 B |        0.18 |
-| StackAlloc                  | Vulnerable | 0                       | 14     |   144.7 ns |  1.21 ns |  1.13 ns |  0.67 |    0.01 | 0.0067 |      56 B |        0.09 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **0**                       | **24**     |   **306.7 ns** |  **4.69 ns** |  **4.16 ns** |  **1.00** |    **0.02** | **0.1516** |    **1272 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 0                       | 24     |   291.2 ns |  2.72 ns |  2.54 ns |  0.95 |    0.01 | 0.0172 |     144 B |        0.11 |
-| SpecialLoop                 | Vulnerable | 0                       | 24     |   205.8 ns |  0.92 ns |  0.77 ns |  0.67 |    0.01 | 0.0172 |     144 B |        0.11 |
-| StackAlloc                  | Vulnerable | 0                       | 24     |   200.9 ns |  1.91 ns |  1.79 ns |  0.66 |    0.01 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **0**                       | **32**     |   **375.6 ns** |  **4.12 ns** |  **3.85 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 0                       | 32     |   386.8 ns |  3.88 ns |  3.63 ns |  1.03 |    0.01 | 0.0210 |     176 B |        0.09 |
-| SpecialLoop                 | Vulnerable | 0                       | 32     |   257.3 ns |  2.53 ns |  2.11 ns |  0.69 |    0.01 | 0.0210 |     176 B |        0.09 |
-| StackAlloc                  | Vulnerable | 0                       | 32     |   253.1 ns |  2.16 ns |  1.91 ns |  0.67 |    0.01 | 0.0105 |      88 B |        0.05 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **1**                       | **14**     |   **212.1 ns** |  **2.21 ns** |  **1.85 ns** |  **1.00** |    **0.01** | **0.0753** |     **632 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 1                       | 14     |   208.4 ns |  1.88 ns |  1.76 ns |  0.98 |    0.01 | 0.0138 |     117 B |        0.19 |
-| SpecialLoop                 | Vulnerable | 1                       | 14     |   148.0 ns |  1.53 ns |  1.36 ns |  0.70 |    0.01 | 0.0134 |     112 B |        0.18 |
-| StackAlloc                  | Vulnerable | 1                       | 14     |   146.3 ns |  1.35 ns |  1.20 ns |  0.69 |    0.01 | 0.0067 |      56 B |        0.09 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **1**                       | **24**     |   **305.3 ns** |  **5.51 ns** |  **4.30 ns** |  **1.00** |    **0.02** | **0.1516** |    **1272 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 1                       | 24     |   302.8 ns |  2.79 ns |  2.47 ns |  0.99 |    0.02 | 0.0172 |     145 B |        0.11 |
-| SpecialLoop                 | Vulnerable | 1                       | 24     |   203.7 ns |  1.41 ns |  1.18 ns |  0.67 |    0.01 | 0.0172 |     144 B |        0.11 |
-| StackAlloc                  | Vulnerable | 1                       | 24     |   201.5 ns |  2.20 ns |  2.06 ns |  0.66 |    0.01 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **1**                       | **32**     |   **376.2 ns** |  **3.70 ns** |  **3.46 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 1                       | 32     |   365.3 ns |  2.39 ns |  1.99 ns |  0.97 |    0.01 | 0.0210 |     176 B |        0.09 |
-| SpecialLoop                 | Vulnerable | 1                       | 32     |   254.2 ns |  1.24 ns |  1.03 ns |  0.68 |    0.01 | 0.0210 |     176 B |        0.09 |
-| StackAlloc                  | Vulnerable | 1                       | 32     |   253.4 ns |  2.49 ns |  2.33 ns |  0.67 |    0.01 | 0.0105 |      88 B |        0.05 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **2**                       | **14**     |   **217.1 ns** |  **1.63 ns** |  **1.37 ns** |  **1.00** |    **0.01** | **0.0753** |     **632 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 2                       | 14     |   274.6 ns |  2.58 ns |  2.28 ns |  1.27 |    0.01 | 0.0162 |     137 B |        0.22 |
-| SpecialLoop                 | Vulnerable | 2                       | 14     |   207.6 ns |  1.65 ns |  1.47 ns |  0.96 |    0.01 | 0.0134 |     112 B |        0.18 |
-| StackAlloc                  | Vulnerable | 2                       | 14     |   203.9 ns |  0.93 ns |  0.77 ns |  0.94 |    0.01 | 0.0067 |      56 B |        0.09 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **2**                       | **24**     |   **304.0 ns** |  **1.89 ns** |  **1.58 ns** |  **1.00** |    **0.01** | **0.1516** |    **1272 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 2                       | 24     |   320.2 ns |  2.43 ns |  2.16 ns |  1.05 |    0.01 | 0.0176 |     150 B |        0.12 |
-| SpecialLoop                 | Vulnerable | 2                       | 24     |   236.8 ns |  1.78 ns |  1.67 ns |  0.78 |    0.01 | 0.0172 |     144 B |        0.11 |
-| StackAlloc                  | Vulnerable | 2                       | 24     |   231.2 ns |  1.92 ns |  1.80 ns |  0.76 |    0.01 | 0.0086 |      72 B |        0.06 |
-|                             |            |                         |        |            |          |          |       |         |        |           |             |
-| **GeneratePassword**            | **Vulnerable** | **2**                       | **32**     |   **375.5 ns** |  **4.20 ns** |  **3.93 ns** |  **1.00** |    **0.01** | **0.2303** |    **1928 B** |        **1.00** |
-| GetItemsWithRejection       | Vulnerable | 2                       | 32     |   385.3 ns |  3.45 ns |  3.23 ns |  1.03 |    0.01 | 0.0210 |     178 B |        0.09 |
-| SpecialLoop                 | Vulnerable | 2                       | 32     |   279.0 ns |  2.41 ns |  2.14 ns |  0.74 |    0.01 | 0.0210 |     176 B |        0.09 |
-| StackAlloc                  | Vulnerable | 2                       | 32     |   272.8 ns |  2.34 ns |  2.19 ns |  0.73 |    0.01 | 0.0105 |      88 B |        0.05 |
+| Method                      | MinmumSpecialCharacters | Length | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
+|---------------------------- |------------------------ |------- |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
+| **GetItemsSecure**              | **0**                       | **14**     | **219.25 ns** | **3.568 ns** | **3.504 ns** |  **1.00** |    **0.02** | **0.0134** |     **112 B** |        **1.00** |
+| RejectionSampleSecure       | 0                       | 14     |  96.46 ns | 1.653 ns | 1.546 ns |  0.44 |    0.01 | 0.0181 |     152 B |        1.36 |
+| GetItemsWithRejectionSecure | 0                       | 14     | 281.77 ns | 4.986 ns | 4.664 ns |  1.29 |    0.03 | 0.0134 |     112 B |        1.00 |
+| SpecialLoopSecure           | 0                       | 14     | 239.87 ns | 4.092 ns | 3.828 ns |  1.09 |    0.02 | 0.0134 |     112 B |        1.00 |
+| StackAllocSecure            | 0                       | 14     | 255.86 ns | 4.454 ns | 7.916 ns |  1.17 |    0.04 | 0.0067 |      56 B |        0.50 |
+| RejectionSampleStackAlloc   | 0                       | 14     |  97.55 ns | 1.386 ns | 1.229 ns |  0.45 |    0.01 | 0.0067 |      56 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **0**                       | **24**     | **313.89 ns** | **2.916 ns** | **2.435 ns** |  **1.00** |    **0.01** | **0.0172** |     **144 B** |        **1.00** |
+| RejectionSampleSecure       | 0                       | 24     | 129.64 ns | 1.929 ns | 1.805 ns |  0.41 |    0.01 | 0.0229 |     192 B |        1.33 |
+| GetItemsWithRejectionSecure | 0                       | 24     | 415.99 ns | 6.103 ns | 5.709 ns |  1.33 |    0.02 | 0.0172 |     144 B |        1.00 |
+| SpecialLoopSecure           | 0                       | 24     | 319.59 ns | 5.351 ns | 5.005 ns |  1.02 |    0.02 | 0.0172 |     144 B |        1.00 |
+| StackAllocSecure            | 0                       | 24     | 327.40 ns | 5.817 ns | 5.442 ns |  1.04 |    0.02 | 0.0086 |      72 B |        0.50 |
+| RejectionSampleStackAlloc   | 0                       | 24     | 124.45 ns | 2.023 ns | 1.892 ns |  0.40 |    0.01 | 0.0086 |      72 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **0**                       | **32**     | **367.56 ns** | **5.343 ns** | **4.998 ns** |  **1.00** |    **0.02** | **0.0210** |     **176 B** |        **1.00** |
+| RejectionSampleSecure       | 0                       | 32     | 145.40 ns | 2.978 ns | 3.186 ns |  0.40 |    0.01 | 0.0277 |     232 B |        1.32 |
+| GetItemsWithRejectionSecure | 0                       | 32     | 524.62 ns | 7.121 ns | 5.946 ns |  1.43 |    0.02 | 0.0210 |     176 B |        1.00 |
+| SpecialLoopSecure           | 0                       | 32     | 406.65 ns | 6.309 ns | 5.901 ns |  1.11 |    0.02 | 0.0210 |     176 B |        1.00 |
+| StackAllocSecure            | 0                       | 32     | 398.60 ns | 7.189 ns | 6.724 ns |  1.08 |    0.02 | 0.0105 |      88 B |        0.50 |
+| RejectionSampleStackAlloc   | 0                       | 32     | 138.75 ns | 2.733 ns | 2.557 ns |  0.38 |    0.01 | 0.0105 |      88 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **1**                       | **14**     | **209.37 ns** | **3.375 ns** | **3.157 ns** |  **1.00** |    **0.02** | **0.0134** |     **112 B** |        **1.00** |
+| RejectionSampleSecure       | 1                       | 14     | 101.67 ns | 1.786 ns | 1.670 ns |  0.49 |    0.01 | 0.0181 |     152 B |        1.36 |
+| GetItemsWithRejectionSecure | 1                       | 14     | 317.30 ns | 4.885 ns | 4.569 ns |  1.52 |    0.03 | 0.0138 |     117 B |        1.04 |
+| SpecialLoopSecure           | 1                       | 14     | 241.89 ns | 3.421 ns | 3.200 ns |  1.16 |    0.02 | 0.0134 |     112 B |        1.00 |
+| StackAllocSecure            | 1                       | 14     | 246.68 ns | 4.584 ns | 4.288 ns |  1.18 |    0.03 | 0.0067 |      56 B |        0.50 |
+| RejectionSampleStackAlloc   | 1                       | 14     |  96.41 ns | 1.684 ns | 1.575 ns |  0.46 |    0.01 | 0.0067 |      56 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **1**                       | **24**     | **305.87 ns** | **4.377 ns** | **4.094 ns** |  **1.00** |    **0.02** | **0.0172** |     **144 B** |        **1.00** |
+| RejectionSampleSecure       | 1                       | 24     | 129.04 ns | 2.608 ns | 2.790 ns |  0.42 |    0.01 | 0.0229 |     192 B |        1.33 |
+| GetItemsWithRejectionSecure | 1                       | 24     | 425.78 ns | 5.961 ns | 5.576 ns |  1.39 |    0.03 | 0.0172 |     145 B |        1.01 |
+| SpecialLoopSecure           | 1                       | 24     | 319.29 ns | 4.231 ns | 3.958 ns |  1.04 |    0.02 | 0.0172 |     144 B |        1.00 |
+| StackAllocSecure            | 1                       | 24     | 318.13 ns | 4.758 ns | 4.451 ns |  1.04 |    0.02 | 0.0086 |      72 B |        0.50 |
+| RejectionSampleStackAlloc   | 1                       | 24     | 118.54 ns | 2.184 ns | 2.043 ns |  0.39 |    0.01 | 0.0086 |      72 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **1**                       | **32**     | **367.17 ns** | **5.206 ns** | **4.869 ns** |  **1.00** |    **0.02** | **0.0210** |     **176 B** |        **1.00** |
+| RejectionSampleSecure       | 1                       | 32     | 148.29 ns | 2.290 ns | 2.030 ns |  0.40 |    0.01 | 0.0277 |     232 B |        1.32 |
+| GetItemsWithRejectionSecure | 1                       | 32     | 497.77 ns | 8.330 ns | 7.792 ns |  1.36 |    0.03 | 0.0210 |     176 B |        1.00 |
+| SpecialLoopSecure           | 1                       | 32     | 383.71 ns | 6.443 ns | 6.027 ns |  1.05 |    0.02 | 0.0210 |     176 B |        1.00 |
+| StackAllocSecure            | 1                       | 32     | 380.26 ns | 4.160 ns | 3.891 ns |  1.04 |    0.02 | 0.0105 |      88 B |        0.50 |
+| RejectionSampleStackAlloc   | 1                       | 32     | 134.83 ns | 2.179 ns | 2.038 ns |  0.37 |    0.01 | 0.0105 |      88 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **2**                       | **14**     | **218.75 ns** | **1.572 ns** | **1.471 ns** |  **1.00** |    **0.01** | **0.0134** |     **112 B** |        **1.00** |
+| RejectionSampleSecure       | 2                       | 14     | 106.04 ns | 1.657 ns | 1.550 ns |  0.48 |    0.01 | 0.0181 |     152 B |        1.36 |
+| GetItemsWithRejectionSecure | 2                       | 14     | 410.57 ns | 6.451 ns | 6.034 ns |  1.88 |    0.03 | 0.0162 |     137 B |        1.22 |
+| SpecialLoopSecure           | 2                       | 14     | 332.73 ns | 2.577 ns | 2.284 ns |  1.52 |    0.01 | 0.0134 |     112 B |        1.00 |
+| StackAllocSecure            | 2                       | 14     | 340.73 ns | 4.629 ns | 4.330 ns |  1.56 |    0.02 | 0.0067 |      56 B |        0.50 |
+| RejectionSampleStackAlloc   | 2                       | 14     |  98.66 ns | 1.572 ns | 1.470 ns |  0.45 |    0.01 | 0.0067 |      56 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **2**                       | **24**     | **313.25 ns** | **4.255 ns** | **3.772 ns** |  **1.00** |    **0.02** | **0.0172** |     **144 B** |        **1.00** |
+| RejectionSampleSecure       | 2                       | 24     | 130.08 ns | 2.566 ns | 2.852 ns |  0.42 |    0.01 | 0.0229 |     192 B |        1.33 |
+| GetItemsWithRejectionSecure | 2                       | 24     | 450.29 ns | 3.358 ns | 2.977 ns |  1.44 |    0.02 | 0.0176 |     150 B |        1.04 |
+| SpecialLoopSecure           | 2                       | 24     | 368.24 ns | 5.882 ns | 5.502 ns |  1.18 |    0.02 | 0.0172 |     144 B |        1.00 |
+| StackAllocSecure            | 2                       | 24     | 357.85 ns | 2.917 ns | 2.729 ns |  1.14 |    0.02 | 0.0086 |      72 B |        0.50 |
+| RejectionSampleStackAlloc   | 2                       | 24     | 119.55 ns | 1.124 ns | 0.997 ns |  0.38 |    0.01 | 0.0086 |      72 B |        0.50 |
+|                             |                         |        |           |          |          |       |         |        |           |             |
+| **GetItemsSecure**              | **2**                       | **32**     | **375.78 ns** | **7.011 ns** | **6.558 ns** |  **1.00** |    **0.02** | **0.0210** |     **176 B** |        **1.00** |
+| RejectionSampleSecure       | 2                       | 32     | 155.96 ns | 1.061 ns | 0.886 ns |  0.42 |    0.01 | 0.0277 |     232 B |        1.32 |
+| GetItemsWithRejectionSecure | 2                       | 32     | 536.46 ns | 7.375 ns | 6.899 ns |  1.43 |    0.03 | 0.0210 |     178 B |        1.01 |
+| SpecialLoopSecure           | 2                       | 32     | 424.13 ns | 7.327 ns | 6.853 ns |  1.13 |    0.03 | 0.0210 |     176 B |        1.00 |
+| StackAllocSecure            | 2                       | 32     | 411.87 ns | 6.340 ns | 5.931 ns |  1.10 |    0.02 | 0.0105 |      88 B |        0.50 |
+| RejectionSampleStackAlloc   | 2                       | 32     | 136.31 ns | 2.318 ns | 2.168 ns |  0.36 |    0.01 | 0.0105 |      88 B |        0.50 |
+
 
 </details>
 
-Checking in a loop has significantly reduced the overhead of counting special characters. Stack allocation has shaved 1-2ns off the time too, but perhaps more importantly, has halved the heap usage.
+Checking in a loop has significantly reduced the overhead of counting special characters. Stack allocation has barely changed runtime, but perhaps more importantly, has halved the heap usage, as can be seen in these graphs by the purple allocation line.
 
+![Graph of Results for Table 6 with minimum special characters: 0](/assets/img/7aStackAlloc0.png)
+
+![Graph of Results for Table 6 with minimum special characters: 1](/assets/img/7bStackAlloc1.png)
+
+![Graph of Results for Table 6 with minimum special characters: 2](/assets/img/7cStackAlloc2.png)
 
 # Notes
 
