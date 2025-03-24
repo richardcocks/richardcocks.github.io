@@ -2,6 +2,9 @@
 layout: post
 title: Fixing a password generator
 date: 2025-03-24
+description: Fixing co-pilot output, with micro-benchmarking tool BenchmarkDotNet
+tags: copilot,
+image: /assets/img/7aStackAlloc0.png
 ---
 
 # 2025-03-24  Fixing a Password Generator
