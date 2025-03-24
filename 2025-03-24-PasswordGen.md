@@ -739,6 +739,66 @@ Alternatively, we can have a strategy in place for getting a new buffer if we ru
 
 We can parameterise the buffer length to find an acceptable trade-off between requesting too much data, and having to re-fill the buffer.
 
+```csharp
+[Benchmark]
+public string DoubleRejection()
+{
+    Span<byte> bytebuffer = stackalloc byte[RandomBufferLength];
+    Span<char> buffer = stackalloc char[Length];
+
+
+    while (true)
+    {
+        int i = 0;
+        RandomNumberGenerator.Fill(bytebuffer);
+        int charIndex = 0;
+        bool metMinimum = false;
+
+        int specialChars = 0;
+
+        while (i < RandomBufferLength)
+        {
+            byte value = bytebuffer[i];
+            if (value >= 222)
+            {
+                i++;
+                continue;
+            }
+
+            buffer[charIndex] = charactersLongSet[bytebuffer[i]];
+
+            if (!metMinimum && (value < 36) && (++specialChars >= MinmumSpecialCharacters))
+            {
+                metMinimum = true;
+            }
+
+            if (++charIndex == Length)
+            {
+                if (metMinimum)
+                {
+                    return new(buffer);
+                }
+                else
+                {
+                    // reset charIndex
+                    charIndex = 0;
+                    specialChars = 0;
+                    i++;
+                    continue;
+
+                }
+
+            }
+            else
+            {
+                i++;
+                continue;
+            }
+        }
+    }
+}
+```
+
 <details>
 
 <summary> Table of different buffer lengths with 32 length password requiring 8 special characters.</summary>
