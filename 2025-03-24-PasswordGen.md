@@ -778,15 +778,12 @@ public string DoubleRejection()
                 {
                     return new(buffer);
                 }
-                else
-                {
-                    // reset charIndex
-                    charIndex = 0;
-                    specialChars = 0;
-                    i++;
-                    continue;
 
-                }
+                // reset charIndex
+                charIndex = 0;
+                specialChars = 0;
+                i++;
+                continue;
 
             }
             else
