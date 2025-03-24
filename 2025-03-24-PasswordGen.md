@@ -357,6 +357,8 @@ Now there's the improvement we were hoping for! Our vulnerable version is now up
 
 More importantly, our secure version is actually faster than the original vulnerable co-pilot version.
 
+## Using the full symbol set
+
 We've sacrificed some symbols and characters from the output to achieve this. Can we maintain a good speed while also using our full character set? It might be possible: while looking up `RandomNumberGenerator.Fill` I spotted `RandomNumberGenerator.GetItems<T>`, which:
 
 > Creates an array populated with items chosen at random from choices
@@ -597,15 +599,43 @@ For this solution we have had to enumerate the array again for the `GetItems` ap
 
 ![Graph of results for minimum special characters](/assets/img/6Rejection.png "Lower is better")
 
-As expected, this has added overhead, particularly `GetItemsWithRejection`, which is left in a strange spot of being neither secure, nor particularly fast. If security is not an issue, then `RejectionSample` still performs decently well. If security is desired, then there is a choice between `RejectionSampleSecure` with it's slightly reduced entropy per output character, and `GetItemsWithRejectionSecure`.
+As expected, this has added overhead, it leaves us with a choice between `RejectionSampleSecure` with it's slightly reduced entropy per output character but preferable performance characteristics and `GetItemsWithRejectionSecure`, which uses the full symbol set for feature parity with the original code.
+
+## Further performance improvements
 
 We can try to speed up the `GetItems` based methods by using a loop to count the special characters, so we can exit early when we've met our target rather than counting all special characters.
 
-Finally, we can try to avoid a heap allocation by using `stackalloc` to allocate the span on the stack.
+Also, we can try to avoid a heap allocation by using `stackalloc` to allocate the span on the stack.
+
+This leaves our code like the following:
+
+```csharp
+[Benchmark()]
+public string StackAllocSecure()
+{
+    Span<char> buffer = stackalloc char[Length];
+
+    while (true)
+    {
+        RandomNumberGenerator.GetItems<char>(characters, buffer);
+
+        int specialChars = 0;
+
+        for (int i = 0; i < Length; i++)
+        {
+            if (!char.IsAsciiLetterOrDigit(buffer[i]) && (++specialChars >= MinmumSpecialCharacters))
+            {
+                return new(buffer);
+            }
+        }
+
+    }
+}
+```
 
 <details>
 
-<summary>Results table - Loop special character checking (Example6.cs)</summary>
+<summary>Table of Results for manual Special character checking and stack allocation</summary>
 
 | Method                      | MinmumSpecialCharacters | Length | Mean      | Error    | StdDev   | Ratio | RatioSD | Gen0   | Allocated | Alloc Ratio |
 |---------------------------- |------------------------ |------- |----------:|---------:|---------:|------:|--------:|-------:|----------:|------------:|
@@ -675,13 +705,22 @@ Finally, we can try to avoid a heap allocation by using `stackalloc` to allocate
 
 </details>
 
-Checking in a loop has significantly reduced the overhead of counting special characters. Stack allocation has barely changed runtime, but perhaps more importantly, has halved the heap usage, as can be seen in these graphs by the purple allocation line.
-
 ![Graph of Results for Table 6 with minimum special characters: 0](/assets/img/7aStackAlloc0.png)
 
 ![Graph of Results for Table 6 with minimum special characters: 1](/assets/img/7bStackAlloc1.png)
 
 ![Graph of Results for Table 6 with minimum special characters: 2](/assets/img/7cStackAlloc2.png)
+
+
+Checking in a loop has significantly reduced the overhead of counting special characters.
+
+ Stack allocation has barely changed running time, but has halved allocated bytes, as can be seen in these graphs by the purple allocation line.
+
+
+
+# Conclusion
+
+We've gone on a journey 
 
 # Notes
 
