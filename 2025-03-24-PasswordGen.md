@@ -852,9 +852,15 @@ That's a great speedup with a 64 byte buffer, a modest saving with a 128 byte bu
 
 ## Conclusion
 
-We've gone from the initial co-pilot generated code to a .
+We've gone from the initial co-pilot generated code with its naive use of `new Random()` and lack of features, to a couple of performant and secure alternatives. We can now configure minimum symbol guarantees in our generator and we can alter settings to fine-tune the performance for the length of password we want to generate.
+
+If we want to minimise runtime, we can use a reduced character set to avoid having to reject bytes. I would recommend this approach.
 
 # Notes
+
+## Future improvements
+
+Investigate alternative Crypto-secure Random Number Generators (CSPRNG) or Key Derivation Functions (KDF) for faster generation.
 
 ## Motivation
 
