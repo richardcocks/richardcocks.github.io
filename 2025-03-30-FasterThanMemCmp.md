@@ -4,7 +4,7 @@ title: What's faster than Memcmp
 date: 2025-03-30
 description: What could be faster than memcmp? How to quickly compare arrays using Span<T>
 tagline: What could be faster than memcmp? Benefits of Span<T>
-image: https://richardcocks.github.io/assets/img/7aStackAlloc0.png
+image: https://richardcocks.github.io/assets/img/1_dotnet_framework.png
 ---
 
 # 2025-03-30 What's faster than Memcmp?
@@ -13,7 +13,7 @@ In this post I look at improvements in .NET and using Span<T> for performance an
 
 I was examining portability issues in a code base that I wanted to migrate from .NET framework 4.8.1 to .NET8. I discovered use of `msvcrt.dll`. I quickly established it is a [popular stackoverflow answer](https://stackoverflow.com/a/1445405/1635976) for a fast way to compare byte arrays in .NET
 
-The answer as provided (and faithfully copied into codebases is this):
+The answer as provided, and faithfully copied into codebases, is this:
 
 ```csharp
 [DllImport("msvcrt.dll", CallingConvention=CallingConvention.Cdecl)]
@@ -175,13 +175,13 @@ The first notable result is that for very small arrays, the overhead of calling 
 
 The more biggest difference is between .NET framework and .NET 8. Even the loop is notably faster in .NET 8. There is a bizarre performance regression from .NET 8 to .NET 9 for 1GB arrays, which I will investigate separately to try to confirm that result, it may have been a glitch in the benchmark, given twice the memory allocations and twice the time taken.
 
-When we look at `IEnumerable<T>.SequenceEqual`, it is 500 times faster for our 1MB array in .NET 8 than in .NET framework. In .NET8 and .NET9, `IEnumerable<T>.SequenceEqual` is faster than the version of memcmp I have on my machine.
+When we look at `IEnumerable<T>.SequenceEqual`, it is **500 times faster for our 1MB array in .NET 8 than in .NET framework**. In .NET8 and .NET9, `IEnumerable<T>.SequenceEqual` is faster than the version of memcmp I have on my machine.
 
 There wasn't a significant difference between `ReadOnlySpan<T>.SequenceEqual` and `IEnumerable<T>.SequenceEqual`, with the difference around the margin of error.
 
-memcmp is still a little slower across the board, it's still very fast but it's no longer necessary for highly performant array comparisons. When the original stackoverflow answer was written, nothing in .NET could come close to that performance, since `Span<T>` wasn't yet a thing, and for 1MB arrays, 
+`memcmp` is still a little slower than `SequenceEqual` across the board. It's still very fast, much faster than naive methods, but it's clearly no longer necessary for achieving high performance for array comparisons. When the original stackoverflow answer was written, there was nothing available in .NET that could come close to that performance, as it was before `Span<T>` was added to the runtime.
 
-A benefit of the `ReadOnlySpan<T>` implementation over `IEnumerable<T>.SequenceEqual` is that we can also trust that it still perform acceptably when we target .NET Framework.
+A benefit of the `ReadOnlySpan<T>` implementation over using `IEnumerable<T>.SequenceEqual` is that we can also trust that it still perform acceptably when we target .NET Framework.
 
 ## Conclusion
 
