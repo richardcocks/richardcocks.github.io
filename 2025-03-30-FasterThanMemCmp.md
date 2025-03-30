@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What's faster than Memcmp
+title: What's faster than Memcmp?
 date: 2025-03-30
 description: What could be faster than memcmp? How to quickly compare arrays using Span<T>
 tagline: What could be faster than memcmp? Benefits of Span<T>
