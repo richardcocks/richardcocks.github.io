@@ -187,7 +187,7 @@ A benefit of the `ReadOnlySpan<T>` implementation over `IEnumerable<T>.SequenceE
 
 If you're using .NET 8 and don't need to run in the .NET Framework runtime, don't write your own utility function and just use `IEnumerable<T>.SequenceEqual`, it's incredibly fast and doesn't need any external dependencies to just work.
 
-If you're on .NET Framework, then bring in `System.Memory` and using `Span<T>.SequenceEquals` instead of relying on P/Invoke and external C libraries. Make sure any calls to `IEnumerable<T>.SequenceEquals` to checked to make sure they aren't operating on large arrays.
+If you're on .NET Framework, then bring in `System.Memory` and use `Span<T>.SequenceEquals` instead of relying on external C libraries. Make sure any calls to `IEnumerable<T>.SequenceEquals` are checked to make sure they aren't operating on large arrays.
 
 
 ## Other considerations
