@@ -1,1 +1,2 @@
+ - [2025-03-30 What's faster than Memcmp?](/2025-03-30-FasterThanMemCmp)
  - [2025-03-24 Fixing a Password Generator](/2025-03-24-PasswordGen)
