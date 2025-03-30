@@ -194,5 +194,9 @@ If you're on .NET Framework, then bring in `System.Memory` and use `Span<T>.Sequ
 
 If you regularly need to compare very large arrays and they are append-only and/or are compared more often than constructed, then it may make sense to avoid the comparison entirely by using a data structure that includes and maintains an order-sensitive hash of its contents. Most negative cases can be discounted through a hash comparison before doing the more expensive array comparison. Rebuilding this hash could be expensive for arrays that shuffle or remove items however.
 
+## Source Code
 
+The source code to generate these results is available at https://github.com/richardcocks/memcomparison/ .
+
+Pull requests always welcome.
 
