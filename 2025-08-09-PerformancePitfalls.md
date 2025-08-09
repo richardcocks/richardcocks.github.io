@@ -1,12 +1,12 @@
 ---
 layout: post
-title: Performance Pitfalls in C# / .NET
+title: Performance Pitfalls in C# / .NET - List Contains
 date: 2025-08-09
 description: Looking at the performance of a C# helper method for Contains
 tagline: A IsInList helper method could hurt performance
 image: https://richardcocks.github.io/assets/img/1benchmark.png
 ---
-# Performance Pitfalls in C# / .NET
+# Performance Pitfalls in C# / .NET - List Contains
 
 A day ago, reddit user zigs asked on the csharp subreddit:
 
