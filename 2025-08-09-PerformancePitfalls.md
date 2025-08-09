@@ -154,3 +154,8 @@ Always profile your real-world application and let that guide any optimisation y
 
 Always profile within the context of your application. Blindly removing the helper method and replacing with `Contains` would be a disaster if you were still on .NET Framework.
 
+## Source Code
+
+The source code to generate these results is available at https://github.com/richardcocks/IsInList .
+
+Pull requests always welcome.
