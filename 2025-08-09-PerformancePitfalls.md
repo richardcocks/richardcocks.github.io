@@ -1,10 +1,11 @@
 # Performance Pitfalls in C# / .NET
 
-A day ago, reddit user [zigs](https://np.reddit.com/user/zigs) asked on [the csharp subreddit](https://np.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/):
+A day ago, reddit user zigs asked on the csharp subreddit:
 
-> What is the lowest effort, highest impact helper method you've ever written?
+> [What is the lowest effort, highest impact helper method you've ever written?](https://np.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/)
 
-This proved a popular post, and one of the more popular answers from user \_mattmc3\_ was [this one](https://old.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/n7kuuii/):
+
+This proved a popular post, and one of the [more popular answers from user \_mattmc3\_](https://old.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/n7kuuii/) was:
 
 > I've written a lot of SQL in my years as a developer, so foo IN(1, 2, 3) is a more intuitive way to express the concept to me than foo == 1 || foo == 2 || foo == 3 or even new int[] {1,2,3}.Contains(foo). Having foo being first just makes more sense, so I have a handy IsIn() extension method so I can write foo.IsIn(1, 2, 3):
 
@@ -114,10 +115,26 @@ We should also compare it to the simplest approach, `if` or `switch case`:
 
 ![Benchmark results graph](/assets/img/1benchmark.png "Lower is better")
 
+## .NET Framework
+
+I also ran a comparison on .NET Framework:
+
+| Method       | Job                  | Runtime              | Mean       | Error     | StdDev     | Median     | Ratio | RatioSD | Gen0     | Allocated | Alloc Ratio |
+|------------- |--------------------- |--------------------- |-----------:|----------:|-----------:|-----------:|------:|--------:|---------:|----------:|------------:|
+| IsIn         | .NET Framework 4.8.1 | .NET Framework 4.8.1 | 186.539 us | 1.9634 us |  1.5329 us | 186.937 us |  1.75 |    0.07 | 176.5137 | 1111075 B |       2.777 |
+| IsInReadOnly | .NET Framework 4.8.1 | .NET Framework 4.8.1 | 241.478 us | 4.1324 us |  3.6633 us | 242.215 us |  2.27 |    0.09 | 112.7930 |  709897 B |       1.775 |
+| Contains     | .NET Framework 4.8.1 | .NET Framework 4.8.1 | 560.785 us | 9.9977 us |  9.3518 us | 565.321 us |  5.26 |    0.21 |  63.4766 |  401204 B |       1.003 |
+| WithIf       | .NET Framework 4.8.1 | .NET Framework 4.8.1 |  59.772 us | 0.7011 us |  0.6558 us |  59.798 us |  0.56 |    0.02 |        - |      31 B |       0.000 |
+| WithSwitch   | .NET Framework 4.8.1 | .NET Framework 4.8.1 |  64.200 us | 1.1971 us |  1.2294 us |  64.313 us |  0.60 |    0.03 |        - |      31 B |       0.000 |
+
+Without native `ReadOnlySpan<T>` support, that version is much slower than `params T[]`, despite fewer allocations.
+
+With the lack of LINQ optimisation in .NET Framework, `Contains` is by far the worst performing here.
+
 
 ## Conclusion
 
-The biggest surprise here was actually the performance difference between .NET 8 and .NET 10. I wasn't expecting the naive `if` statement to see a dramatic improvement between .NET 8 and .NET 10, but it did.
+The biggest surprise for me here was actually the performance difference between .NET 8 and .NET 10 for the naive `if` statement method. A dramatic improvement between .NET 8 and .NET 10 for a simple set of `if` statements suggests JIT improvements have made a big difference.
 
 The `ReadOnlySpan<T>` approach avoided some allocations, but it still allocated more than the `Contains` approach, which was still more than the `switch / case` version.
 
@@ -126,4 +143,6 @@ For such a popular and tempting helper method, this is a real performance trap. 
 As with any micro-benchmark, it's important to stress that this is only important if profiling your real-world use case demonstrates it. 
 
 Always profile your real-world application and let that guide any optimisation you do. I have seen this pattern impact performance in a real world application, so keep it in mind.
+
+Always profile within the context of your application. Blindly removing the helper method and replacing with `Contains` would be a disaster if you were still on .NET Framework.
 
