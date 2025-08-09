@@ -5,7 +5,7 @@ A day ago, reddit user zigs asked on the csharp subreddit:
 > [What is the lowest effort, highest impact helper method you've ever written?](https://np.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/)
 
 
-This proved a popular post, and one of the [more popular answers from user \_mattmc3\_](https://old.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/n7kuuii/) was:
+This proved a popular post, and one of the [more popular answers from user \_mattmc3\_](https://np.reddit.com/r/csharp/comments/1mkrlcc/what_is_the_lowest_effort_highest_impact_helper/n7kuuii/) was:
 
 > I've written a lot of SQL in my years as a developer, so foo IN(1, 2, 3) is a more intuitive way to express the concept to me than foo == 1 || foo == 2 || foo == 3 or even new int[] {1,2,3}.Contains(foo). Having foo being first just makes more sense, so I have a handy IsIn() extension method so I can write foo.IsIn(1, 2, 3):
 
