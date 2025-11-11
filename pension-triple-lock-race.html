@@ -227,18 +227,32 @@
 <body>
     <h1>Matching Speed vs. Matching Position: Visualising the Triple Lock's Mathematical Flaw</h1>
 
-    <div style="max-width: 900px; margin: 0 auto 30px; text-align: center; line-height: 1.6;">
-        <p><strong>Imagine</strong> you're instructing a camera drone to follow the leader in a race. You write: "At any
-            moment, match the speed of whichever racer is currently going fastest."</p>
+    <div style="max-width: 900px; margin: 0 auto 30px; text-align: left; line-height: 1.6;">
+        <p>Imagine that you've been tasked with instructing a camera drone to follow the leader in a race.</p>
 
-        <p>Twenty minutes in, the drone is flying over empty track, a full lap ahead of every racer. What went wrong?
-            The drone continuously matched whichever racer was going fastest at that moment. Whenever any racer sped up,
-            the drone gained ground. When all racers slowed, the drone slowed too—but the distance it had already gained
-            was permanent. It kept every advantage, never giving any back.</p>
+        <p>Without thinking too much, you write down the instructions:
+        <blockquote>At any moment, match the speed of whichever racer is currently going fastest.</blockquote>
+        </p>
 
-        <p>The mistake: confusing <strong>matching speed</strong> with <strong>matching position</strong>. The drone was
-            mathematically guaranteed to fly ahead by cherry-picking the best speed each moment while never falling
-            back.</p>
+        <p>Before too long, the drone is flying around more than a full lap ahead of every racer.
+        </p>
+        <p>
+            What went wrong?
+            The drone continuously matched whichever racer was going fastest at that moment. Whenever a racer sped up
+            and pulled away, the drone gained ground over the pack. When the front-runner slowed for corners, the drone
+            matched a car still on the straight.
+        </p>
+        <p>
+            Any distance gained on the leader was baked in permanently. It kept every advantage, never giving any back,
+            because pole position could never go faster than the drone and therefore could never make up lost ground.
+        </p>
+
+        <p>The mistake made is confusing <strong>matching speed</strong> with <strong>matching position</strong>. The
+            drone was mathematically guaranteed to fly ahead by cherry-picking the best speed.</p>
+
+        <p>
+            The UK Treasury made this same mistake, and it's been costing the UK billions:
+        </p>
     </div>
 
     <div class="year-display" id="yearDisplay">Year: 2012</div>
@@ -366,15 +380,21 @@
             each year:
             <code>Pension<sub>t</sub> = Pension<sub>t-1</sub> × (1 + MAX(CPI rate, Earnings rate, 2.5%))</code>. This
             creates a ratchet effect where pensions
-            borrow speed from whoever's fastest but never give it back, compounding ahead of <em>all three</em>
+            borrow growth from whichever grows fastest, but never gives it back, compounding ahead of <em>all three</em>
             measures.
         </p>
 
-        <p><strong>The mathematical mistake:</strong> By locking to <em>rates</em> instead of <em>levels</em>, the
+        <p><strong>The mathematical mistake:</strong> By locking to <em>rates</em> instead of <em>indexes</em>, the
             policy cherry-picks
             the best performance from each measure annually. A true "lock" would mean matching the position of the
             leader. Instead,
-            pensions exceed all three measures they're supposedly locked to - which is mathematically contradictory.</p>
+            pensions exceed all three measures they're supposedly locked to.</p>
+    </div>
+
+    <div
+        style="margin-top: 15px; padding: 15px; background-color: #ffebee; border-left: 4px solid #d32f2f; font-size: 16px; text-align: center;">
+        <strong>Estimated Cumulative Overspend (2012-2025):</strong> <span
+            style="color: #d32f2f; font-size: 18px; font-weight: bold;">£60.4bn</span>
     </div>
 
     <div class="data-table">
@@ -623,11 +643,7 @@
             increased by 3.1% (CPI) instead of 8.3% (earnings growth), which was unusually high due to pandemic-related
             statistical distortions.
         </p>
-        <div
-            style="margin-top: 15px; padding: 15px; background-color: #ffebee; border-left: 4px solid #d32f2f; font-size: 16px; text-align: center;">
-            <strong>Estimated Cumulative Overspend (2012-2025):</strong> <span
-                style="color: #d32f2f; font-size: 18px; font-weight: bold;">£60.4bn</span>
-        </div>
+
     </div>
 
 
