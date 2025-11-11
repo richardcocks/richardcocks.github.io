@@ -30,7 +30,7 @@
     <meta name="twitter:description"
         content="An interactive visualization showing how the UK's pension triple lock contains a mathematical design flaw that has cost taxpayers over £60 billion since 2012.">
     <meta name="twitter:image" content="richardcocks.github.io/assets/img/1_Leader.png">
-    <meta name="twitter:creator" content="">
+    <meta name="twitter:creator" content="@eterm.bsky.social">
 
     <!-- Additional Meta Tags -->
     <meta name="robots" content="index, follow">
@@ -43,6 +43,7 @@
             align-items: center;
             padding: 20px;
             background-color: #f5f5f5;
+            font-size: 16px;
         }
 
         h1 {
@@ -61,6 +62,9 @@
             border-radius: 10px;
             position: relative;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            height: auto;
         }
 
         .track {
@@ -110,6 +114,8 @@
             color: white;
             border: none;
             border-radius: 5px;
+            min-height: 44px;
+            min-width: 44px;
         }
 
         button:hover {
@@ -179,6 +185,11 @@
             width: 100%;
         }
 
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .data-table h2 {
             text-align: center;
             margin-bottom: 15px;
@@ -221,6 +232,109 @@
         a:hover {
             text-decoration: underline;
         }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+                text-align: center;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 10px;
+            }
+
+            .stat-value {
+                font-size: 20px;
+            }
+
+            .controls {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            button {
+                padding: 12px 16px;
+                flex: 1;
+                min-width: 100px;
+            }
+
+            .legend {
+                gap: 15px;
+            }
+
+            .legend-item {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .description,
+            .data-table {
+                font-size: 14px;
+            }
+
+            .year-display {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 12px;
+            }
+
+            .controls {
+                gap: 5px;
+                width: 100%;
+            }
+
+            .legend {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            th,
+            td {
+                padding: 6px 4px;
+                font-size: 12px;
+            }
+
+            .lane-label {
+                font-size: 12px;
+            }
+
+            .car {
+                font-size: 24px;
+            }
+        }
     </style>
 </head>
 
@@ -257,7 +371,7 @@
 
     <div class="year-display" id="yearDisplay">Year: 2012</div>
 
-    <svg id="raceTrack" width="800" height="400">
+    <svg id="raceTrack" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
         <!-- Race track with lanes -->
         <rect class="track" x="50" y="50" width="700" height="300" rx="10" />
 
@@ -407,237 +521,239 @@
                 href="https://www.gov.uk/government/collections/benefit-expenditure-tables" target="_blank">DWP Benefit
                 Expenditure and Caseload Tables</a> (outturn data 2012/13-2023/24, forecast 2024/25-2025/26)
         </p>
-        <table id="dataTable">
-            <thead>
-                <tr>
-                    <th>Year</th>
-                    <th>CPI Inflation (%)</th>
-                    <th>Earnings Growth (%)</th>
-                    <th>2.5% Floor</th>
-                    <th>Pension Increase (%)</th>
-                    <th>CPI Index</th>
-                    <th>Earnings Index</th>
-                    <th>2.5% Index</th>
-                    <th>Pension Index (as implemented)</th>
-                    <th>Leader Index (what it should be)</th>
-                    <th>Gap = Error (index points)</th>
-                    <th>Pension Spend (£bn)</th>
-                    <th>Estimated Annual Overspend (£bn)</th>
-                </tr>
-            </thead>
-            <tbody id="dataTableBody">
-                <tr>
-                    <td>2012</td>
-                    <td class="winner">5.2%</td>
-                    <td>2.5%</td>
-                    <td>2.5%</td>
-                    <td class="winner">5.2%</td>
-                    <td>105.2</td>
-                    <td>102.5</td>
-                    <td>102.5</td>
-                    <td><strong>105.2</strong></td>
-                    <td>105.2</td>
-                    <td style="color: #388e3c; font-weight: bold;">0.0</td>
-                    <td>£79.8bn</td>
-                    <td style="color: #388e3c; font-weight: bold;">£0.0bn</td>
-                </tr>
-                <tr>
-                    <td>2013</td>
-                    <td>2.2%</td>
-                    <td>1.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td>107.5</td>
-                    <td>104.0</td>
-                    <td>105.1</td>
-                    <td><strong>107.8</strong></td>
-                    <td>107.5</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
-                    <td>£83.1bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+0.2bn</td>
-                </tr>
-                <tr>
-                    <td>2014</td>
-                    <td class="winner">2.7%</td>
-                    <td>1.2%</td>
-                    <td>2.5%</td>
-                    <td class="winner">2.7%</td>
-                    <td>110.4</td>
-                    <td>105.3</td>
-                    <td>107.7</td>
-                    <td><strong>110.7</strong></td>
-                    <td>110.4</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
-                    <td>£86.5bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+0.3bn</td>
-                </tr>
-                <tr>
-                    <td>2015</td>
-                    <td>1.2%</td>
-                    <td>1.8%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td>111.7</td>
-                    <td>107.2</td>
-                    <td>110.4</td>
-                    <td><strong>113.5</strong></td>
-                    <td>111.7</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+1.8</td>
-                    <td>£89.4bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+1.4bn</td>
-                </tr>
-                <tr>
-                    <td>2016</td>
-                    <td>0.0%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td>111.7</td>
-                    <td>109.9</td>
-                    <td>113.1</td>
-                    <td><strong>116.3</strong></td>
-                    <td>113.1</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+3.2</td>
-                    <td>£91.6bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+2.5bn</td>
-                </tr>
-                <tr>
-                    <td>2017</td>
-                    <td>1.0%</td>
-                    <td>2.4%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td>112.9</td>
-                    <td>112.5</td>
-                    <td>116.0</td>
-                    <td><strong>119.3</strong></td>
-                    <td>116.0</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+3.3</td>
-                    <td>£93.8bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+2.6bn</td>
-                </tr>
-                <tr>
-                    <td>2018</td>
-                    <td class="winner">3.0%</td>
-                    <td>2.8%</td>
-                    <td>2.5%</td>
-                    <td class="winner">3.0%</td>
-                    <td>116.2</td>
-                    <td>115.6</td>
-                    <td>118.9</td>
-                    <td><strong>122.8</strong></td>
-                    <td>118.9</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+4.0</td>
-                    <td>£96.7bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+3.1bn</td>
-                </tr>
-                <tr>
-                    <td>2019</td>
-                    <td>2.4%</td>
-                    <td class="winner">2.6%</td>
-                    <td>2.5%</td>
-                    <td class="winner">2.6%</td>
-                    <td>119.0</td>
-                    <td>118.7</td>
-                    <td>121.8</td>
-                    <td><strong>126.0</strong></td>
-                    <td>121.8</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+4.2</td>
-                    <td>£98.8bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+3.3bn</td>
-                </tr>
-                <tr>
-                    <td>2020</td>
-                    <td>1.7%</td>
-                    <td class="winner">3.9%</td>
-                    <td>2.5%</td>
-                    <td class="winner">3.9%</td>
-                    <td>121.1</td>
-                    <td>123.3</td>
-                    <td>124.9</td>
-                    <td><strong>130.9</strong></td>
-                    <td>124.9</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+6.1</td>
-                    <td>£102.0bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+4.7bn</td>
-                </tr>
-                <tr>
-                    <td>2021</td>
-                    <td>0.5%</td>
-                    <td>-0.6%</td>
-                    <td class="winner">2.5%</td>
-                    <td class="winner">2.5%</td>
-                    <td>121.7</td>
-                    <td>122.5</td>
-                    <td>128.0</td>
-                    <td><strong>134.2</strong></td>
-                    <td>128.0</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+6.2</td>
-                    <td>£104.7bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+4.8bn</td>
-                </tr>
-                <tr>
-                    <td>2022*</td>
-                    <td>3.1%</td>
-                    <td class="winner">8.3%</td>
-                    <td>2.5%</td>
-                    <td class="winner">3.1%</td>
-                    <td>125.4</td>
-                    <td>132.7</td>
-                    <td>131.2</td>
-                    <td><strong>138.4</strong></td>
-                    <td>132.7</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+5.7</td>
-                    <td>£110.5bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+4.5bn</td>
-                </tr>
-                <tr>
-                    <td>2023</td>
-                    <td class="winner">10.1%</td>
-                    <td>5.5%</td>
-                    <td>2.5%</td>
-                    <td class="winner">10.1%</td>
-                    <td>138.1</td>
-                    <td>140.0</td>
-                    <td>134.5</td>
-                    <td><strong>152.4</strong></td>
-                    <td>140.0</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+12.3</td>
-                    <td>£124.1bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+10.1bn</td>
-                </tr>
-                <tr>
-                    <td>2024</td>
-                    <td>6.7%</td>
-                    <td class="winner">8.5%</td>
-                    <td>2.5%</td>
-                    <td class="winner">8.5%</td>
-                    <td>147.4</td>
-                    <td>151.9</td>
-                    <td>137.9</td>
-                    <td><strong>165.3</strong></td>
-                    <td>151.9</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+13.4</td>
-                    <td>£136.4bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+11.1bn</td>
-                </tr>
-                <tr>
-                    <td>2025</td>
-                    <td>1.7%</td>
-                    <td class="winner">4.1%</td>
-                    <td>2.5%</td>
-                    <td class="winner">4.1%</td>
-                    <td>149.9</td>
-                    <td>158.1</td>
-                    <td>141.3</td>
-                    <td><strong>172.1</strong></td>
-                    <td>158.1</td>
-                    <td style="color: #d32f2f; font-weight: bold;">+13.9</td>
-                    <td>£145.6bn</td>
-                    <td style="color: #d32f2f; font-weight: bold;">£+11.8bn</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>CPI Inflation (%)</th>
+                        <th>Earnings Growth (%)</th>
+                        <th>2.5% Floor</th>
+                        <th>Pension Increase (%)</th>
+                        <th>CPI Index</th>
+                        <th>Earnings Index</th>
+                        <th>2.5% Index</th>
+                        <th>Pension Index (as implemented)</th>
+                        <th>Leader Index (what it should be)</th>
+                        <th>Gap = Error (index points)</th>
+                        <th>Pension Spend (£bn)</th>
+                        <th>Estimated Annual Overspend (£bn)</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTableBody">
+                    <tr>
+                        <td>2012</td>
+                        <td class="winner">5.2%</td>
+                        <td>2.5%</td>
+                        <td>2.5%</td>
+                        <td class="winner">5.2%</td>
+                        <td>105.2</td>
+                        <td>102.5</td>
+                        <td>102.5</td>
+                        <td><strong>105.2</strong></td>
+                        <td>105.2</td>
+                        <td style="color: #388e3c; font-weight: bold;">0.0</td>
+                        <td>£79.8bn</td>
+                        <td style="color: #388e3c; font-weight: bold;">£0.0bn</td>
+                    </tr>
+                    <tr>
+                        <td>2013</td>
+                        <td>2.2%</td>
+                        <td>1.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td>107.5</td>
+                        <td>104.0</td>
+                        <td>105.1</td>
+                        <td><strong>107.8</strong></td>
+                        <td>107.5</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
+                        <td>£83.1bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+0.2bn</td>
+                    </tr>
+                    <tr>
+                        <td>2014</td>
+                        <td class="winner">2.7%</td>
+                        <td>1.2%</td>
+                        <td>2.5%</td>
+                        <td class="winner">2.7%</td>
+                        <td>110.4</td>
+                        <td>105.3</td>
+                        <td>107.7</td>
+                        <td><strong>110.7</strong></td>
+                        <td>110.4</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
+                        <td>£86.5bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+0.3bn</td>
+                    </tr>
+                    <tr>
+                        <td>2015</td>
+                        <td>1.2%</td>
+                        <td>1.8%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td>111.7</td>
+                        <td>107.2</td>
+                        <td>110.4</td>
+                        <td><strong>113.5</strong></td>
+                        <td>111.7</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+1.8</td>
+                        <td>£89.4bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+1.4bn</td>
+                    </tr>
+                    <tr>
+                        <td>2016</td>
+                        <td>0.0%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td>111.7</td>
+                        <td>109.9</td>
+                        <td>113.1</td>
+                        <td><strong>116.3</strong></td>
+                        <td>113.1</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+3.2</td>
+                        <td>£91.6bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+2.5bn</td>
+                    </tr>
+                    <tr>
+                        <td>2017</td>
+                        <td>1.0%</td>
+                        <td>2.4%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td>112.9</td>
+                        <td>112.5</td>
+                        <td>116.0</td>
+                        <td><strong>119.3</strong></td>
+                        <td>116.0</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+3.3</td>
+                        <td>£93.8bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+2.6bn</td>
+                    </tr>
+                    <tr>
+                        <td>2018</td>
+                        <td class="winner">3.0%</td>
+                        <td>2.8%</td>
+                        <td>2.5%</td>
+                        <td class="winner">3.0%</td>
+                        <td>116.2</td>
+                        <td>115.6</td>
+                        <td>118.9</td>
+                        <td><strong>122.8</strong></td>
+                        <td>118.9</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+4.0</td>
+                        <td>£96.7bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+3.1bn</td>
+                    </tr>
+                    <tr>
+                        <td>2019</td>
+                        <td>2.4%</td>
+                        <td class="winner">2.6%</td>
+                        <td>2.5%</td>
+                        <td class="winner">2.6%</td>
+                        <td>119.0</td>
+                        <td>118.7</td>
+                        <td>121.8</td>
+                        <td><strong>126.0</strong></td>
+                        <td>121.8</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+4.2</td>
+                        <td>£98.8bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+3.3bn</td>
+                    </tr>
+                    <tr>
+                        <td>2020</td>
+                        <td>1.7%</td>
+                        <td class="winner">3.9%</td>
+                        <td>2.5%</td>
+                        <td class="winner">3.9%</td>
+                        <td>121.1</td>
+                        <td>123.3</td>
+                        <td>124.9</td>
+                        <td><strong>130.9</strong></td>
+                        <td>124.9</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+6.1</td>
+                        <td>£102.0bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+4.7bn</td>
+                    </tr>
+                    <tr>
+                        <td>2021</td>
+                        <td>0.5%</td>
+                        <td>-0.6%</td>
+                        <td class="winner">2.5%</td>
+                        <td class="winner">2.5%</td>
+                        <td>121.7</td>
+                        <td>122.5</td>
+                        <td>128.0</td>
+                        <td><strong>134.2</strong></td>
+                        <td>128.0</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+6.2</td>
+                        <td>£104.7bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+4.8bn</td>
+                    </tr>
+                    <tr>
+                        <td>2022*</td>
+                        <td>3.1%</td>
+                        <td class="winner">8.3%</td>
+                        <td>2.5%</td>
+                        <td class="winner">3.1%</td>
+                        <td>125.4</td>
+                        <td>132.7</td>
+                        <td>131.2</td>
+                        <td><strong>138.4</strong></td>
+                        <td>132.7</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+5.7</td>
+                        <td>£110.5bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+4.5bn</td>
+                    </tr>
+                    <tr>
+                        <td>2023</td>
+                        <td class="winner">10.1%</td>
+                        <td>5.5%</td>
+                        <td>2.5%</td>
+                        <td class="winner">10.1%</td>
+                        <td>138.1</td>
+                        <td>140.0</td>
+                        <td>134.5</td>
+                        <td><strong>152.4</strong></td>
+                        <td>140.0</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+12.3</td>
+                        <td>£124.1bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+10.1bn</td>
+                    </tr>
+                    <tr>
+                        <td>2024</td>
+                        <td>6.7%</td>
+                        <td class="winner">8.5%</td>
+                        <td>2.5%</td>
+                        <td class="winner">8.5%</td>
+                        <td>147.4</td>
+                        <td>151.9</td>
+                        <td>137.9</td>
+                        <td><strong>165.3</strong></td>
+                        <td>151.9</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+13.4</td>
+                        <td>£136.4bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+11.1bn</td>
+                    </tr>
+                    <tr>
+                        <td>2025</td>
+                        <td>1.7%</td>
+                        <td class="winner">4.1%</td>
+                        <td>2.5%</td>
+                        <td class="winner">4.1%</td>
+                        <td>149.9</td>
+                        <td>158.1</td>
+                        <td>141.3</td>
+                        <td><strong>172.1</strong></td>
+                        <td>158.1</td>
+                        <td style="color: #d32f2f; font-weight: bold;">+13.9</td>
+                        <td>£145.6bn</td>
+                        <td style="color: #d32f2f; font-weight: bold;">£+11.8bn</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">
             *In 2022, the triple lock was temporarily suspended and only the earnings element was excluded. Pensions
             increased by 3.1% (CPI) instead of 8.3% (earnings growth), which was unusually high due to pandemic-related
