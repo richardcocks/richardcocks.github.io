@@ -7,12 +7,12 @@ og:
   title: "The Flatpack Fallacy"
   description: "Why the debate around AI-assisted coding is haunted by a false choice."
   type: "article"
-  image: "img/Gemini_Generated_Image_z9d8puz9d8puz9d8.png"
+  image: "https://richardcocks.github.io/chum/img/Gemini_Generated_Image_z9d8puz9d8puz9d8.png"
 twitter:
   card: "summary_large_image"
   title: "The Flatpack Fallacy"
   description: "Why the debate around AI-assisted coding is haunted by a false choice."
-  image: "img/Gemini_Generated_Image_z9d8puz9d8puz9d8.png"
+  image: "https://richardcocks.github.io/chum/img/Gemini_Generated_Image_z9d8puz9d8puz9d8.png"
 ---
 
 # The Flatpack Fallacy
