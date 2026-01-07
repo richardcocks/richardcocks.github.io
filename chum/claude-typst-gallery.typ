@@ -675,3 +675,282 @@ Questions regarding this RFP should be submitted via email by January 21, 2026. 
 = Conclusion
 
 This document has presented a range of Typst formatting examples demonstrating capabilities relevant to AI-assisted document generation. From academic papers to business documents, mathematical content to code samples, Typst provides the necessary tools for professional typesetting.
+
+#pagebreak()
+
+= Addendum: Source Code Examples
+
+This section provides the Typst source code for key examples demonstrated throughout this document. These snippets can be referenced when instructing Claude to generate similar elements.
+
+== Document Setup
+
+The initial configuration for page layout, typography, and heading numbering:
+
+```typst
+#set page(
+  paper: "us-letter",
+  margin: (x: 1.5in, y: 1in),
+  numbering: "1",
+)
+
+#set text(
+  font: "EB Garamond",
+  size: 13pt,
+  lang: "en",
+)
+
+#set par(
+  justify: true,
+  leading: 0.65em,
+)
+
+#set heading(numbering: "1.1")
+```
+
+== Title Page Construction
+
+Creating a centered title page with multiple text sizes and spacing:
+
+```typst
+#align(center)[
+  #v(2in)
+  #text(size: 28pt, weight: "bold")[
+    Claude + Typst
+  ]
+
+  #v(0.5em)
+  #text(size: 16pt)[
+    Examples for AI-Assisted Document Generation
+  ]
+
+  #v(2em)
+  #text(size: 13pt)[
+    Version 1.0 • #datetime.today().display()
+  ]
+]
+
+#pagebreak()
+```
+
+#pagebreak()
+
+== Styled Tables with Alternating Rows
+
+Tables with custom colors, alignment, and formatting:
+
+```typst
+// Define function for alternating row colors
+#let row-color(idx) = if calc.odd(idx) {
+  rgb("#f5f5f5")
+} else {
+  white
+}
+
+#figure(
+  table(
+    columns: (auto, 1.2fr, 0.8fr, 0.8fr, 1fr),
+    align: (left, left, right, right, center),
+    stroke: 0.5pt,
+    fill: (x, y) => if y == 0 {
+      rgb("#333333")
+    } else {
+      row-color(y)
+    },
+    table.header(
+      [#text(fill: white, weight: "bold")[ID]],
+      [#text(fill: white, weight: "bold")[Description]],
+      [#text(fill: white, weight: "bold")[Units]],
+      [#text(fill: white, weight: "bold")[Price]],
+      [#text(fill: white, weight: "bold")[Status]],
+    ),
+    [REQ-001], [User authentication], [1], [\$25,000], [Complete],
+    [REQ-002], [Payment gateway], [1], [\$40,000], [In Progress],
+  ),
+  caption: [Project requirements tracking]
+)
+```
+
+== Mathematical Equations with Numbering
+
+Display equations with labels and cross-references:
+
+```typst
+// Enable equation numbering
+#set math.equation(numbering: "(1)")
+
+// Create labeled equations
+$ E = m c^2 $ <einstein>
+
+$ nabla times bold(E) = - (partial bold(B))/(partial t) $ <faraday>
+
+$ nabla dot bold(E) = rho / epsilon_0 $ <gauss>
+
+// Reference equations in text
+Einstein's mass-energy equivalence (@einstein) and
+Maxwell's equations (@faraday, @gauss) form the
+foundation of modern physics.
+```
+
+#pagebreak()
+
+== Code Blocks with Syntax Highlighting
+
+Including code with automatic syntax highlighting:
+
+````typst
+The following demonstrates API implementation:
+
+```python
+import requests
+from typing import Dict, Optional
+
+class APIClient:
+    def __init__(self, base_url: str, api_key: str):
+        self.base_url = base_url
+        self.headers = {
+            "Authorization": f"Bearer {api_key}"
+        }
+```
+````
+
+== Callout Boxes with Color Coding
+
+Creating highlighted boxes for notes, warnings, and tips:
+
+```typst
+// Information callout
+#rect(
+  width: 100%,
+  inset: 15pt,
+  fill: rgb("#e8f4f8"),
+  stroke: (left: 4pt + rgb("#2196f3")),
+)[
+  *Note:* This is an informational callout box.
+]
+
+// Warning callout
+#rect(
+  width: 100%,
+  inset: 15pt,
+  fill: rgb("#fff3cd"),
+  stroke: (left: 4pt + rgb("#ffc107")),
+)[
+  *Warning:* This indicates cautionary information.
+]
+
+// Success/tip callout
+#rect(
+  width: 100%,
+  inset: 15pt,
+  fill: rgb("#d4edda"),
+  stroke: (left: 4pt + rgb("#28a745")),
+)[
+  *Tip:* Helpful suggestions can be formatted this way.
+]
+```
+
+#pagebreak()
+
+== Headers and Footers
+
+Custom page headers and footers with dynamic content:
+
+```typst
+#set page(
+  header: [
+    #set text(9pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[_Claude + Typst Examples_],
+      align(right)[Version 1.0]
+    )
+    #line(length: 100%, stroke: 0.5pt)
+  ],
+  footer: [
+    #line(length: 100%, stroke: 0.5pt)
+    #set text(9pt)
+    #grid(
+      columns: (1fr, 1fr),
+      align(left)[Generated: #datetime.today().display()],
+      align(right)[
+        Page #context counter(page).display("1 of 1", both: true)
+      ]
+    )
+  ]
+)
+```
+
+== Two-Column Layout
+
+Multi-column text flow with manual column breaks:
+
+```typst
+#columns(2)[
+  == Abstract
+
+  This section demonstrates multi-column layout capabilities.
+  Text flows naturally from one column to the next.
+
+  #colbreak()
+
+  == Discussion
+
+  Column breaks can be inserted manually using colbreak()
+  to control where content splits between columns.
+]
+```
+
+#pagebreak()
+
+== Figure Placeholders with Cross-References
+
+Creating figure environments with captions and labels:
+
+```typst
+#figure(
+  rect(
+    width: 80%,
+    height: 200pt,
+    stroke: 1pt + gray,
+    fill: rgb("#f0f0f0"),
+  )[
+    #align(center + horizon)[
+      #text(size: 11pt, fill: gray)[
+        [System Architecture Diagram]
+
+        Placeholder for figure content
+      ]
+    ]
+  ],
+  caption: [
+    High-level system architecture showing major
+    components and data flows
+  ]
+) <fig-architecture>
+
+// Reference the figure in text
+As shown in @fig-architecture, the system follows
+a three-tier architecture pattern.
+```
+
+== Block Quotes with Attribution
+
+Formatted quotations with author attribution:
+
+```typst
+#block(
+  inset: (left: 30pt, right: 30pt, top: 10pt, bottom: 10pt),
+  fill: rgb("#fafafa"),
+)[
+  #set text(style: "italic")
+
+    1. A robot may not injure a human being or, through inaction, allow a human being to come to harm.
+    2. A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.
+    3. A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.
+
+  #align(right)[
+    #text(style: "normal")[— Handbook of Robotics, 56th Edition, 2058 A.D]
+  ]
+]
+```
+
