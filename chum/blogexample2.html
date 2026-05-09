@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All my clients wanted a carousel, now it's an AI chatbot!</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #f5f0e8;
+            --ink: #1a1208;
+            --accent: #d4420a;
+            --muted: #7a6e60;
+            --card: #ede8dc;
+            --border: #c8bfad;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--ink);
+            font-family: 'Fraunces', Georgia, serif;
+            font-weight: 300;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        header {
+            border-bottom: 1.5px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .site-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            background: var(--accent);
+            color: #fff;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 5rem 2rem 8rem;
+        }
+
+        .meta {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 6vw, 3.6rem);
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+        }
+
+        h1 em {
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        p {
+            margin-bottom: 1.75rem;
+            font-size: 1.08rem;
+        }
+
+        .callout {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: 4px;
+            padding: 1.5rem 1.75rem;
+            margin: 2.5rem 0;
+            position: relative;
+        }
+
+        .callout::before {
+            content: '"';
+            font-size: 5rem;
+            color: var(--border);
+            position: absolute;
+            top: -1.5rem;
+            left: 1rem;
+            line-height: 1;
+        }
+
+        .callout p {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin: 0;
+            padding-top: 0.5rem;
+        }
+
+        .ending {
+            margin-top: 3.5rem;
+            padding-top: 2rem;
+            border-top: 1.5px solid var(--border);
+            font-style: italic;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .author {
+            margin-top: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .author-info {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+        }
+
+        .author-name {
+            font-weight: 500;
+            color: var(--ink);
+            letter-spacing: 0.05em;
+        }
+
+        .author-bio {
+            color: var(--muted);
+            margin-top: 0.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <span class="site-name">The Freelance Dispatch</span>
+        <span class="tag">Opinion</span>
+    </header>
+
+    <main>
+        <div class="meta">
+            <span>May 9, 2026</span>
+            <span>4 min read</span>
+            <span>Web Dev · Clients · AI</span>
+        </div>
+
+        <h1>All my clients wanted a carousel.<br>Now it's an <em>AI chatbot.</em></h1>
+
+        <p>
+            It always starts with a Slack message, or a screen share, or a PDF mood board assembled at 11pm. And
+            somewhere in there is <em>the thing</em> — the one feature that's going to transform the website. I've been
+            freelancing for over a decade. I've watched the thing change many times.
+        </p>
+
+        <p>
+            For years it was carousels. Every brief, without fail: rotating hero banners, autoplay every three seconds,
+            five slides, each one a different call to action. I built beautiful carousels. The analytics were
+            devastating — slide two at 3% engagement, slide five at statistically zero. None of that mattered. The
+            carousel meant the site was serious, and that was that.
+        </p>
+
+        <p>
+            Then came video backgrounds. Then parallax. Then the quiz era (genuinely fun, no complaints). Then dark
+            mode. Then — and this one still visits me at night — the brief that just said <em>"can we make it more
+                Web3?"</em>
+        </p>
+
+        <div class="callout">
+            <p>The feature was never really about the users. It was about the client feeling like they were keeping up.
+                The technology changes. The psychology doesn't.</p>
+        </div>
+
+        <p>
+            And now it's AI chatbots. Every kickoff call, eventually: <em>"We want something like ChatGPT but for our
+                brand."</em> What would users ask it? Everything. What's feeding it? The website, can't it just learn?
+            Can we have it by Friday?
+        </p>
+
+        <p>
+            Here's the thing I've had to be honest with myself about though: unlike carousels — which were always
+            solving a client problem, never a user problem — a well-built AI assistant genuinely can help people find
+            what they need. The technology, when it fits, is remarkable. The mistake is assuming it always fits, and
+            that bolting it on will quietly fix whatever else isn't working.
+        </p>
+
+        <p>
+            I used to push back harder. I'd show up with click-through data and case studies. I was right, and also
+            frequently exhausting. Now I just ask better questions — not <em>"why do you want this?"</em> but <em>"what
+                does success look like in six months?"</em> Sometimes the chatbot still happens. Sometimes we end up
+            rebuilding the navigation instead, which is usually where the real problem lives.
+        </p>
+
+        <p>
+            Either way, I've made my peace with it. Every era taught me something: carousels gave me CSS transitions,
+            video backgrounds introduced me to performance budgets, and whatever this AI moment becomes, I'm already
+            learning things I'll carry forward. The job is to absorb the trend, understand it well enough to know when
+            it helps, and try to steer toward something that'll still make sense in two years.
+        </p>
+
+        <p style="font-style: italic; color: var(--muted); margin-bottom: 0;">
+            Sometimes you succeed. Sometimes you ship a carousel.
+        </p>
+
+        <div class="ending">
+            <p>Forward this to whoever last sent you a brief that just said "like ChatGPT but for us." They'll enjoy it.
+                Probably.</p>
+        </div>
+
+        <div class="author">
+            <div class="author-avatar">✍</div>
+            <div class="author-info">
+                <div class="author-name">THE FREELANCE DISPATCH</div>
+                <div class="author-bio">Honest dispatches from a decade in the web trenches.</div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
