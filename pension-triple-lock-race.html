@@ -11,7 +11,7 @@
         content="An interactive visualization showing how the UK's pension triple lock contains a mathematical design flaw that has cost taxpayers over £85 billion since 2012.">
     <meta name="keywords"
         content="UK pension, triple lock, state pension, mathematical error, policy design, inflation, earnings growth">
-    <meta name="author" content="Rich Harris">
+    <meta name="author" content="Richard Cocks">
 
     <!-- Open Graph Meta Tags (Facebook, LinkedIn) -->
     <meta property="og:type" content="website">
@@ -20,7 +20,7 @@
     <meta property="og:description"
         content="An interactive visualization showing how the UK's pension triple lock contains a mathematical design flaw that has cost taxpayers over £85 billion since 2012.">
     <meta property="og:image" content="https://richardcocks.github.io/assets/img/1_Leader.png">
-    <meta property="og:url" content="richardcocks.github.io/pension-triple-lock-race.html">
+    <meta property="og:url" content="https://richardcocks.github.io/pension-triple-lock-race.html">
     <meta property="og:site_name" content="Triple Lock Visualization">
 
     <!-- Twitter Card Meta Tags -->
@@ -32,200 +32,98 @@
     <meta name="twitter:image" content="https://richardcocks.github.io/assets/img/1_Leader.png">
     <meta name="twitter:creator" content="@eterm.bsky.social">
 
-    <!-- Additional Meta Tags -->
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="">
+    <link rel="canonical" href="https://richardcocks.github.io/pension-triple-lock-race.html">
+
     <style>
+        :root {
+            --page: #f9f9f7;
+            --surface: #fcfcfb;
+            --ink: #0b0b0b;
+            --ink-2: #52514e;
+            --muted: #898781;
+            --grid: #e1e0d9;
+            --axis: #c3c2b7;
+            --border: rgba(11, 11, 11, 0.10);
+            --cpi: #2a78d6;
+            --earnings: #1baf7a;
+            --floor-c: #4a3aa7;
+            --pension: #e34948;
+            --wash: rgba(227, 73, 72, 0.12);
+            --winner-bg: #fdf3d7;
+            --callout-bg: #fdf3d7;
+            --callout-edge: #eda100;
+            --overspend-bg: #fbeaea;
+            --overspend-edge: #d03b3b;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --page: #0d0d0d;
+                --surface: #1a1a19;
+                --ink: #ffffff;
+                --ink-2: #c3c2b7;
+                --muted: #898781;
+                --grid: #2c2c2a;
+                --axis: #383835;
+                --border: rgba(255, 255, 255, 0.10);
+                --cpi: #3987e5;
+                --earnings: #199e70;
+                --floor-c: #9085e9;
+                --pension: #e66767;
+                --wash: rgba(230, 103, 103, 0.16);
+                --winner-bg: #35301c;
+                --callout-bg: #35301c;
+                --callout-edge: #c98500;
+                --overspend-bg: #351d1d;
+                --overspend-edge: #e66767;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            background-color: #f5f5f5;
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            margin: 0;
+            padding: 24px 16px 48px;
+            background-color: var(--page);
+            color: var(--ink);
             font-size: 16px;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .description {
-            max-width: 800px;
-            text-align: center;
-            margin-bottom: 20px;
             line-height: 1.6;
         }
 
-        #raceTrack {
-            background-color: #e8f5e9;
-            border-radius: 10px;
-            position: relative;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            height: auto;
-        }
-
-        .track {
-            fill: #666;
-            stroke: #333;
-            stroke-width: 2;
-        }
-
-        .lane-line {
-            stroke: white;
-            stroke-width: 2;
-            stroke-dasharray: 10, 10;
-        }
-
-        .start-line {
-            stroke: white;
-            stroke-width: 4;
-            stroke-dasharray: 5, 5;
-        }
-
-        .finish-line {
-            stroke: white;
-            stroke-width: 4;
-            stroke-dasharray: 5, 5;
-        }
-
-        .lane-label {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .car {
-            font-size: 30px;
-        }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            min-height: 44px;
-            min-width: 44px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        button:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        .legend {
-            margin-top: 20px;
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .legend-car {
-            font-size: 24px;
-        }
-
-        .stats {
-            margin-top: 20px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            max-width: 800px;
-            width: 100%;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .year-display {
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .data-table {
-            margin-top: 30px;
+        .page {
             max-width: 900px;
-            width: 100%;
+            margin: 0 auto;
         }
 
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
+        h1 {
+            font-size: 28px;
+            line-height: 1.3;
+            margin: 0 0 20px;
         }
 
-        .data-table h2 {
-            text-align: center;
-            margin-bottom: 15px;
+        h2 {
+            font-size: 20px;
+            margin: 40px 0 8px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        p {
+            margin: 0 0 14px;
         }
 
-        th,
-        td {
-            padding: 12px;
-            text-align: center;
-            border: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .winner {
-            background-color: #fff9c4;
-            font-weight: bold;
+        blockquote {
+            margin: 0 0 14px;
+            padding: 10px 16px;
+            border-left: 3px solid var(--axis);
+            color: var(--ink-2);
+            font-style: italic;
         }
 
         a {
-            color: #4CAF50;
+            color: var(--cpi);
             text-decoration: none;
         }
 
@@ -233,123 +131,448 @@
             text-decoration: underline;
         }
 
-        /* Mobile responsive styles */
-        @media (max-width: 768px) {
-            body {
-                padding: 15px;
-            }
+        code {
+            background: var(--grid);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 0 0 16px;
+        }
+
+        .year-display {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 2px;
+        }
+
+        .annotation {
+            min-height: 44px;
+            color: var(--ink-2);
+            font-size: 15px;
+            margin: 0 0 10px;
+        }
+
+        svg {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Race + chart series classes */
+        .fill-cpi { fill: var(--cpi); }
+        .fill-earnings { fill: var(--earnings); }
+        .fill-floor { fill: var(--floor-c); }
+        .fill-pension { fill: var(--pension); }
+        .stroke-cpi { stroke: var(--cpi); }
+        .stroke-earnings { stroke: var(--earnings); }
+        .stroke-floor { stroke: var(--floor-c); }
+        .stroke-pension { stroke: var(--pension); }
+
+        .tick-line {
+            stroke: var(--grid);
+            stroke-width: 1;
+        }
+
+        .axis-line {
+            stroke: var(--axis);
+            stroke-width: 1;
+        }
+
+        .tick-text {
+            fill: var(--muted);
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .lane-text {
+            fill: var(--ink-2);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .value-text {
+            fill: var(--ink);
+            font-size: 14px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .ref-line {
+            stroke: var(--ink-2);
+            stroke-width: 1.5;
+        }
+
+        .ref-text {
+            fill: var(--ink-2);
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .wash-rect,
+        .wash-area {
+            fill: var(--wash);
+        }
+
+        .tip-dot {
+            stroke: var(--surface);
+            stroke-width: 2;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+        }
+
+        .end-label-name {
+            fill: var(--ink-2);
+            font-size: 12px;
+        }
+
+        .end-label-value {
+            fill: var(--ink);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .fine-print {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .controls {
+            margin-top: 14px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 22px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 7px;
+            min-height: 44px;
+            min-width: 44px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--ink);
+        }
+
+        button.primary {
+            background: var(--ink);
+            color: var(--surface);
+            border-color: var(--ink);
+        }
+
+        button:hover:not(:disabled) {
+            filter: brightness(1.15);
+        }
+
+        button.primary:hover:not(:disabled) {
+            filter: none;
+            opacity: 0.85;
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .slider-row {
+            margin-top: 14px;
+        }
+
+        .slider-row label {
+            font-weight: 600;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--pension);
+        }
+
+        .slider-ends {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .stats {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 12px 14px;
+            border-radius: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--ink-2);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-key {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex: none;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .stat-card.hero {
+            border-left: 4px solid var(--overspend-edge);
+        }
+
+        .stat-card.hero .stat-value {
+            font-size: 28px;
+        }
+
+        .stat-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 0 0 10px;
+            font-size: 14px;
+            color: var(--ink-2);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .legend-key {
+            width: 18px;
+            height: 3px;
+            border-radius: 2px;
+            flex: none;
+        }
+
+        .callout {
+            margin: 28px 0;
+            padding: 18px 20px;
+            background: var(--callout-bg);
+            border-left: 5px solid var(--callout-edge);
+            border-radius: 6px;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .overspend-banner {
+            margin: 20px 0;
+            padding: 14px 18px;
+            background: var(--overspend-bg);
+            border-left: 4px solid var(--overspend-edge);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .overspend-banner .big {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .chart-wrap {
+            position: relative;
+        }
+
+        .chart-wrap:focus {
+            outline: 2px solid var(--cpi);
+            outline-offset: 2px;
+        }
+
+        .crosshair {
+            stroke: var(--axis);
+            stroke-width: 1;
+        }
+
+        .tooltip {
+            position: absolute;
+            pointer-events: none;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 8px 12px;
+            font-size: 13px;
+            min-width: 170px;
+            z-index: 5;
+            display: none;
+        }
+
+        .tooltip .tt-year {
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tooltip .tt-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin: 2px 0;
+        }
+
+        .tooltip .tt-key {
+            width: 14px;
+            height: 3px;
+            border-radius: 2px;
+            flex: none;
+        }
+
+        .tooltip .tt-name {
+            color: var(--ink-2);
+            flex: 1;
+        }
+
+        .tooltip .tt-value {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tooltip .tt-gap {
+            border-top: 1px solid var(--grid);
+            margin-top: 5px;
+            padding-top: 5px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--surface);
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            padding: 9px 8px;
+            text-align: center;
+            border: 1px solid var(--grid);
+            font-variant-numeric: tabular-nums;
+        }
+
+        th {
+            background: var(--grid);
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        .winner {
+            background-color: var(--winner-bg);
+            font-weight: 700;
+        }
+
+        .suspended {
+            text-decoration: line-through;
+            color: var(--muted);
+        }
+
+        .gap-cell,
+        .overspend-cell {
+            color: var(--overspend-edge);
+            font-weight: 700;
+        }
+
+        .zero-cell {
+            color: var(--muted);
+        }
+
+        @media (max-width: 768px) {
             h1 {
-                font-size: 24px;
-                text-align: center;
+                font-size: 22px;
             }
 
             .stats {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 10px;
-            }
-
-            .stat-value {
-                font-size: 20px;
-            }
-
-            .controls {
-                flex-wrap: wrap;
-                justify-content: center;
             }
 
             button {
-                padding: 12px 16px;
                 flex: 1;
-                min-width: 100px;
-            }
-
-            .legend {
-                gap: 15px;
-            }
-
-            .legend-item {
-                font-size: 14px;
+                min-width: 90px;
+                padding: 10px 12px;
             }
 
             th,
             td {
-                padding: 8px;
-                font-size: 14px;
+                padding: 6px 5px;
+                font-size: 12px;
             }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            h1 {
-                font-size: 20px;
-            }
-
             .stats {
-                grid-template-columns: 1fr;
-                gap: 10px;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
             }
 
-            .description,
-            .data-table {
-                font-size: 14px;
+            .stat-value {
+                font-size: 19px;
             }
 
-            .year-display {
-                font-size: 20px;
-            }
-
-            button {
-                font-size: 14px;
-                padding: 10px 12px;
-            }
-
-            .controls {
-                gap: 5px;
-                width: 100%;
+            .stat-card.hero .stat-value {
+                font-size: 22px;
             }
 
             .legend {
-                flex-direction: column;
                 gap: 10px;
-            }
-
-            th,
-            td {
-                padding: 6px 4px;
-                font-size: 12px;
-            }
-
-            .lane-label {
-                font-size: 12px;
-            }
-
-            .car {
-                font-size: 24px;
+                font-size: 13px;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>Matching Speed vs. Matching Position: Visualising the Triple Lock's Mathematical Flaw</h1>
+    <div class="page">
+        <h1>Matching Speed vs. Matching Position: Visualising the Triple Lock's Mathematical Flaw</h1>
 
-    <div style="max-width: 900px; margin: 0 auto 30px; text-align: left; line-height: 1.6;">
         <p>Imagine that you've been tasked with instructing a camera drone to follow the leader in a race.</p>
 
-        <p>Without thinking too much, you write down the instructions:
+        <p>Without thinking too much, you write down the instructions:</p>
         <blockquote>At any moment, match the speed of whichever racer is currently going fastest.</blockquote>
-        </p>
 
-        <p>Before too long, the drone is flying around more than a full lap ahead of every racer.
-        </p>
+        <p>Before too long, the drone is flying around more than a full lap ahead of every racer.</p>
         <p>
             What went wrong?
             The drone continuously matched whichever racer was going fastest at that moment. Whenever a racer sped up
@@ -358,633 +581,457 @@
         </p>
         <p>
             Any distance gained on the leader was baked in permanently. It kept every advantage, never giving any back,
-            because the front-runner could never go faster than the drone and therefore could never make up lost ground.
+            because the front-runner could never go faster than the drone and therefore could never make up lost
+            ground.
         </p>
 
         <p>The mistake made is confusing <strong>matching speed</strong> with <strong>matching position</strong>. The
             drone was mathematically guaranteed to fly ahead by cherry-picking the best speed.</p>
 
         <p>
-            The UK Treasury <em>made this same mistake</em>, and it has been costing the UK billions:
+            The UK Treasury <em>made this same mistake</em>, and it has been costing the UK billions.
+            Watch the pension (in red) run the race below. It only ever copies the <em>speed</em> of one of the three
+            racers it is "locked" to &mdash; and ends up ahead of all of them:
         </p>
-    </div>
 
-    <div class="year-display" id="yearDisplay">Year: 2011 (baseline)</div>
+        <div class="card">
+            <div class="year-display" id="yearDisplay">2011 &mdash; baseline</div>
+            <div class="annotation" id="annotation">Everyone starts level at 100. Press Start, or drag the slider.
+            </div>
 
-    <svg id="raceTrack" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
-        <!-- Race track with lanes -->
-        <rect class="track" x="50" y="50" width="700" height="300" rx="10" />
+            <svg id="raceSvg" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet" role="img"
+                aria-label="Animated race showing the pension index pulling ahead of CPI, earnings and the 2.5% floor indices"></svg>
 
-        <!-- Lane dividers -->
-        <line class="lane-line" x1="50" y1="125" x2="750" y2="125" />
-        <line class="lane-line" x1="50" y1="200" x2="750" y2="200" />
-        <line class="lane-line" x1="50" y1="275" x2="750" y2="275" />
+            <div class="fine-print">Track uses a logarithmic scale, so constant percentage growth appears as constant
+                speed. The shaded red band is the pension's lead over the front-runner &mdash; the overshoot a true
+                lock would not have.</div>
 
-        <!-- Start line -->
-        <line class="start-line" x1="80" y1="50" x2="80" y2="350" />
+            <div class="controls">
+                <button id="startBtn" class="primary" onclick="startRace()">Start race</button>
+                <button id="pauseBtn" onclick="pauseRace()" disabled>Pause</button>
+                <button id="resetBtn" onclick="resetRace()">Reset</button>
+            </div>
 
-        <!-- Finish line -->
-        <line class="finish-line" x1="720" y1="50" x2="720" y2="350" />
+            <div class="slider-row">
+                <label for="yearSlider">Scrub through years</label>
+                <input type="range" id="yearSlider" min="-1" max="14" value="-1" step="1"
+                    oninput="scrubToYear(this.value)" aria-label="Scrub through years 2011 to 2026">
+                <div class="slider-ends">
+                    <span>2011</span>
+                    <span>2026</span>
+                </div>
+            </div>
 
-        <!-- Leader line (for max of CPI/Earnings/2.5%) -->
-        <line id="leaderLine" x1="80" y1="50" x2="80" y2="350" stroke="white" stroke-width="3" stroke-dasharray="5,5" />
-        <text id="leaderLabel" x="80" y="365" fill="white" font-size="12" font-weight="bold" text-anchor="middle"
-            style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">Leader</text>
-
-        <!-- Pension line (showing gold car position) -->
-        <line id="pensionLine" x1="80" y1="50" x2="80" y2="350" stroke="#f57f17" stroke-width="3"
-            stroke-dasharray="5,5" />
-        <text id="pensionLabel" x="80" y="380" fill="#f57f17" font-size="12" font-weight="bold"
-            text-anchor="middle">Pension</text>
-
-        <!-- Lane labels -->
-        <text class="lane-label" x="10" y="92" fill="#d32f2f">CPI</text>
-        <text class="lane-label" x="10" y="167" fill="#1976d2">Earn.</text>
-        <text class="lane-label" x="10" y="242" fill="#388e3c">2.5%</text>
-        <text class="lane-label" x="10" y="317" fill="#f57f17">Pen.</text>
-
-        <!-- Cars -->
-        <text id="redCar" class="car" x="0" y="0">🏎️</text>
-        <text id="blueCar" class="car" x="0" y="0">🏎️</text>
-        <text id="greenCar" class="car" x="0" y="0">🏎️</text>
-        <text id="goldCar" class="car" x="0" y="0">🏎️</text>
-    </svg>
-
-    <div style="text-align: center; font-size: 10px; color: #999; margin-top: 5px;">
-        Note: Track uses logarithmic scale - constant percentage growth appears as constant speed
-    </div>
-
-    <div class="controls">
-        <button id="startBtn" onclick="startRace()">Start Race</button>
-        <button id="pauseBtn" onclick="pauseRace()" disabled>Pause</button>
-        <button id="resetBtn" onclick="resetRace()">Reset</button>
-    </div>
-
-    <div style="margin-top: 20px; max-width: 800px; width: 100%;">
-        <label for="yearSlider" style="font-weight: bold; margin-bottom: 10px; display: block;">Scrub through
-            years:</label>
-        <input type="range" id="yearSlider" min="-1" max="14" value="-1" step="1" style="width: 100%; cursor: pointer;"
-            oninput="scrubToYear(this.value)">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666; margin-top: 5px;">
-            <span>Start</span>
-            <span>2012</span>
-            <span>2026</span>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-label"><span class="stat-key" style="background: var(--pension)"></span>Pension
+                        index</div>
+                    <div class="stat-value" id="statPension">100.0</div>
+                    <div class="stat-sub">as implemented</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label"><span class="stat-key"
+                            style="background: var(--ink-2)"></span>True&#8209;lock index</div>
+                    <div class="stat-value" id="statLeader">100.0</div>
+                    <div class="stat-sub">highest of the three measures</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Gap</div>
+                    <div class="stat-value" id="statGap">0.0</div>
+                    <div class="stat-sub">index points of overshoot</div>
+                </div>
+                <div class="stat-card hero">
+                    <div class="stat-label">Cumulative overspend</div>
+                    <div class="stat-value" id="statOverspend">£0bn</div>
+                    <div class="stat-sub">our estimate, since 2012</div>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="legend">
-        <div class="legend-item">
-            <span class="legend-car" style="filter: hue-rotate(0deg);">🏎️</span>
-            <span>Red: Inflation (variable)</span>
+        <div class="callout" id="callout">
+            The pension ends the race ahead of all three measures it is supposedly "locked" to. The UK government made
+            exactly this mistake, and it has cost taxpayers an estimated
+            <span id="calloutTotal">£85</span> billion so far.
         </div>
-        <div class="legend-item">
-            <span class="legend-car" style="filter: hue-rotate(200deg);">🏎️</span>
-            <span>Blue: Earnings Growth (variable)</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-car" style="filter: hue-rotate(100deg);">🏎️</span>
-            <span>Green: 2.5% Floor</span>
-        </div>
-        <div class="legend-item">
-            <span class="legend-car" style="filter: hue-rotate(45deg) brightness(1.5);">🏎️</span>
-            <span>Gold: Pension (locked to fastest speed)</span>
-        </div>
-    </div>
 
-    <div class="stats">
-        <div class="stat-card">
-            <div class="stat-label">Red Position</div>
-            <div class="stat-value" id="redPos" style="color: #d32f2f;">100</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Blue Position</div>
-            <div class="stat-value" id="bluePos" style="color: #1976d2;">100</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Green Position</div>
-            <div class="stat-value" id="greenPos" style="color: #388e3c;">100</div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-label">Gold Position</div>
-            <div class="stat-value" id="goldPos" style="color: #f57f17;">100</div>
-        </div>
-    </div>
+        <h2>The same race as a chart</h2>
+        <p>Every index starts at 100 in 2011. The red pension line borrows the best growth rate every year and never
+            gives it back, so it climbs above the <em>envelope</em> of all three measures. The shaded band is the
+            overshoot &mdash; growth beyond even the best-performing measure.</p>
 
-    <div
-        style="max-width: 900px; margin: 30px auto; padding: 20px; background: #fff3cd; border-left: 5px solid #ffc107; border-radius: 5px;">
-        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #856404;">Watch the gold pension car pull ahead
-            of all three racers. The UK government made exactly this mistake and it has cost taxpayers over £85
-            billion so far.</p>
-    </div>
+        <div class="card">
+            <div class="legend" id="chartLegend"></div>
+            <div class="chart-wrap" id="chartWrap" tabindex="0"
+                aria-label="Line chart of CPI, earnings, 2.5 percent floor and pension indices, 2011 to 2026. Use arrow keys to explore values.">
+                <svg id="lineSvg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="tooltip" id="tooltip"></div>
+            </div>
+        </div>
 
-    <div class="description" style="max-width: 900px; margin: 0 auto 30px; text-align: center; line-height: 1.6;">
+        <h2>What went wrong, precisely</h2>
+
         <p><strong>A multi-billion pound mistake:</strong> The UK state pension "triple lock" contains a mathematical
-            design mistake that has
-            cost taxpayers tens of billions since 2012. The policy sounds simple: increase pensions each year by
-            whichever is highest -
-            CPI inflation, average earnings growth, or 2.5%. But there's a critical flaw in the mathematical
-            formulation.</p>
+            design mistake that has cost taxpayers tens of billions since 2012. The policy sounds simple: increase
+            pensions each year by whichever is highest &mdash; CPI inflation, average earnings growth, or 2.5%. But
+            there's a critical flaw in the mathematical formulation.</p>
 
         <p><strong>What "triple lock" should mean:</strong> If pensions are "locked" to three measures, you'd expect:
             <code>Pension = MAX(CPI index, Earnings index, 2.5% index)</code>. This would ensure pensions genuinely
             track the highest measure.
         </p>
 
-        <p><strong>What it actually does:</strong> Instead, it takes the <em>rate</em> (delta) from whichever is highest
-            each year:
-            <code>Pension<sub>t</sub> = Pension<sub>t-1</sub> × (1 + MAX(CPI rate, Earnings rate, 2.5%))</code>. This
-            creates a ratchet effect where pensions
-            borrow growth from whichever grows fastest, but never gives it back, compounding ahead of <em>all three</em>
-            measures.
+        <p><strong>What it actually does:</strong> Instead, it takes the <em>rate</em> (delta) from whichever is
+            highest each year:
+            <code>Pension<sub>t</sub> = Pension<sub>t-1</sub> &times; (1 + MAX(CPI rate, Earnings rate, 2.5%))</code>.
+            This creates a ratchet effect where pensions borrow growth from whichever grows fastest, but never gives it
+            back, compounding ahead of <em>all three</em> measures.
         </p>
 
         <p><strong>The mathematical mistake:</strong> By locking to <em>rates</em> instead of <em>indexes</em>, the
-            policy cherry-picks
-            the best performance from each measure annually. A true "lock" would mean matching the position of the
-            leader. Instead,
-            pensions exceed all three measures they're supposedly locked to.</p>
-    </div>
+            policy cherry-picks the best performance from each measure annually. A true "lock" would mean matching the
+            position of the leader. Instead, pensions exceed all three measures they're supposedly locked to. The
+            Resolution Foundation describes the same structural effect in
+            <a href="https://www.resolutionfoundation.org/publications/what-a-ratchet/" target="_blank">"What a
+                ratchet!"</a>, and the OBR estimates triple-lock uprating will cost roughly &pound;12.6bn per year more
+            than earnings-linking by 2029&ndash;30 &mdash; the same order of magnitude as our per-year estimate below.
+        </p>
 
-    <div
-        style="margin-top: 15px; padding: 15px; background-color: #ffebee; border-left: 4px solid #d32f2f; font-size: 16px; text-align: center;">
-        <strong>Estimated Cumulative Overspend (2012-2026):</strong> <span
-            style="color: #d32f2f; font-size: 18px; font-weight: bold;">£85.2bn</span>
-    </div>
+        <div class="overspend-banner">
+            <div><strong>Estimated cumulative overspend (2012&ndash;2026):</strong> <span class="big"
+                    id="bannerTotal" style="color: var(--overspend-edge)"></span></div>
+            <div class="fine-print">Our estimate: each year's overspend = pension spend &times; (1 &minus;
+                true&#8209;lock index &divide; pension index). Figures are current as of the April 2026 uprating (4.8%,
+                earnings), confirmed in November 2025.</div>
+        </div>
 
-    <div class="data-table">
-        <h2>Historical UK Triple Lock Data (2012-2026)</h2>
-        <p style="text-align: center; font-size: 14px; color: #666; margin-bottom: 10px;">
+        <h2>Historical UK triple lock data (2012&ndash;2026)</h2>
+        <p class="fine-print" style="font-size: 14px;">
             <strong>CPI data:</strong> <a
                 href="https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7bt/mm23"
-                target="_blank">ONS Consumer Price Inflation</a><br>
+                target="_blank">ONS Consumer Price Inflation</a> &middot;
             <strong>Analysis:</strong> <a
                 href="https://ifs.org.uk/articles/what-are-effects-triple-lock-and-how-could-it-be-reformed"
-                target="_blank">IFS - Effects of the Triple Lock</a><br>
+                target="_blank">IFS &mdash; Effects of the Triple Lock</a> &middot;
             <strong>Spending figures:</strong> <a
                 href="https://www.gov.uk/government/collections/benefit-expenditure-tables" target="_blank">DWP Benefit
-                Expenditure and Caseload Tables</a> (outturn data 2012/13-2023/24, forecast 2024/25-2025/26)
+                Expenditure and Caseload Tables</a> (outturn 2012/13&ndash;2023/24, forecast thereafter)
         </p>
         <div class="table-container">
             <table id="dataTable">
                 <thead>
                     <tr>
                         <th>Year</th>
-                        <th>CPI Inflation (%)</th>
-                        <th>Earnings Growth (%)</th>
-                        <th>2.5% Floor</th>
-                        <th>Pension Increase (%)</th>
-                        <th>CPI Index</th>
-                        <th>Earnings Index</th>
-                        <th>2.5% Index</th>
-                        <th>Pension Index (as implemented)</th>
-                        <th>Leader Index (what it should be)</th>
-                        <th>Gap = Error (index points)</th>
-                        <th>Pension Spend (£bn)</th>
-                        <th>Estimated Annual Overspend (£bn)</th>
+                        <th>CPI (%)</th>
+                        <th>Earnings (%)</th>
+                        <th>Floor</th>
+                        <th>Applied (%)</th>
+                        <th>CPI index</th>
+                        <th>Earnings index</th>
+                        <th>2.5% index</th>
+                        <th>Pension index<br>(as implemented)</th>
+                        <th>True&#8209;lock index<br>(what it should be)</th>
+                        <th>Gap<br>(points)</th>
+                        <th>Spend<br>(&pound;bn)</th>
+                        <th>Overspend<br>(&pound;bn)</th>
                     </tr>
                 </thead>
-                <tbody id="dataTableBody">
-                    <tr>
-                        <td>2012</td>
-                        <td class="winner">5.2%</td>
-                        <td>2.8%</td>
-                        <td>2.5%</td>
-                        <td class="winner">5.2%</td>
-                        <td>105.2</td>
-                        <td>102.8</td>
-                        <td>102.5</td>
-                        <td><strong>105.2</strong></td>
-                        <td>105.2</td>
-                        <td style="color: #388e3c; font-weight: bold;">0.0</td>
-                        <td>£79.8bn</td>
-                        <td style="color: #388e3c; font-weight: bold;">£0.0bn</td>
-                    </tr>
-                    <tr>
-                        <td>2013</td>
-                        <td>2.2%</td>
-                        <td>1.6%</td>
-                        <td class="winner">2.5%</td>
-                        <td class="winner">2.5%</td>
-                        <td>107.5</td>
-                        <td>104.4</td>
-                        <td>105.1</td>
-                        <td><strong>107.8</strong></td>
-                        <td>107.5</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
-                        <td>£83.1bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+0.2bn</td>
-                    </tr>
-                    <tr>
-                        <td>2014</td>
-                        <td class="winner">2.7%</td>
-                        <td>1.2%</td>
-                        <td>2.5%</td>
-                        <td class="winner">2.7%</td>
-                        <td>110.4</td>
-                        <td>105.7</td>
-                        <td>107.7</td>
-                        <td><strong>110.7</strong></td>
-                        <td>110.4</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+0.3</td>
-                        <td>£86.5bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+0.3bn</td>
-                    </tr>
-                    <tr>
-                        <td>2015</td>
-                        <td>1.2%</td>
-                        <td>0.6%</td>
-                        <td class="winner">2.5%</td>
-                        <td class="winner">2.5%</td>
-                        <td>111.7</td>
-                        <td>106.3</td>
-                        <td>110.4</td>
-                        <td><strong>113.5</strong></td>
-                        <td>111.7</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+1.8</td>
-                        <td>£89.4bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+1.4bn</td>
-                    </tr>
-                    <tr>
-                        <td>2016</td>
-                        <td>-0.1%</td>
-                        <td class="winner">2.9%</td>
-                        <td>2.5%</td>
-                        <td class="winner">2.9%</td>
-                        <td>111.6</td>
-                        <td>109.4</td>
-                        <td>113.1</td>
-                        <td><strong>116.8</strong></td>
-                        <td>113.1</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+3.7</td>
-                        <td>£91.6bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+3.0bn</td>
-                    </tr>
-                    <tr>
-                        <td>2017</td>
-                        <td>1.0%</td>
-                        <td>2.4%</td>
-                        <td class="winner">2.5%</td>
-                        <td class="winner">2.5%</td>
-                        <td>112.7</td>
-                        <td>112.0</td>
-                        <td>116.0</td>
-                        <td><strong>119.7</strong></td>
-                        <td>116.0</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+3.8</td>
-                        <td>£93.8bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+2.9bn</td>
-                    </tr>
-                    <tr>
-                        <td>2018</td>
-                        <td class="winner">3.0%</td>
-                        <td>2.3%</td>
-                        <td>2.5%</td>
-                        <td class="winner">3.0%</td>
-                        <td>116.1</td>
-                        <td>114.6</td>
-                        <td>118.9</td>
-                        <td><strong>123.3</strong></td>
-                        <td>118.9</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+4.4</td>
-                        <td>£96.7bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+3.5bn</td>
-                    </tr>
-                    <tr>
-                        <td>2019</td>
-                        <td>2.4%</td>
-                        <td class="winner">2.6%</td>
-                        <td>2.5%</td>
-                        <td class="winner">2.6%</td>
-                        <td>118.9</td>
-                        <td>117.6</td>
-                        <td>121.8</td>
-                        <td><strong>126.5</strong></td>
-                        <td>121.8</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+4.7</td>
-                        <td>£98.8bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+3.7bn</td>
-                    </tr>
-                    <tr>
-                        <td>2020</td>
-                        <td>1.7%</td>
-                        <td class="winner">3.9%</td>
-                        <td>2.5%</td>
-                        <td class="winner">3.9%</td>
-                        <td>120.9</td>
-                        <td>122.2</td>
-                        <td>124.9</td>
-                        <td><strong>131.5</strong></td>
-                        <td>124.9</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+6.6</td>
-                        <td>£102.0bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+5.1bn</td>
-                    </tr>
-                    <tr>
-                        <td>2021</td>
-                        <td>0.5%</td>
-                        <td>-1.0%</td>
-                        <td class="winner">2.5%</td>
-                        <td class="winner">2.5%</td>
-                        <td>121.5</td>
-                        <td>121.0</td>
-                        <td>128.0</td>
-                        <td><strong>134.7</strong></td>
-                        <td>128.0</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+6.7</td>
-                        <td>£104.7bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+5.2bn</td>
-                    </tr>
-                    <tr>
-                        <td>2022*</td>
-                        <td>3.1%</td>
-                        <td class="winner">8.3%</td>
-                        <td>2.5%</td>
-                        <td class="winner">3.1%</td>
-                        <td>125.3</td>
-                        <td>131.0</td>
-                        <td>131.2</td>
-                        <td><strong>138.9</strong></td>
-                        <td>131.2</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+7.7</td>
-                        <td>£110.5bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+6.1bn</td>
-                    </tr>
-                    <tr>
-                        <td>2023</td>
-                        <td class="winner">10.1%</td>
-                        <td>5.5%</td>
-                        <td>2.5%</td>
-                        <td class="winner">10.1%</td>
-                        <td>138.0</td>
-                        <td>138.2</td>
-                        <td>134.5</td>
-                        <td><strong>152.9</strong></td>
-                        <td>138.2</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+14.7</td>
-                        <td>£124.1bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+12.0bn</td>
-                    </tr>
-                    <tr>
-                        <td>2024</td>
-                        <td>6.7%</td>
-                        <td class="winner">8.5%</td>
-                        <td>2.5%</td>
-                        <td class="winner">8.5%</td>
-                        <td>147.2</td>
-                        <td>150.0</td>
-                        <td>137.9</td>
-                        <td><strong>165.9</strong></td>
-                        <td>150.0</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+16.0</td>
-                        <td>£136.4bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+13.1bn</td>
-                    </tr>
-                    <tr>
-                        <td>2025</td>
-                        <td>1.7%</td>
-                        <td class="winner">4.1%</td>
-                        <td>2.5%</td>
-                        <td class="winner">4.1%</td>
-                        <td>149.7</td>
-                        <td>156.1</td>
-                        <td>141.3</td>
-                        <td><strong>172.8</strong></td>
-                        <td>156.1</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+16.6</td>
-                        <td>£145.6bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+14.0bn</td>
-                    </tr>
-                    <tr>
-                        <td>2026</td>
-                        <td>3.8%</td>
-                        <td class="winner">4.8%</td>
-                        <td>2.5%</td>
-                        <td class="winner">4.8%</td>
-                        <td>155.4</td>
-                        <td>163.6</td>
-                        <td>144.8</td>
-                        <td><strong>181.0</strong></td>
-                        <td>163.6</td>
-                        <td style="color: #d32f2f; font-weight: bold;">+17.4</td>
-                        <td>£153.2bn</td>
-                        <td style="color: #d32f2f; font-weight: bold;">£+14.8bn</td>
-                    </tr>
-                </tbody>
+                <tbody id="dataTableBody"></tbody>
             </table>
         </div>
-        <p style="font-size: 12px; color: #666; margin-top: 10px; font-style: italic;">
-            *In 2022, the triple lock was temporarily suspended and only the earnings element was excluded. Pensions
+        <p class="fine-print" style="font-style: italic;">
+            *In 2022, the triple lock was temporarily suspended and the earnings element was excluded. Pensions
             increased by 3.1% (CPI) instead of 8.3% (earnings growth), which was unusually high due to pandemic-related
-            statistical distortions.
+            statistical distortions. Struck-through figures were not applied.
         </p>
-
     </div>
 
-
     <script>
-        // Track dimensions
-        const startX = 80;
-        const carOffset = 15; // Car emoji centering offset
-        const targetFinishX = 700; // Where we want the car to finish (x position)
-        // We need: targetFinishX = startX + xPos - carOffset
-        // So: xPos = targetFinishX - startX + carOffset = 700 - 80 + 15 = 635
-        const maxXPos = targetFinishX - startX + carOffset;
-        const laneY = {
-            red: 87,      // CPI lane
-            blue: 162,    // Earnings lane
-            green: 237,   // 2.5% floor lane
-            gold: 312     // Pension lane
-        };
+        'use strict';
 
-        let animationId = null;
-        let currentYearIndex = 0;
-        let frameInYear = 0;
-        const framesPerYear = 60;
-
-        // Historical data from 2012-2026 (rates in %)
-        // CPI Source: ONS Consumer Price Inflation (D7BT series)
-        // Reference: https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7bt/mm23
+        // ---------------------------------------------------------------
+        // Data — the single source of truth. Everything else is computed.
+        // CPI: ONS D7BT series (September of the preceding year).
+        // spend: DWP benefit expenditure tables (state pension, GB, £bn).
+        // ---------------------------------------------------------------
         const historicalData = [
-            { year: 2012, cpi: 5.2, earnings: 2.8, floor: 2.5, pension: 5.2 },
-            { year: 2013, cpi: 2.2, earnings: 1.6, floor: 2.5, pension: 2.5 },
-            { year: 2014, cpi: 2.7, earnings: 1.2, floor: 2.5, pension: 2.7 },
-            { year: 2015, cpi: 1.2, earnings: 0.6, floor: 2.5, pension: 2.5 },
-            { year: 2016, cpi: -0.1, earnings: 2.9, floor: 2.5, pension: 2.9 },
-            { year: 2017, cpi: 1.0, earnings: 2.4, floor: 2.5, pension: 2.5 },
-            { year: 2018, cpi: 3.0, earnings: 2.3, floor: 2.5, pension: 3.0 },
-            { year: 2019, cpi: 2.4, earnings: 2.6, floor: 2.5, pension: 2.6 },
-            { year: 2020, cpi: 1.7, earnings: 3.9, floor: 2.5, pension: 3.9 },
-            { year: 2021, cpi: 0.5, earnings: -1.0, floor: 2.5, pension: 2.5 },
-            { year: 2022, cpi: 3.1, earnings: 8.3, floor: 2.5, pension: 3.1 }, // Triple lock suspended (earnings element only)
-            { year: 2023, cpi: 10.1, earnings: 5.5, floor: 2.5, pension: 10.1 },
-            { year: 2024, cpi: 6.7, earnings: 8.5, floor: 2.5, pension: 8.5 },
-            { year: 2025, cpi: 1.7, earnings: 4.1, floor: 2.5, pension: 4.1 },
-            { year: 2026, cpi: 3.8, earnings: 4.8, floor: 2.5, pension: 4.8 }
+            { year: 2012, cpi: 5.2, earnings: 2.8, floor: 2.5, applied: 5.2, spend: 79.8, note: 'Inflation leads at 5.2% and the pension matches it. So far, so fair.' },
+            { year: 2013, cpi: 2.2, earnings: 1.6, floor: 2.5, applied: 2.5, spend: 83.1, note: 'Neither measure beats the 2.5% floor. The pension moves ahead of all three for the first time.' },
+            { year: 2014, cpi: 2.7, earnings: 1.2, floor: 2.5, applied: 2.7, spend: 86.5, note: 'Inflation leads again — but last year’s advantage is never handed back.' },
+            { year: 2015, cpi: 1.2, earnings: 0.6, floor: 2.5, applied: 2.5, spend: 89.4, note: 'Earnings grew just 0.6%, yet the pension rises 2.5% from a position already ahead.' },
+            { year: 2016, cpi: -0.1, earnings: 2.9, floor: 2.5, applied: 2.9, spend: 91.6, note: 'Prices actually fell (−0.1%). The pension still rises 2.9%, copying earnings.' },
+            { year: 2017, cpi: 1.0, earnings: 2.4, floor: 2.5, applied: 2.5, spend: 93.8, note: 'The 2.5% floor wins a third time. The ratchet clicks again.' },
+            { year: 2018, cpi: 3.0, earnings: 2.3, floor: 2.5, applied: 3.0, spend: 96.7, note: 'Inflation leads at 3.0% — copied from a position already nearly 4 points ahead.' },
+            { year: 2019, cpi: 2.4, earnings: 2.6, floor: 2.5, applied: 2.6, spend: 98.8, note: 'Earnings edge it at 2.6%. Every measure has now led at least once.' },
+            { year: 2020, cpi: 1.7, earnings: 3.9, floor: 2.5, applied: 3.9, spend: 102.0, note: 'Earnings jump 3.9% — the pension copies the speed, not the position.' },
+            { year: 2021, cpi: 0.5, earnings: -1.0, floor: 2.5, applied: 2.5, spend: 104.7, note: 'Earnings fell 1.0% in the pandemic. The pension still rises 2.5% — the gap is banked.' },
+            { year: 2022, cpi: 3.1, earnings: 8.3, floor: 2.5, applied: 3.1, spend: 110.5, suspended: true, note: 'Triple lock suspended: the distorted 8.3% earnings figure is ignored and CPI’s 3.1% used instead.' },
+            { year: 2023, cpi: 10.1, earnings: 5.5, floor: 2.5, applied: 10.1, spend: 124.1, note: 'Inflation spikes to 10.1%, copied from 7.7 points ahead — the gap nearly doubles.' },
+            { year: 2024, cpi: 6.7, earnings: 8.5, floor: 2.5, applied: 8.5, spend: 136.4, note: 'Earnings lead at 8.5%. The gap widens to 16 points.' },
+            { year: 2025, cpi: 1.7, earnings: 4.1, floor: 2.5, applied: 4.1, spend: 145.6, note: 'Earnings lead at 4.1%. The overshoot keeps compounding.' },
+            { year: 2026, cpi: 3.8, earnings: 4.8, floor: 2.5, applied: 4.8, spend: 153.2, note: 'Earnings lead at 4.8%. The pension now sits 17 points above every measure it is “locked” to.' }
         ];
 
-        // Position values (start at 100, like an index)
-        let positions = {
-            red: 100,
-            blue: 100,
-            green: 100,
-            gold: 100
+        const series = [
+            { key: 'cpi', name: 'CPI', cssVar: '--cpi' },
+            { key: 'earnings', name: 'Earnings', cssVar: '--earnings' },
+            { key: 'floor', name: '2.5% floor', cssVar: '--floor-c' },
+            { key: 'pension', name: 'Pension', cssVar: '--pension' }
+        ];
+
+        // Cumulative indices per year (year-end), plus derived columns.
+        const rows = (function () {
+            let cpiI = 100, earnI = 100, floorI = 100, penI = 100, cum = 0;
+            return historicalData.map(function (d) {
+                cpiI *= 1 + d.cpi / 100;
+                earnI *= 1 + d.earnings / 100;
+                floorI *= 1 + d.floor / 100;
+                penI *= 1 + d.applied / 100;
+                const leader = Math.max(cpiI, earnI, floorI);
+                const gap = penI - leader;
+                const overspend = d.spend * (1 - leader / penI);
+                cum += overspend;
+                return {
+                    year: d.year, cpi: cpiI, earnings: earnI, floor: floorI,
+                    pension: penI, leader: leader, gap: gap,
+                    overspend: overspend, cumOverspend: cum
+                };
+            });
+        })();
+        const finalRow = rows[rows.length - 1];
+
+        // ------------------------- helpers -------------------------
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        function el(name, attrs, parent) {
+            const node = document.createElementNS(SVG_NS, name);
+            for (const k in attrs) node.setAttribute(k, attrs[k]);
+            if (parent) parent.appendChild(node);
+            return node;
+        }
+
+        function svgText(parent, x, y, cls, content, anchor) {
+            const t = el('text', { x: x, y: y, 'class': cls, 'text-anchor': anchor || 'start' }, parent);
+            t.textContent = content;
+            return t;
+        }
+
+        // Indices at a fractional point in time. t = years elapsed since the
+        // 2011 baseline (0 → all 100; historicalData.length → final values).
+        function indicesAt(t) {
+            const out = { cpi: 100, earnings: 100, floor: 100, pension: 100 };
+            const whole = Math.min(Math.floor(t), historicalData.length);
+            for (let i = 0; i < whole; i++) {
+                const d = historicalData[i];
+                out.cpi *= 1 + d.cpi / 100;
+                out.earnings *= 1 + d.earnings / 100;
+                out.floor *= 1 + d.floor / 100;
+                out.pension *= 1 + d.applied / 100;
+            }
+            const frac = t - whole;
+            if (frac > 0 && whole < historicalData.length) {
+                const d = historicalData[whole];
+                out.cpi *= Math.pow(1 + d.cpi / 100, frac);
+                out.earnings *= Math.pow(1 + d.earnings / 100, frac);
+                out.floor *= Math.pow(1 + d.floor / 100, frac);
+                out.pension *= Math.pow(1 + d.applied / 100, frac);
+            }
+            return out;
+        }
+
+        function cumOverspendAt(t) {
+            const whole = Math.min(Math.floor(t), rows.length);
+            let cum = whole > 0 ? rows[whole - 1].cumOverspend : 0;
+            const frac = t - whole;
+            if (frac > 0 && whole < rows.length) cum += rows[whole].overspend * frac;
+            return cum;
+        }
+
+        // ------------------------- race track -------------------------
+        const race = {
+            x0: 130, x1: 718, valX: 792,
+            top: 30, bottom: 258,
+            barH: 16
         };
+        race.scale = (race.x1 - race.x0) / Math.log(finalRow.pension / 100);
+        race.xOf = function (idx) { return race.x0 + Math.log(idx / 100) * race.scale; };
+        race.laneH = (race.bottom - race.top) / series.length;
 
-        // X positions on track (pixels from start)
-        let xPositions = {
-            red: 0,
-            blue: 0,
-            green: 0,
-            gold: 0
-        };
+        const raceSvg = document.getElementById('raceSvg');
+        const raceParts = { bars: {}, tips: {}, values: {} };
 
-        // Table data is now static HTML - see tbody in the HTML above
+        function buildRace() {
+            // Index gridlines (log positions) + labels
+            [100, 120, 140, 160, 180].forEach(function (v) {
+                const x = race.xOf(v);
+                el('line', { x1: x, y1: race.top, x2: x, y2: race.bottom, 'class': 'tick-line' }, raceSvg);
+                svgText(raceSvg, x, race.bottom + 16, 'tick-text', String(v), 'middle');
+            });
+            svgText(raceSvg, race.x0, race.bottom + 32, 'tick-text', 'index (2011 = 100, log scale)', 'start');
 
-        function getCurrentRates() {
-            if (currentYearIndex >= historicalData.length) {
-                return null;
-            }
-            return historicalData[currentYearIndex];
+            // Overshoot band between the true-lock line and the pension tip
+            raceParts.band = el('rect', {
+                x: race.x0, y: race.top, width: 0, height: race.bottom - race.top,
+                'class': 'wash-rect'
+            }, raceSvg);
+            raceParts.gapLabel = svgText(raceSvg, 0, race.top + 16, 'ref-text', '', 'middle');
+            raceParts.gapLabel.style.display = 'none';
+
+            // Lanes
+            series.forEach(function (s, i) {
+                const cy = race.top + (i + 0.5) * race.laneH;
+                el('circle', { cx: 14, cy: cy - 1, r: 4.5, 'class': 'fill-' + s.key }, raceSvg);
+                svgText(raceSvg, 26, cy + 4, 'lane-text', s.name, 'start');
+                raceParts.bars[s.key] = el('path', { d: '', 'class': 'fill-' + s.key }, raceSvg);
+                raceParts.tips[s.key] = el('circle', {
+                    cx: race.x0, cy: cy, r: 5,
+                    'class': 'fill-' + s.key + ' tip-dot'
+                }, raceSvg);
+                raceParts.values[s.key] = svgText(raceSvg, race.valX, cy + 5, 'value-text', '100.0', 'end');
+            });
+
+            // True-lock reference line (drawn after bars so it stays visible)
+            raceParts.refLine = el('line', {
+                x1: race.x0, y1: race.top - 4, x2: race.x0, y2: race.bottom, 'class': 'ref-line'
+            }, raceSvg);
+            raceParts.refLabel = svgText(raceSvg, race.x0, race.top - 10, 'ref-text', 'true lock', 'middle');
+
+            // Start axis
+            el('line', { x1: race.x0, y1: race.top, x2: race.x0, y2: race.bottom, 'class': 'axis-line' }, raceSvg);
         }
 
-        function updateCarPosition(carId, xPos, yPos, color) {
-            const car = document.getElementById(carId);
-            car.setAttribute('x', startX + xPos - 15);
-            car.setAttribute('y', yPos + 10);
+        function barPath(x0, x1, cy, h) {
+            const len = x1 - x0;
+            if (len <= 0.5) return '';
+            const r = Math.min(4, len / 2);
+            const yT = cy - h / 2, yB = cy + h / 2;
+            return 'M' + x0 + ',' + yT +
+                ' L' + (x1 - r) + ',' + yT +
+                ' Q' + x1 + ',' + yT + ' ' + x1 + ',' + (yT + r) +
+                ' L' + x1 + ',' + (yB - r) +
+                ' Q' + x1 + ',' + yB + ' ' + (x1 - r) + ',' + yB +
+                ' L' + x0 + ',' + yB + ' Z';
+        }
 
-            // Apply color filter
-            if (color === 'red') {
-                car.style.filter = 'hue-rotate(0deg) brightness(1.2)';
-            } else if (color === 'blue') {
-                car.style.filter = 'hue-rotate(200deg) brightness(1.2)';
-            } else if (color === 'green') {
-                car.style.filter = 'hue-rotate(100deg) brightness(1.2)';
+        function renderRace(t) {
+            const idx = indicesAt(t);
+            const leaderIdx = Math.max(idx.cpi, idx.earnings, idx.floor);
+            const leaderX = race.xOf(leaderIdx);
+            const pensionX = race.xOf(idx.pension);
+
+            series.forEach(function (s, i) {
+                const cy = race.top + (i + 0.5) * race.laneH;
+                const x = race.xOf(idx[s.key]);
+                raceParts.bars[s.key].setAttribute('d', barPath(race.x0, x, cy, race.barH));
+                raceParts.tips[s.key].setAttribute('cx', x);
+                raceParts.values[s.key].textContent = idx[s.key].toFixed(1);
+            });
+
+            raceParts.refLine.setAttribute('x1', leaderX);
+            raceParts.refLine.setAttribute('x2', leaderX);
+            raceParts.refLabel.setAttribute('x', leaderX);
+            raceParts.band.setAttribute('x', leaderX);
+            raceParts.band.setAttribute('width', Math.max(0, pensionX - leaderX));
+
+            const gap = idx.pension - leaderIdx;
+            if (pensionX - leaderX > 44) {
+                raceParts.gapLabel.style.display = '';
+                raceParts.gapLabel.setAttribute('x', (leaderX + pensionX) / 2);
+                raceParts.gapLabel.textContent = '+' + gap.toFixed(1) + ' pts';
             } else {
-                car.style.filter = 'hue-rotate(45deg) brightness(1.5)';
+                raceParts.gapLabel.style.display = 'none';
             }
+
+            // Stat tiles
+            document.getElementById('statPension').textContent = idx.pension.toFixed(1);
+            document.getElementById('statLeader').textContent = leaderIdx.toFixed(1);
+            document.getElementById('statGap').textContent = '+' + gap.toFixed(1);
+            document.getElementById('statOverspend').textContent =
+                '£' + cumOverspendAt(t).toFixed(1) + 'bn';
         }
 
-        function updateStats() {
-            document.getElementById('redPos').textContent = positions.red.toFixed(1);
-            document.getElementById('bluePos').textContent = positions.blue.toFixed(1);
-            document.getElementById('greenPos').textContent = positions.green.toFixed(1);
-            document.getElementById('goldPos').textContent = positions.gold.toFixed(1);
-
-            if (currentYearIndex < 0) {
-                document.getElementById('yearDisplay').textContent = `Year: 2011 (baseline)`;
-            } else if (currentYearIndex < historicalData.length) {
-                document.getElementById('yearDisplay').textContent = `Year: ${historicalData[currentYearIndex].year}`;
+        function setYearText(yearIndex) {
+            const yd = document.getElementById('yearDisplay');
+            const an = document.getElementById('annotation');
+            if (yearIndex < 0) {
+                yd.textContent = '2011 — baseline';
+                an.textContent = 'Everyone starts level at 100. Press Start, or drag the slider.';
             } else {
-                document.getElementById('yearDisplay').textContent = `Year: Complete`;
+                const d = historicalData[Math.min(yearIndex, historicalData.length - 1)];
+                yd.textContent = String(d.year);
+                an.textContent = d.note;
             }
         }
 
-        function animate() {
-            const rates = getCurrentRates();
+        // ------------------------- animation -------------------------
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const framesPerYear = 55;
+        let animationId = null;
+        let stepTimer = null;
+        let currentYearIndex = -1;   // -1 = baseline
+        let frameInYear = 0;
 
-            if (!rates) {
-                // Race is complete
-                pauseRace();
-                return;
-            }
+        function currentT() {
+            if (currentYearIndex < 0) return 0;
+            return Math.min(currentYearIndex + frameInYear / framesPerYear, historicalData.length);
+        }
 
+        function animateFrame() {
             frameInYear += 1;
-
-            // Calculate progress through the current year (0 to 1)
-            const yearProgress = frameInYear / framesPerYear;
-
-            // Calculate positions at this point in time
-            // Start from the position at the beginning of the current year
-            let yearStartPositions = { red: 100, blue: 100, green: 100, gold: 100 };
-
-            // Apply all previous years' growth
-            for (let i = 0; i < currentYearIndex; i++) {
-                const data = historicalData[i];
-                yearStartPositions.red *= (1 + data.cpi / 100);
-                yearStartPositions.blue *= (1 + data.earnings / 100);
-                yearStartPositions.green *= (1 + data.floor / 100);
-                yearStartPositions.gold *= (1 + data.pension / 100);
-            }
-
-            // Apply partial growth for the current year
-            positions.red = yearStartPositions.red * Math.pow(1 + rates.cpi / 100, yearProgress);
-            positions.blue = yearStartPositions.blue * Math.pow(1 + rates.earnings / 100, yearProgress);
-            positions.green = yearStartPositions.green * Math.pow(1 + rates.floor / 100, yearProgress);
-            positions.gold = yearStartPositions.gold * Math.pow(1 + rates.pension / 100, yearProgress);
-
-            // Calculate x positions based on index values (logarithmic scale)
-            // Calculate final gold position to scale track properly
-            let finalGoldIndex = 100;
-            for (let i = 0; i < historicalData.length; i++) {
-                finalGoldIndex *= (1 + historicalData[i].pension / 100);
-            }
-
-            // Scale so gold reaches finish line in 2025 (using log scale)
-            const scale = maxXPos / Math.log(finalGoldIndex / 100);
-
-            xPositions.red = Math.log(positions.red / 100) * scale;
-            xPositions.blue = Math.log(positions.blue / 100) * scale;
-            xPositions.green = Math.log(positions.green / 100) * scale;
-            xPositions.gold = Math.log(positions.gold / 100) * scale;
-
-            // Update car positions on track
-            updateCarPosition('redCar', xPositions.red, laneY.red, 'red');
-            updateCarPosition('blueCar', xPositions.blue, laneY.blue, 'blue');
-            updateCarPosition('greenCar', xPositions.green, laneY.green, 'green');
-            updateCarPosition('goldCar', xPositions.gold, laneY.gold, 'gold');
-
-            // Update leader line position (max of red, blue, green)
-            const maxTriplePos = Math.max(xPositions.red, xPositions.blue, xPositions.green);
-            const leaderLine = document.getElementById('leaderLine');
-            const leaderLabel = document.getElementById('leaderLabel');
-            leaderLine.setAttribute('x1', startX + maxTriplePos);
-            leaderLine.setAttribute('x2', startX + maxTriplePos);
-            leaderLabel.setAttribute('x', startX + maxTriplePos);
-
-            // Update pension line position (gold car)
-            const pensionLine = document.getElementById('pensionLine');
-            const pensionLabel = document.getElementById('pensionLabel');
-            pensionLine.setAttribute('x1', startX + xPositions.gold);
-            pensionLine.setAttribute('x2', startX + xPositions.gold);
-            pensionLabel.setAttribute('x', startX + xPositions.gold);
-
-            updateStats();
-
-            // Move to next year when frames complete
             if (frameInYear >= framesPerYear) {
                 frameInYear = 0;
                 currentYearIndex += 1;
-
-                // If we've finished the last year, stop the animation
                 if (currentYearIndex >= historicalData.length) {
-                    // Clamp positions to final values to prevent overshoot
                     currentYearIndex = historicalData.length - 1;
                     frameInYear = framesPerYear;
+                    renderRace(historicalData.length);
+                    setYearText(currentYearIndex);
                     pauseRace();
                     return;
                 }
-
-                // Update slider position
+                setYearText(currentYearIndex);
                 document.getElementById('yearSlider').value = currentYearIndex;
             }
+            renderRace(currentT());
+            animationId = requestAnimationFrame(animateFrame);
+        }
 
-            animationId = requestAnimationFrame(animate);
+        function animateStep() {
+            // Reduced-motion mode: advance one whole year at a time.
+            currentYearIndex += 1;
+            if (currentYearIndex >= historicalData.length) {
+                currentYearIndex = historicalData.length - 1;
+                frameInYear = framesPerYear;
+                pauseRace();
+                return;
+            }
+            frameInYear = framesPerYear - 1;
+            setYearText(currentYearIndex);
+            document.getElementById('yearSlider').value = currentYearIndex;
+            renderRace(currentYearIndex + 1);
+            stepTimer = setTimeout(animateStep, 800);
+        }
+
+        function isRunning() {
+            return animationId !== null || stepTimer !== null;
         }
 
         function startRace() {
-            if (!animationId) {
-                // If we're not at the start or partway through, reset first
-                if (currentYearIndex < 0) {
-                    currentYearIndex = 0;
-                    frameInYear = 0;
-                    positions = { red: 100, blue: 100, green: 100, gold: 100 };
-                    // Update slider to reflect we're now on year 0 (2012)
-                    document.getElementById('yearSlider').value = 0;
-                }
-
-                animate();
-                document.getElementById('startBtn').disabled = true;
-                document.getElementById('pauseBtn').disabled = false;
+            if (isRunning()) return;
+            const atEnd = currentYearIndex >= historicalData.length - 1 && frameInYear >= framesPerYear;
+            if (currentYearIndex < 0 || atEnd) {
+                currentYearIndex = 0;
+                frameInYear = 0;
+                setYearText(0);
+                document.getElementById('yearSlider').value = 0;
+                renderRace(0);
+            }
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
+            if (reducedMotion) {
+                currentYearIndex -= 1; // animateStep pre-increments
+                animateStep();
+            } else {
+                animationId = requestAnimationFrame(animateFrame);
             }
         }
 
@@ -992,114 +1039,304 @@
             if (animationId) {
                 cancelAnimationFrame(animationId);
                 animationId = null;
-                document.getElementById('startBtn').disabled = false;
-                document.getElementById('pauseBtn').disabled = true;
             }
+            if (stepTimer) {
+                clearTimeout(stepTimer);
+                stepTimer = null;
+            }
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
         }
 
         function resetRace() {
             pauseRace();
             currentYearIndex = -1;
             frameInYear = 0;
-            positions = { red: 100, blue: 100, green: 100, gold: 100 };
-            xPositions = { red: 0, blue: 0, green: 0, gold: 0 };
-
-            updateCarPosition('redCar', 0, laneY.red, 'red');
-            updateCarPosition('blueCar', 0, laneY.blue, 'blue');
-            updateCarPosition('greenCar', 0, laneY.green, 'green');
-            updateCarPosition('goldCar', 0, laneY.gold, 'gold');
-
-            // Reset leader line position
-            const leaderLine = document.getElementById('leaderLine');
-            const leaderLabel = document.getElementById('leaderLabel');
-            leaderLine.setAttribute('x1', startX);
-            leaderLine.setAttribute('x2', startX);
-            leaderLabel.setAttribute('x', startX);
-
-            // Reset pension line position
-            const pensionLine = document.getElementById('pensionLine');
-            const pensionLabel = document.getElementById('pensionLabel');
-            pensionLine.setAttribute('x1', startX);
-            pensionLine.setAttribute('x2', startX);
-            pensionLabel.setAttribute('x', startX);
-
-            updateStats();
-
-            document.getElementById('startBtn').disabled = false;
             document.getElementById('yearSlider').value = -1;
+            setYearText(-1);
+            renderRace(0);
         }
 
-        function scrubToYear(yearIndex) {
+        function scrubToYear(value) {
             pauseRace();
-
-            yearIndex = parseInt(yearIndex);
-
-            // Reset positions to start
-            positions = { red: 100, blue: 100, green: 100, gold: 100 };
-
-            // If yearIndex is -1 (start position), don't apply any growth
-            if (yearIndex >= 0) {
-                // Apply growth for each year up to and including the selected year
-                for (let i = 0; i <= yearIndex; i++) {
-                    const data = historicalData[i];
-                    positions.red *= (1 + data.cpi / 100);
-                    positions.blue *= (1 + data.earnings / 100);
-                    positions.green *= (1 + data.floor / 100);
-                    positions.gold *= (1 + data.pension / 100);
-                }
-            }
-
-            // Calculate final gold position for scaling (logarithmic scale)
-            let finalGoldIndex = 100;
-            for (let i = 0; i < historicalData.length; i++) {
-                finalGoldIndex *= (1 + historicalData[i].pension / 100);
-            }
-
-            // Scale positions so gold reaches finish line in 2025 (using log scale)
-            const scale = maxXPos / Math.log(finalGoldIndex / 100);
-            xPositions.red = Math.log(positions.red / 100) * scale;
-            xPositions.blue = Math.log(positions.blue / 100) * scale;
-            xPositions.green = Math.log(positions.green / 100) * scale;
-            xPositions.gold = Math.log(positions.gold / 100) * scale;
-
-            // Update car positions
-            updateCarPosition('redCar', xPositions.red, laneY.red, 'red');
-            updateCarPosition('blueCar', xPositions.blue, laneY.blue, 'blue');
-            updateCarPosition('greenCar', xPositions.green, laneY.green, 'green');
-            updateCarPosition('goldCar', xPositions.gold, laneY.gold, 'gold');
-
-            // Update leader line position (max of red, blue, green)
-            const maxTriplePos = Math.max(xPositions.red, xPositions.blue, xPositions.green);
-            const leaderLine = document.getElementById('leaderLine');
-            const leaderLabel = document.getElementById('leaderLabel');
-            leaderLine.setAttribute('x1', startX + maxTriplePos);
-            leaderLine.setAttribute('x2', startX + maxTriplePos);
-            leaderLabel.setAttribute('x', startX + maxTriplePos);
-
-            // Update pension line position (gold car)
-            const pensionLine = document.getElementById('pensionLine');
-            const pensionLabel = document.getElementById('pensionLabel');
-            pensionLine.setAttribute('x1', startX + xPositions.gold);
-            pensionLine.setAttribute('x2', startX + xPositions.gold);
-            pensionLabel.setAttribute('x', startX + xPositions.gold);
-
-            // Update current year index
-            currentYearIndex = parseInt(yearIndex);
-            frameInYear = 0;
-
-            // Update display
-            if (currentYearIndex < 0) {
-                document.getElementById('yearDisplay').textContent = `Year: 2011 (baseline)`;
-            } else if (currentYearIndex < historicalData.length) {
-                document.getElementById('yearDisplay').textContent = `Year: ${historicalData[currentYearIndex].year}`;
-            } else {
-                document.getElementById('yearDisplay').textContent = `Year: Complete`;
-            }
-            updateStats();
+            currentYearIndex = parseInt(value, 10);
+            frameInYear = currentYearIndex >= 0 ? framesPerYear : 0;
+            setYearText(currentYearIndex);
+            renderRace(currentYearIndex < 0 ? 0 : currentYearIndex + 1);
         }
 
-        // Initialize
-        resetRace();
+        // ------------------------- line chart -------------------------
+        const chart = {
+            w: 800, h: 400,
+            mL: 46, mR: 92, mT: 24, mB: 36,
+            yMin: 95, yMax: 185,
+            years: [2011].concat(historicalData.map(function (d) { return d.year; }))
+        };
+        chart.plotW = chart.w - chart.mL - chart.mR;
+        chart.plotH = chart.h - chart.mT - chart.mB;
+        chart.xOf = function (year) {
+            return chart.mL + (year - 2011) / (2026 - 2011) * chart.plotW;
+        };
+        chart.yOf = function (v) {
+            return chart.mT + (chart.yMax - v) / (chart.yMax - chart.yMin) * chart.plotH;
+        };
+
+        // Per-year values, including the 2011 baseline row.
+        const chartRows = [{ year: 2011, cpi: 100, earnings: 100, floor: 100, pension: 100, leader: 100, gap: 0 }]
+            .concat(rows);
+
+        const lineSvg = document.getElementById('lineSvg');
+        const chartParts = { hoverDots: {} };
+
+        function buildChart() {
+            // Horizontal gridlines + y ticks
+            [100, 120, 140, 160, 180].forEach(function (v) {
+                const y = chart.yOf(v);
+                el('line', { x1: chart.mL, y1: y, x2: chart.w - chart.mR, y2: y, 'class': 'tick-line' }, lineSvg);
+                svgText(lineSvg, chart.mL - 8, y + 4, 'tick-text', String(v), 'end');
+            });
+            // X ticks every three years
+            [2011, 2014, 2017, 2020, 2023, 2026].forEach(function (yr) {
+                svgText(lineSvg, chart.xOf(yr), chart.h - chart.mB + 20, 'tick-text', String(yr), 'middle');
+            });
+
+            // Overshoot wash: pension on top, true-lock envelope underneath
+            const topPts = chartRows.map(function (r) {
+                return chart.xOf(r.year) + ',' + chart.yOf(r.pension);
+            });
+            const botPts = chartRows.slice().reverse().map(function (r) {
+                return chart.xOf(r.year) + ',' + chart.yOf(r.leader);
+            });
+            el('polygon', { points: topPts.concat(botPts).join(' '), 'class': 'wash-area' }, lineSvg);
+
+            // Wash label, midway between the two edges around 2023
+            const r23 = chartRows.find(function (r) { return r.year === 2023; });
+            svgText(lineSvg, chart.xOf(2023), (chart.yOf(r23.pension) + chart.yOf(r23.leader)) / 2 + 4,
+                'ref-text', 'the overshoot', 'middle');
+
+            // Series lines + end labels
+            series.forEach(function (s) {
+                const pts = chartRows.map(function (r) {
+                    return chart.xOf(r.year) + ',' + chart.yOf(r[s.key]);
+                }).join(' ');
+                el('polyline', { points: pts, 'class': 'chart-line stroke-' + s.key }, lineSvg);
+
+                const last = chartRows[chartRows.length - 1];
+                const y = chart.yOf(last[s.key]);
+                const label = el('text', { x: chart.w - chart.mR + 8, y: y + 4 }, lineSvg);
+                const nameSpan = document.createElementNS(SVG_NS, 'tspan');
+                nameSpan.setAttribute('class', 'end-label-name');
+                nameSpan.textContent = s.name + ' ';
+                const valSpan = document.createElementNS(SVG_NS, 'tspan');
+                valSpan.setAttribute('class', 'end-label-value');
+                valSpan.textContent = last[s.key].toFixed(0);
+                label.appendChild(nameSpan);
+                label.appendChild(valSpan);
+                el('line', {
+                    x1: chart.w - chart.mR + 1, y1: y, x2: chart.w - chart.mR + 6, y2: y,
+                    'class': 'chart-line stroke-' + s.key
+                }, lineSvg);
+            });
+
+            // Baseline axis
+            el('line', {
+                x1: chart.mL, y1: chart.h - chart.mB, x2: chart.w - chart.mR, y2: chart.h - chart.mB,
+                'class': 'axis-line'
+            }, lineSvg);
+
+            // Hover layer: crosshair + ringed dots (hidden until hover)
+            chartParts.crosshair = el('line', {
+                x1: 0, y1: chart.mT, x2: 0, y2: chart.h - chart.mB, 'class': 'crosshair'
+            }, lineSvg);
+            chartParts.crosshair.style.display = 'none';
+            series.forEach(function (s) {
+                const dot = el('circle', { cx: 0, cy: 0, r: 5, 'class': 'fill-' + s.key + ' tip-dot' }, lineSvg);
+                dot.style.display = 'none';
+                chartParts.hoverDots[s.key] = dot;
+            });
+
+            // Transparent hit area over the whole plot
+            chartParts.hitArea = el('rect', {
+                x: chart.mL, y: chart.mT, width: chart.plotW, height: chart.plotH,
+                fill: 'transparent'
+            }, lineSvg);
+
+            // Legend (line keys)
+            const legend = document.getElementById('chartLegend');
+            series.forEach(function (s) {
+                const item = document.createElement('div');
+                item.className = 'legend-item';
+                const key = document.createElement('span');
+                key.className = 'legend-key';
+                key.style.background = 'var(' + s.cssVar + ')';
+                const name = document.createElement('span');
+                name.textContent = s.name;
+                item.appendChild(key);
+                item.appendChild(name);
+                legend.appendChild(item);
+            });
+        }
+
+        // --------------------- chart hover / tooltip ---------------------
+        const chartWrap = document.getElementById('chartWrap');
+        const tooltip = document.getElementById('tooltip');
+        let hoverIndex = -1;
+
+        function buildTooltip(r) {
+            tooltip.replaceChildren();
+            const yearEl = document.createElement('div');
+            yearEl.className = 'tt-year';
+            yearEl.textContent = String(r.year);
+            tooltip.appendChild(yearEl);
+            series.forEach(function (s) {
+                const row = document.createElement('div');
+                row.className = 'tt-row';
+                const key = document.createElement('span');
+                key.className = 'tt-key';
+                key.style.background = 'var(' + s.cssVar + ')';
+                const name = document.createElement('span');
+                name.className = 'tt-name';
+                name.textContent = s.name;
+                const val = document.createElement('span');
+                val.className = 'tt-value';
+                val.textContent = r[s.key].toFixed(1);
+                row.appendChild(key);
+                row.appendChild(name);
+                row.appendChild(val);
+                tooltip.appendChild(row);
+            });
+            const gapRow = document.createElement('div');
+            gapRow.className = 'tt-row tt-gap';
+            const gapName = document.createElement('span');
+            gapName.className = 'tt-name';
+            gapName.textContent = 'Overshoot';
+            const gapVal = document.createElement('span');
+            gapVal.className = 'tt-value';
+            gapVal.textContent = '+' + r.gap.toFixed(1) + ' pts';
+            gapRow.appendChild(gapName);
+            gapRow.appendChild(gapVal);
+            tooltip.appendChild(gapRow);
+        }
+
+        function showHover(i) {
+            hoverIndex = i;
+            const r = chartRows[i];
+            const dataX = chart.xOf(r.year);
+
+            chartParts.crosshair.setAttribute('x1', dataX);
+            chartParts.crosshair.setAttribute('x2', dataX);
+            chartParts.crosshair.style.display = '';
+            series.forEach(function (s) {
+                const dot = chartParts.hoverDots[s.key];
+                dot.setAttribute('cx', dataX);
+                dot.setAttribute('cy', chart.yOf(r[s.key]));
+                dot.style.display = '';
+            });
+
+            buildTooltip(r);
+            const rect = lineSvg.getBoundingClientRect();
+            const px = dataX / chart.w * rect.width;
+            tooltip.style.display = 'block';
+            if (dataX > chart.w * 0.62) {
+                tooltip.style.left = 'auto';
+                tooltip.style.right = (rect.width - px + 12) + 'px';
+            } else {
+                tooltip.style.right = 'auto';
+                tooltip.style.left = (px + 12) + 'px';
+            }
+            tooltip.style.top = (chart.mT / chart.h * rect.height + 8) + 'px';
+        }
+
+        function hideHover() {
+            hoverIndex = -1;
+            tooltip.style.display = 'none';
+            chartParts.crosshair.style.display = 'none';
+            series.forEach(function (s) { chartParts.hoverDots[s.key].style.display = 'none'; });
+        }
+
+        function nearestYearIndex(clientX) {
+            const rect = lineSvg.getBoundingClientRect();
+            const dataX = (clientX - rect.left) / rect.width * chart.w;
+            let best = 0, bestDist = Infinity;
+            chartRows.forEach(function (r, i) {
+                const d = Math.abs(chart.xOf(r.year) - dataX);
+                if (d < bestDist) { bestDist = d; best = i; }
+            });
+            return best;
+        }
+
+        function wireChartInteraction() {
+            chartParts.hitArea.addEventListener('pointermove', function (e) {
+                showHover(nearestYearIndex(e.clientX));
+            });
+            chartParts.hitArea.addEventListener('pointerleave', hideHover);
+            chartWrap.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const delta = e.key === 'ArrowRight' ? 1 : -1;
+                    const next = hoverIndex < 0
+                        ? (delta > 0 ? 0 : chartRows.length - 1)
+                        : Math.max(0, Math.min(chartRows.length - 1, hoverIndex + delta));
+                    showHover(next);
+                } else if (e.key === 'Escape') {
+                    hideHover();
+                }
+            });
+            chartWrap.addEventListener('blur', hideHover);
+        }
+
+        // ------------------------- data table -------------------------
+        function buildTable() {
+            const tbody = document.getElementById('dataTableBody');
+            historicalData.forEach(function (d, i) {
+                const r = rows[i];
+                const tr = document.createElement('tr');
+
+                function cell(text, cls) {
+                    const td = document.createElement('td');
+                    td.textContent = text;
+                    if (cls) td.className = cls;
+                    tr.appendChild(td);
+                    return td;
+                }
+
+                const winner = d.suspended ? 'cpi'
+                    : (d.applied === d.cpi ? 'cpi' : (d.applied === d.earnings ? 'earnings' : 'floor'));
+
+                cell(d.year + (d.suspended ? '*' : ''));
+                cell(d.cpi.toFixed(1) + '%', winner === 'cpi' ? 'winner' : '');
+                cell(d.earnings.toFixed(1) + '%',
+                    d.suspended ? 'suspended' : (winner === 'earnings' ? 'winner' : ''));
+                cell(d.floor.toFixed(1) + '%', winner === 'floor' ? 'winner' : '');
+                cell(d.applied.toFixed(1) + '%', 'winner');
+                cell(r.cpi.toFixed(1));
+                cell(r.earnings.toFixed(1));
+                cell(r.floor.toFixed(1));
+                const penTd = cell(r.pension.toFixed(1));
+                penTd.style.fontWeight = '700';
+                cell(r.leader.toFixed(1));
+                cell((r.gap >= 0.05 ? '+' : '') + r.gap.toFixed(1),
+                    r.gap >= 0.05 ? 'gap-cell' : 'zero-cell');
+                cell('£' + d.spend.toFixed(1) + 'bn');
+                cell('£' + (r.overspend >= 0.05 ? '+' : '') + r.overspend.toFixed(1) + 'bn',
+                    r.overspend >= 0.05 ? 'overspend-cell' : 'zero-cell');
+
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ------------------------- init -------------------------
+        buildRace();
+        buildChart();
+        wireChartInteraction();
+        buildTable();
+        renderRace(0);
+        setYearText(-1);
+
+        const totalText = '£' + finalRow.cumOverspend.toFixed(1) + 'bn';
+        document.getElementById('bannerTotal').textContent = totalText;
+        document.getElementById('calloutTotal').textContent =
+            '£' + Math.round(finalRow.cumOverspend);
     </script>
 </body>
 
