@@ -7,7 +7,7 @@ description: Last Accessed Dates, bad caching, a performance trap
 tagline: How to overload your SQLite database
 ---
 
-# 2025-07-18 Performance pitfalls
+# Performance Pitfalls - Stamping a Last Seen Date / Bad Caching
 
 ## Introduction
 
