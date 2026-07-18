@@ -2,6 +2,7 @@
 layout: post
 title: Performance Pitfalls - Stamping a Last Seen Date / Bad Caching
 date: 2026-07-18
+permalink: /2026-07-18-Last-Accessed-Trap
 description: Last Accessed Dates, bad caching, a performance trap
 tagline: How to overload your SQLite database
 ---

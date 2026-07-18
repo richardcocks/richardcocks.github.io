@@ -1,8 +1,19 @@
+---
+layout: default
+title: Richard Cocks
+---
+
 I'm on bluesky at [@eterm.bsky.social](https://bsky.app/profile/eterm.bsky.social)
 
 # Posts
 
- - [2025-08-09 Performance Pitfalls - List Contains](/2025-08-09-PerformancePitfalls.md)
- - [2025-03-30 What's faster than Memcmp?](/2025-03-30-FasterThanMemCmp)
- - [2025-03-24 Fixing a Password Generator](/2025-03-24-PasswordGen)
- - [2025-05-08 My SO question was closed so I'm writing this post on CoreWCF](/2025-05-08-CoreWCF)
+<p><a href="{{ '/feed.xml' | relative_url }}">RSS feed</a></p>
+
+<ul>
+{% for post in site.posts %}
+  <li>
+    <a href="{{ post.url | relative_url }}">{{ post.date | date: "%Y-%m-%d" }} {{ post.title }}</a>
+    {% if post.tagline %}<br><small>{{ post.tagline }}</small>{% endif %}
+  </li>
+{% endfor %}
+</ul>
