@@ -1,0 +1,19 @@
+---
+layout: default
+---
+
+<meta name="robots" content="noindex, nofollow">
+
+<div class="unlisted-notice" style="border:1px solid currentColor;padding:0.75em 1em;margin-bottom:1.5em;">
+  <strong>Unpublished draft.</strong>
+  This page is not listed on the site index and is not in the RSS feed.
+  It is shared for comment ahead of publication and may still change.
+</div>
+
+<p class="post-meta">
+  {% if page.date %}
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time>
+  {% endif %}
+</p>
+
+{{ content }}
