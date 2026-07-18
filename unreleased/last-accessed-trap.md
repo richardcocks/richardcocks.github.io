@@ -29,7 +29,7 @@ In some architectures, such as Rails running on Puma with a limited number of wo
 
 ## But we can cache anonymous traffic to avoid hitting the application entirely
 
-Yes, but be sure to do so carefully. In preparing for writing this blog post, I[1] found that on one popular application, the cache is evicting its entire contents every minute because of a misconfigured cache eviction cron job.
+Yes, but be sure to do so carefully. In preparing for writing this blog post, I[^1] found that on one popular application, the cache is evicting its entire contents every minute because of a misconfigured cache eviction cron job.
 
 What should have been `-not -mmin -5` was typo'd as `-not -mmin 5`
 
@@ -53,4 +53,4 @@ Make sure your anonymous requests are read-only. They should be to avoid DOS vec
 This can be difficult to do in some frameworks, but if you can control time, then do so to make sure your strategy is correct. That utility, `touch`, that you lazily think of meaning "create new file", is actually a utility that _sets timestamps_ to any value you like. If you're using file caches, set up a directory of files, run `touch` across them with different times, and then run your eviction strategy to check you have what you expect left over.
 
 
-[1] Well, "I" found. Tools helped. If you're offended by that, please be re-assured this post is entirely my own voice.
+[^1]: Well, "I" found. Tools helped. If you're offended by that, please be re-assured this post is entirely my own voice.

@@ -1,4 +1,6 @@
-markdown: GFM
+markdown: kramdown
+kramdown:
+  input: GFM
 
 title: Richard Cocks
 description: Posts on C# / .NET performance, benchmarking, and the occasional rabbit hole.
