@@ -23,7 +23,7 @@ Even with WAL mode, an underappreciated fact of SQLite is that all writes must b
 
 This is fine if all your writes are genuinely quick, if every single one is a quick write then there are no problems.
 
-However, if you have a longer write, say a statistics sweep that runs aggregation of your last 90 days traffic, then that longer write could hold up all your other writes.
+However, if you have a longer write, such as cleanup that happens when a user deletes their account, then that longer write could hold up all your other writes.
 
 In some architectures, such as Rails running on Puma with a limited number of worker threads, then a handful of authenticated requests waiting for their turn to stamp the database, could exhaust the worker pool, which then holds up anonymous requests which don't even need to write to the database at all.
 
