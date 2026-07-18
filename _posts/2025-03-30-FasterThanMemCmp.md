@@ -2,7 +2,8 @@
 layout: post
 title: What's faster than Memcmp?
 date: 2025-03-30
-permalink: /2025-03-30-FasterThanMemCmp
+redirect_from:
+  - /2025-03-30-FasterThanMemCmp
 description: What could be faster than memcmp? How to quickly compare arrays using Span<T>
 tagline: What could be faster than memcmp? Benefits of Span<T>
 image: https://richardcocks.github.io/assets/img/1_dotnet_framework.png

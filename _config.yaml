@@ -8,8 +8,10 @@ author: Richard Cocks
 
 plugins:
   - jekyll-feed
+  - jekyll-redirect-from
 
-# Posts previously lived at the repo root and were served at /YYYY-MM-DD-Title.
-# This keeps that shape for new posts; existing posts pin an explicit `permalink`
-# in their front matter to preserve the original capitalisation.
-permalink: /:year-:month-:day-:title
+permalink: /:year/:month/:day/:title
+
+# Posts originally lived at the repo root and were served at /YYYY-MM-DD-Title.
+# Those URLs are still linked externally, so each pre-existing post carries a
+# `redirect_from` entry pointing at its old flat URL. New posts don't need one.

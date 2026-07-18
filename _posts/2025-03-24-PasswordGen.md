@@ -2,7 +2,8 @@
 layout: post
 title: Fixing a password generator
 date: 2025-03-24
-permalink: /2025-03-24-PasswordGen
+redirect_from:
+  - /2025-03-24-PasswordGen
 description: Fixing co-pilot output, with micro-benchmarking tool BenchmarkDotNet
 tagline: Fixing co-pilot output, with micro-benchmarking tool BenchmarkDotNet
 image: https://richardcocks.github.io/assets/img/7aStackAlloc0.png
