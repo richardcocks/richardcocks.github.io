@@ -8,7 +8,7 @@ tagline: What could be faster than memcmp? Benefits of Span<T>
 image: https://richardcocks.github.io/assets/img/1_dotnet_framework.png
 ---
 
-# 2025-03-30 What's faster than Memcmp?
+# What's faster than Memcmp?
 
 In this post I look at improvements in .NET and using Span<T> for performance and portability.
 
