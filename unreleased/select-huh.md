@@ -26,9 +26,9 @@ SELECT CASE WHEN 1 / 5 * 100.0 = 1 * 100.0 / 5 THEN 1 ELSE 0 END AS Huh
 |PostgreSQL|0|
 |SQLite|0|
 |MSSql|0|
-|Oracle|1| 
+|Oracle\*|1| 
 
-Oracle isn't quite true, it required adding `FROM DUAL` , because it doesn't allow `SELECT <expr>` without a `FROM` clause.
+\* Oracle required adding `FROM DUAL`, because it doesn't allow `SELECT <expr>` without a `FROM` clause.
 
 ## Migration headaches
 
