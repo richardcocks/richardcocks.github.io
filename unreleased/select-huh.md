@@ -10,7 +10,7 @@ tagline: When true isn't true
 
 Whether the headline query returns `1` or `0` depends entirely on your SQL engine of choice. The query is entirely valid to the ISO SQL standard, yet perhaps surprisingly, the result is still vendor specific.
 
-I used codapi ( https://codapi.org ) to run this query against each of their databases.
+I used [codapi.org](https://codapi.org) to run this query against each of their databases.
 
 ```
 SELECT CASE WHEN 1 / 5 * 100.0 = 1 * 100.0 / 5 THEN 1 ELSE 0 END AS Huh
