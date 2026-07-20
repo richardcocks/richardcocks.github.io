@@ -1,5 +1,5 @@
 ---
-layout: unlisted
+layout: post
 title: SELECT CASE WHEN 1 / 5 * 100.0 = 1 * 100.0 / 5 THEN 1 ELSE 0 END AS Huh
 date: 2026-07-20
 description: A SQL Engine gotcha
