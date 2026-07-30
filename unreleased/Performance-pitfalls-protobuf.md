@@ -39,6 +39,8 @@ Removing the transport and microbenchmarking the serialisation and parsing direc
 
 Note: Smaller is better
 
+![log2 scale, 10,000 values per message](/assets/img/1_protobuf_encoding.png "fixed32 vs varint serialisation, 10,000 values per message")
+
 ### Ratio vs `fixed32` by batch size
 
 Serialize:
