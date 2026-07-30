@@ -10,7 +10,7 @@ image: https://richardcocks.github.io/assets/img/1benchmark.png
 
 As I find myself doing often, I was recently benchmarking transfer of a random stream with gRPC.
 
-I wanted a batch of random numbers, and so my naive protobuf was defined as such:
+I wanted a batch of random numbers streamed between processes, and so my naive protobuf was defined as such:
 
 ```
 syntax = "proto3";
@@ -144,17 +144,25 @@ private void EnsureSize(int size)
 
 With a capacity comparison on every item added.
 
-The fixed size parsing however can set capacity once with `EnsureSize(count + (length / codec.FixedSize));`, as well as the varint decoding itself also having overhead compared to a straight copy of known-endianess `fixed32` values.
+The fixed size parsing however can set capacity once with `EnsureSize(count + (length / codec.FixedSize));`, as well as the varint decoding itself also having overhead compared to a straight copy of known-endianness `fixed32` values.
 
 ## Conclusion
 
-It's worth pointing out, that for very small arrays, `uint32` comfortably beats `fixed32`, this optimisation only works for larger arrays, where the fixed cost of `GCHandle` and raw byte copying is worth paying compared to the simple loop.
+It's also worth pointing out, that for very small arrays, `uint32` comfortably beats `fixed32`, this optimisation only works for larger arrays, where the fixed cost of `GCHandle` and raw byte copying is worth paying compared to the simple loop.
 
 Not only this, but with small arrays it'll be a fraction of the transport overhead. However, for larger arrays, `fixed32` becomes a clear winner. What surprised me a bit was how small the crossover point is. In pure serialisation, the crossover point is somewhere between 4 and 16 elements, although that will be made up with wire/transport costs at that size. On my machine, the crossover for being worth it after transport costs was around 64 elements.
 
-If you are doing local IPC and are CPU bottlenecked instead of bandwidth constrained and transferring any kind of larger arrays of values in gRPC / protobuf, then be sure to consider a fixed size value and not variable length fields within the array.
+You should not take the above to be a blanket recommendation of `fixed32`, there are significant downsides to saturating your memory bandwidth instead of your CPU time, although for maximising transfer, `fixed32` was still overall faster even scaled to all 8 of my cores.
 
-On my machine, with a 512KB per core L2 cache, this advantage peaked at around 200x, at somewhere between 8k and 16k array length. This trailed off to merely 167x advantage once it spilled into L3 cache.
+If you are doing local IPC and are CPU bottlenecked instead of RPC and being network bandwidth constrained, and are transferring any kind of larger arrays of values in gRPC / protobuf, then be sure to consider a fixed size value and not variable length fields within the array.
+
+This is still an unusual and artificial scenario, since most servers tend to run with excess CPU capacity even relative to memory bandwidth.
+
+Also, for anything going across the wire, any smaller serialisation will almost always win out unless you can push over an estimated 1Gbit/sec. Whether the varint serialisation is smaller is also dependent on the range of values, for truly random data, frequent high bits will cause a larger varint serialisation.
+
+On my machine, with a 512KB per core L2 cache, this advantage of transfer with a single core peaked at around 200x, at somewhere between 8k and 16k array length. This trailed off to merely 167x advantage once it spilled into L3 cache.
+
+When scaled to multiple cores with memory bandwidth contention and cache-spilling, this advantage narrowed heavily to ~9.48x.
 
 ## Footnote: `bytes`
 
@@ -253,3 +261,13 @@ and a `bytes` field are byte-identical on the wire.
 | Parse | `repeated fixed32` | 0.2196 | 1.00 | 4 B |
 | Parse | `bytes` + `MemoryMarshal.Cast` | 0.2310 | 1.06 | 4 B |
 
+### Memory bandwidth contention
+
+Each invocation serialises `Threads x 1,000,000` values, one message per thread.
+
+| Threads | `fixed32` | `uint32` | ratio | `fixed32` speedup | `uint32` speedup |
+|---:|---:|---:|---:|---:|---:|
+| 1 | 178.0 µs | 14,372 µs | 80.79 | 1.00x | 1.00x |
+| 2 | 383.0 µs | 16,209 µs | 42.37 | 0.93x | 1.77x |
+| 4 | 1,060.9 µs | 16,472 µs | 15.53 | 0.67x | 3.49x |
+| 8 | 1,936.2 µs | 18,323 µs | 9.48 | 0.74x | 6.28x |
