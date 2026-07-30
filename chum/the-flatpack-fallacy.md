@@ -7,12 +7,12 @@ og:
   title: "The Flatpack Fallacy"
   description: "Why the debate around AI-assisted coding is haunted by a false choice."
   type: "article"
-  image: "https://richardcocks.github.io/chum/img/flatpack-fallacy-header.png"
+  image: "https://blog.eterm.uk/chum/img/flatpack-fallacy-header.png"
 twitter:
   card: "summary_large_image"
   title: "The Flatpack Fallacy"
   description: "Why the debate around AI-assisted coding is haunted by a false choice."
-  image: "https://richardcocks.github.io/chum/img/flatpack-fallacy-header.png"
+  image: "https://blog.eterm.uk/chum/img/flatpack-fallacy-header.png"
 ---
 
 # The Flatpack Fallacy

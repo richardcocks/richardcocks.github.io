@@ -7,12 +7,12 @@ og:
   title: "Claude x Typst"
   description: "Combining Claude Code with Typst for efficient, professional PDF document generation."
   type: "article"
-  image: "https://richardcocks.github.io/chum/img/typst-claude-header.png"
+  image: "https://blog.eterm.uk/chum/img/typst-claude-header.png"
 twitter:
   card: "summary_large_image"
   title: "Claude x Typst"
   description: "Combining Claude Code with Typst for efficient, professional PDF document generation."
-  image: "https://richardcocks.github.io/chum/img/typst-claude-header.png"
+  image: "https://blog.eterm.uk/chum/img/typst-claude-header.png"
 ---
 
 # Claude x Typst

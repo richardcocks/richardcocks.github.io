@@ -4,7 +4,7 @@ kramdown:
 
 title: Richard Cocks
 description: Posts on C# / .NET performance, benchmarking, and the occasional rabbit hole.
-url: https://richardcocks.github.io
+url: https://blog.eterm.uk
 baseurl: ""
 author: Richard Cocks
 

@@ -4,7 +4,7 @@ title: Performance Pitfalls in C# / .NET - Protobuf - repeated uint32 vs repeate
 date: 2026-07-30
 description: Looking at the performance of gRPC/protobuf serialisation
 tagline: How could a uint32[] possibly be slow?
-image: https://richardcocks.github.io/assets/img/proto_1.png
+image: https://blog.eterm.uk/assets/img/proto_1.png
 ---
 # Performance Pitfalls in C# / .NET - Protobuf Arrays - `repeated uint32` vs `repeated fixed32`
 

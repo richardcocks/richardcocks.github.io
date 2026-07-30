@@ -3,7 +3,7 @@ layout: default
 title: Richard Cocks
 ---
 
-I'm on bluesky at [@eterm.bsky.social](https://bsky.app/profile/eterm.bsky.social)
+I'm Richard Cocks, a .NET/C# developer. I write here about performance, benchmarking, and whatever rabbit hole I've fallen down that week. Find me on [Bluesky](https://bsky.app/profile/eterm.bsky.social) or [GitHub](https://github.com/richardcocks).
 
 # Posts
 
