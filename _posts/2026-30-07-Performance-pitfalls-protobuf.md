@@ -1,5 +1,5 @@
 ---
-layout: unlisted
+layout: post
 title: Performance Pitfalls in C# / .NET - Protobuf - repeated uint32 vs repeated fixed32
 date: 2026-07-30
 description: Looking at the performance of gRPC/protobuf serialisation
