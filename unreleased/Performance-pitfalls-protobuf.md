@@ -211,10 +211,7 @@ Source code for benchmarks available at https://github.com/richardcocks/protobuf
 
 ### Measured protobuf write paths
 
-`[packed = false]` routes a repeated field through protobuf's per-element
-writer. Applying it to `fixed32` as well as `uint32` gives two paths that share
-the same dispatch, tag writing and buffer bookkeeping, differing only in how
-each value is emitted.
+`[packed = false]` forces protobuf's per-element writer path, letting us compare more directly.
 
 | Path | ns/value | vs packed `fixed32` |
 |---|---:|---:|
@@ -230,8 +227,6 @@ each value is emitted.
 | unpacked `uint32` | 2.8658 |
 
 ### Decomposition
-
-Every endpoint is a real protobuf code path; no hand-written stand-ins.
 
 | Step | Compares | Factor | Share (log-space) |
 |---|---|---:|---:|
@@ -253,8 +248,7 @@ Every endpoint is a real protobuf code path; no hand-written stand-ins.
 
 ### `bytes` vs `repeated fixed32`
 
-Both encode to 40,004 bytes for 10,000 values — packed `repeated fixed32`
-and a `bytes` field are byte-identical on the wire.
+Both encode to the same thing, any variation here is just noise.
 
 | Category | Method | Mean (ns/value) | Ratio | Allocated |
 |---|---|---:|---:|---:|
