@@ -11,6 +11,7 @@ author: Richard Cocks
 plugins:
   - jekyll-feed
   - jekyll-redirect-from
+  - jekyll-sitemap
 
 permalink: /:year/:month/:day/:title
 
