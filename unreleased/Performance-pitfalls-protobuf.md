@@ -121,7 +121,7 @@ else
 
 The whole span written as raw bytes vs a loop emitting entries at a time. In retrospect an obvious win.
 
-On the parsing side, the length of the output cannot be assumed from a quick measurement, and so there is also overhead in per-element parsing, and with the additional overhead of needing to resize the output buffer each power of two, and each time paying for a bounds-check in the `Add(T item)` call:
+On the parsing side, the length of the output cannot be derived, and so there is also overhead in per-element parsing, and with the additional overhead of needing to resize the output buffer each power of two, and each time paying for a bounds-check in the `Add(T item)` call:
 
 ```
 public void Add(T item)
@@ -142,15 +142,13 @@ private void EnsureSize(int size)
 }
 ```
 
-With a bounds-check on every item added.
+With a capacity comparison on every item added.
 
-The fixed size parsing however can check bounds once with `EnsureSize(count + (length / codec.FixedSize));`, as well as the varint decoding itself also having overhead compared to a straight copy of known-endianess `fixed32` values.
-
-
+The fixed size parsing however can set capacity once with `EnsureSize(count + (length / codec.FixedSize));`, as well as the varint decoding itself also having overhead compared to a straight copy of known-endianess `fixed32` values.
 
 ## Conclusion
 
-It's worth pointing out, that for very small arrays, `uint32` comfortably beats `fixed32`, this optimisation only works for larger arrays, where the fixed cost of `GCHandle` and raw byte copying beats the simple loop.
+It's worth pointing out, that for very small arrays, `uint32` comfortably beats `fixed32`, this optimisation only works for larger arrays, where the fixed cost of `GCHandle` and raw byte copying is worth paying compared to the simple loop.
 
 Not only this, but with small arrays it'll be a fraction of the transport overhead. However, for larger arrays, `fixed32` becomes a clear winner. What surprised me a bit was how small the crossover point is. In pure serialisation, the crossover point is somewhere between 4 and 16 elements, although that will be made up with wire/transport costs at that size. On my machine, the crossover for being worth it after transport costs was around 64 elements.
 
@@ -164,7 +162,7 @@ If you can reliably control for endianness and message size, then `bytes` has th
 
 Source code for benchmarks available at https://github.com/richardcocks/protobuf-varint-vs-fixed32
 
-## Addendum - Datatables ( At 10k units per message )
+## Addendum - Datatables
 
 ### End-to-end gRPC streaming throughput
 
