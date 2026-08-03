@@ -10,7 +10,10 @@ image: https://blog.eterm.uk/assets/img/ff_addon.png
 
 There are a plethora of existing readability addons, but they each prompt the scary warning:
 
-> This addon requires: Access your data for all websites
+<div style="display: flex; gap: 0.75em; align-items: flex-start; margin: 1em 0; padding: 0.9em 1.1em; border: 1px solid #d1242f; border-left: 6px solid #d1242f; border-radius: 6px; background: #fff1f0; color: #24292f;">
+  <span style="font-size: 1.5em; line-height: 1;" aria-hidden="true">⚠️</span>
+  <span>This add-on requires permission to:<br><strong>Access your data for all websites</strong></span>
+</div>
 
 And that's a scary thing to accept from an addon controlled by unknown users and groups, and which even in the most optimistic circumstances, could later be sold on to those less scrupulous.
 
