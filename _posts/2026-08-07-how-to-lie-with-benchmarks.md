@@ -48,6 +48,8 @@ This is of course a slow algorithm, but now we have a slow algorithm, we can run
 | | C# / .NET 10 | 7.15 ms | 7.40 ms |
 | | Java 25 (HotSpot C2) | 11.32 ms | 11.78 ms |
 | | Julia 1.12.6 | 11.42 ms | 12.03 ms |
+| | Gleam 1.18 (Erlang OTP 25) | 19.74 ms | 19.96 ms |
+| | Gleam 1.18 (Node / V8) | 20.87 ms | 21.30 ms |
 | | Node 26.5.1 / V8 14.6 | 22.13 ms | 23.37 ms |
 | | LuaJIT 2.1 | 25.95 ms | 26.24 ms |
 | | PyPy 3.9.16 | 26.68 ms | 31.81 ms |
@@ -269,12 +271,14 @@ Some languages purposefully do not do Tail Call Optimisation, other languages gu
 | C# / .NET 10 | 11.3 ns | It's complicated |
 | F# / .NET 10 | 12.4 ns | ✅ |
 | C / gcc | 12.3 ns | ✅ |
+| Gleam (Node / V8) | 17.8 ns | ✅ |
 | Go | 23.3 ns | It's also complicated |
 | LuaJIT | 27.1 ns | ✅ |
 | Java 25 | 28.8 ns | ❌ StackOverflowError |
 | Julia | 42.5 ns | ❌ StackOverflowError |
 | Node / V8 | 130.9 ns | ❌ RangeError |
 | PyPy | 175.8 ns | ❌ RecursionError |
+| Gleam (Erlang OTP 25) | 217.9 ns | ✅ |
 | Lua 5.4 | 612.7 ns | ✅ |
 | Lua 5.1 | 1057.8 ns | ✅ |
 | CPython | 1686.5 ns | ❌ RecursionError |
