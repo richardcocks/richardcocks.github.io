@@ -10,7 +10,7 @@ image: https://blog.eterm.uk/assets/img/fibbench.png
 
 ## Naive double-recursion
 
-A recent hacker news post[^1] alerted me to the idea of testing the speed of function calls by implementing naive recursive fibonacci.
+A recent hacker news post[^1] alerted me to the idea of testing the speed of function calls in different languages by implementing naive recursive fibonacci.
 
 You know, the kind you get by implementing:
 
