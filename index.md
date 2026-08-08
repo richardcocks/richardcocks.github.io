@@ -3,7 +3,7 @@ layout: default
 title: Richard Cocks
 ---
 
-I'm Richard Cocks, a .NET/C# developer. I write here about dotnet performance, benchmarking, and other interests. Find me on [Bluesky](https://bsky.app/profile/eterm.bsky.social) or [GitHub](https://github.com/richardcocks).
+I'm Richard Cocks, a .NET/C# developer. I write here about dotnet performance, benchmarking, and other interests. Find me on [Twitter](https://x.com/eterm_uk), [Bluesky](https://bsky.app/profile/eterm.bsky.social), and [GitHub](https://github.com/richardcocks).
 
 # Posts
 
