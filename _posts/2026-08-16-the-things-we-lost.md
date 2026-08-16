@@ -60,3 +60,9 @@ So we have a digital archive that states that DOOM 3 was reviewed in issue 140, 
 For all the hopes of the early internet, and that of "web2.0", open information and data freely available to be queried and remixed, what we got instead was data hoarding and private information never made available.
 
 We never got the full PCGamer review database online, and so it lies fossilised, incorrectly, on the last ever DVD issue 211.
+
+## It's hard to even find a physical copy
+
+The internet wanted information to be free, but despite the interconnectedness of most of the world, I can't find a physical copy of Issue 139 and Issue 140 on eBay. I'd love to, just to verify what actually was reviewed in each copy! 
+
+I can't even find scans of the covers, except the "subscriber edition" which doesn't have the text advertising what was reviewed!
