@@ -2,9 +2,9 @@
 layout: post
 title: "The things we lost"
 date: 2026-08-16
-description:
-tagline:
-image: https://blog.eterm.uk/assets/PCGamer1.png
+description: Exploring how the internet never lived up to its promise of open information
+tagline: In some ways the internet never lived up to its promise
+image: https://blog.eterm.uk/assets/img/PCGamer1.png
 ---
 # The things we lost
 
@@ -49,7 +49,7 @@ From 140 onward, it seems that 139 reviews ended up badged as 140, but it's not 
 
 This is a plot of reviews in each issue:
 
-![Reviews per issue](/assets/PCGamer1.png, "Reviews per issue")
+![Reviews per issue](/assets/img/PCGamer1.png "Reviews per issue")
 
 I can't make sense of the data, it's as if at some point they switched from tagging the issue from the actual hard-copy issue that carried the review, to the issue that first carried in on disc, i.e. one later, but it still doesn't quite add up. There's later another blip at issue 206, with a similar disappearing act.
 
