@@ -106,6 +106,7 @@ AMD Ryzen 7 3800X, 1 CPU, 16 logical and 8 physical cores
   .NET Framework 4.8.1 : .NET Framework 4.8.1 (4.8.9290.0), X64 RyuJIT VectorSize=256
 
 ```
+
 | Method        | Job                  | Runtime              | Length         |                   Mean |    Ratio |  RatioSD | Allocated |
 |---------------|----------------------|----------------------|----------------|-----------------------:|---------:|---------:|----------:|
 | **MemCmp**    | **.NET 8.0**         | **.NET 8.0**         | **10**         |           **7.957 ns** | **0.65** | **0.01** |     **-** |
