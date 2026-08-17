@@ -11,7 +11,7 @@ Coming up to a year into agentic development, I've overcome the initial awkwardn
 
 It was often difficult in the past to resist one more look at a new feature, one more testing cycle to catch the edge cases, one more commit to polish it off.
 
-When the development cycle took a week, then it was irresponsible to give in too much to that instinct. Experience and discipline called such over-work "gold plating", and it was generally agreed that one should draw a line somewhere and hand over the work, with any imperfections it might contain.
+When a new feature took a week, then it was irresponsible to give in too much to that instinct. Experience and discipline called such over-work "gold plating", and it was generally agreed that one should draw a line somewhere and hand over the work, with any imperfections it might contain.
 
 When working with claude, this is made so much more difficult. You can get to the end of the work, consider it finished, then ask claude for one final look over, and back it comes with a dozen minor code issues, some of which you'd never have even considered, such as the possibility that if someone calls this function in a particular state, then quits at just the right time, they could end up in a loop. That sounds bad, I can't ship that! Even if it's just a hobby project and I'll never be calling it that way.
 
