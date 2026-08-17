@@ -2,12 +2,12 @@
 layout: post
 title: Agentic Perfectionism
 date: 2026-08-17
-description: Agents are driving perfectionism, and that's bad for burnout
-tagline: When "Good enough" is no longer good enough
+description: '"Good enough" no longer feels good enough'
+tagline: 'When "Good enough" is no longer good enough'
 ---
 # Agentic Perfectionism - When "Good enough" is no longer good enough
 
-Coming up to a year into agentic development at work, we've overcome the initial awkwardness and challenges, but I'm finding increasingly there's a new spectre haunting me: Perfectionism.
+Coming up to a year into agentic development, I've overcome the initial awkwardness and challenges, but I'm finding increasingly there's a new spectre haunting me: Perfectionism.
 
 It was often difficult in the past to resist one more look at a new feature, one more testing cycle to catch the edge cases, one more commit to polish it off.
 
