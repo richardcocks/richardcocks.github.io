@@ -1,19 +1,153 @@
 ---
 ---
 
-@import "minima";
+/* Site theme: Merriweather on warm paper. No external theme; this file and
+   _layouts/default.html are the whole design. */
+
+:root {
+  --background: #faf6ef;
+  --text: #2e2b26;
+  --muted: #6b6354;
+  --rule: #d9d0bd;
+  --code-bg: #f3eee3;
+  --link: #1a5fa8;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
-  background-color: #faf6ef;
+  margin: 0;
+  background-color: var(--background);
+  color: var(--text);
   font-family: 'Merriweather', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.75;
 }
 
 .site-header,
-.site-footer {
-  background-color: #faf6ef;
+.site-main {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
 }
 
-h1, h2, h3, h4, h5, h6,
-.site-title {
-  font-family: 'Merriweather', Georgia, serif;
+.site-header {
+  padding-top: 1.5rem;
 }
+
+.site-title {
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-main {
+  padding-bottom: 3rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3;
+  margin: 1.5em 0 0.5em;
+}
+
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1.15rem; }
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5em 0;
+}
+
+blockquote {
+  margin: 1em 0;
+  padding: 0 0 0 1em;
+  border-left: 4px solid var(--rule);
+  color: var(--muted);
+}
+
+.post-meta {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+/* Code */
+
+code, pre {
+  font-family: Consolas, 'SF Mono', Menlo, monospace;
+  font-size: 0.85em;
+}
+
+code {
+  background-color: var(--code-bg);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  background-color: var(--code-bg);
+  padding: 0.8em 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 1em;
+}
+
+/* Tables (benchmark results are wide, so let them scroll) */
+
+table {
+  border-collapse: collapse;
+  font-size: 0.85em;
+  line-height: 1.5;
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+th, td {
+  border: 1px solid var(--rule);
+  padding: 0.35em 0.7em;
+}
+
+th {
+  background-color: var(--code-bg);
+}
+
+/* Syntax highlighting (Rouge), GitHub-style palette */
+
+.highlight .c, .highlight .cm, .highlight .c1  { color: #998; font-style: italic; }
+.highlight .cp  { color: #999; font-weight: bold; }
+.highlight .k, .highlight .kd, .highlight .kn,
+.highlight .kp, .highlight .kr, .highlight .o  { font-weight: bold; }
+.highlight .kt, .highlight .nc                 { color: #458; font-weight: bold; }
+.highlight .s, .highlight .s1, .highlight .s2,
+.highlight .sa, .highlight .se, .highlight .si { color: #d14; }
+.highlight .m, .highlight .mi, .highlight .mf,
+.highlight .mh                                 { color: #099; }
+.highlight .nf                                 { color: #900; }
+.highlight .nb                                 { color: #0086b3; }
+.highlight .nt                                 { color: #000080; }
+.highlight .na                                 { color: #008080; }
+.highlight .err                                { color: inherit; background: none; }
